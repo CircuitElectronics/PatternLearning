@@ -1,0 +1,1145 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>K Nearest-Neighbors KNN &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/KNN/KNN';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Locally Linear Embedding" href="../homeworkLLE/Homework_LLE.html" />
+    <link rel="prev" title="SOFM - Clustering and dimensionality reduction" href="../SOFM/SOFM.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">K Nearest-Neighbors KNN</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/KNN/KNN.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/KNN/KNN.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>K Nearest-Neighbors KNN</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">K Nearest-Neighbors KNN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prototype-methods">Prototype Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-clustering">K-means Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-clustring-for-labeled-data">K-means clustring for labeled data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-vector-quantization">Learning Vector Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbor-classifiers">k-Nearest-Neighbor Classifiers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-comparative-study">Example: A Comparative Study</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-nearest-neighbor-methods">Adaptive Nearest-Neighbor Methods</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-nearest-neighbor-dann-method">Adaptive Nearest-Neighbor (DANN) Method</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-class-data-experiment-in-ten-dimensions">Two-Class Data Experiment in Ten Dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-dimension-reduction-for-nearest-neighbors">Global Dimension Reduction for Nearest-Neighbors</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#drawbacks-and-optimizations-of-nearest-neighbor-rules">Drawbacks and Optimizations of Nearest-Neighbor Rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-reduction-techniques">Storage Reduction Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-algorithms">Key Algorithms</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-classification">Image Classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentiment-analysis">Sentiment Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-detection-identifying-outliers">Anomaly Detection: Identifying Outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographic-notes">Bibliographic Notes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementaion-knn-in-python">Implementaion KNN in python</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-the-modules">1. Importing the modules</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dataset">2. Creating Dataset</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-dataset">3. Visualize the Dataset</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-data-into-training-and-testing-datasets">4. Splitting Data into Training and Testing Datasets</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#knn-classifier-implementation">5. KNN Classifier Implementation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions-for-the-knn-classifiers">6. Predictions for the KNN Classifiers</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-accuracy-for-both-k-values">7. Predict Accuracy for both k values</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-predictions">8. Visualize Predictions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="k-nearest-neighbors-knn">
+<h1>K Nearest-Neighbors KNN<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Author  : Amir Malek Esfandiari</p></li>
+<li><p>Contact : <a class="reference external" href="https://github.com/AmirES1998">Github Page</a></p></li>
+</ul>
+<p><img alt="IMAGES" src="../../_images/self.jpg" /></p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In this chapter we discuss some simple and essentially model-free methods
+for classification and pattern recognition. Because they are highly unstruc-
+tured, they typically are not useful for understanding the nature of the
+relationship between the features and class outcome. However, as black box
+prediction engines, they can be very effective, and are often among the best
+performers in real data problems. The nearest-neighbor technique can also
+be used in regression; this was touched on in Chapter 2 and works reason-
+ably well for low-dimensional problems. However, with high-dimensional
+features, the bias–variance tradeoff does not work as favorably for nearest-
+neighbor regression as it does for classification.</p>
+</section>
+<section id="prototype-methods">
+<h2>Prototype Methods<a class="headerlink" href="#prototype-methods" title="Link to this heading">#</a></h2>
+<p>Throughout this chapter, our training data consists of the N pairs (<span class="math notranslate nohighlight">\(x_1\)</span>,<span class="math notranslate nohighlight">\(g_1\)</span>),
+…, (<span class="math notranslate nohighlight">\(x_n\)</span>,<span class="math notranslate nohighlight">\(g_N\)</span> ) where gi is a class label taking values in {1,2,…,K}. Pro-totype methods represent the training data by a set of points in feature
+space. These prototypes are typically not examples from the training sam-
+ple, except in the case of 1-nearest-neighbor classification discussed later.
+Each prototype has an associated class label, and classification of a query
+point <span class="math notranslate nohighlight">\(x\)</span> is made to the class of the closest prototype. “Closest” is usually
+defined by Euclidean distance in the feature space, after each feature has been standardized to have overall mean 0 and variance 1 in the training
+sample. Euclidean distance is appropriate for quantitative features.</p>
+<p>These methods can be very effective if the prototypes are well positioned
+to capture the distribution of each class. Irregular class boundaries can be
+represented, with enough prototypes in the right places in feature space.
+The main challenge is to figure out how many prototypes to use and where
+to put them. Methods differ according to the number and way in which
+prototypes are selected.</p>
+</section>
+<section id="k-means-clustering">
+<h2>K-means Clustering<a class="headerlink" href="#k-means-clustering" title="Link to this heading">#</a></h2>
+<p>K-means clustering is a method for finding clusters and cluster centers in a
+set of unlabeled data. One chooses the desired number of cluster centers, say
+R, and the K-means procedure iteratively moves the centers to minimize
+the total within cluster variance. Given an initial set of centers, the K-
+means algorithm alternates the two steps:</p>
+<ul class="simple">
+<li><p>for each center we identify the subset of training points (its cluster)
+that is closer to it than any other center;</p></li>
+<li><p>the means of each feature for the data points in each cluster are computed, and this mean vector becomes the new center for that cluster</p></li>
+</ul>
+<p>These two steps are iterated until convergence.Typically the initial centers are R randomly chosen observations from the training data</p>
+<section id="k-means-clustring-for-labeled-data">
+<h3>K-means clustring for labeled data<a class="headerlink" href="#k-means-clustring-for-labeled-data" title="Link to this heading">#</a></h3>
+<p>To use K-means clustering for classification of labeled data, the steps are:</p>
+<ul class="simple">
+<li><p>apply K-means clustering to the training data in each class separately, using R prototypes per class;</p></li>
+<li><p>assign a class label to each of the <span class="math notranslate nohighlight">\(K\)</span> × <span class="math notranslate nohighlight">\(R\)</span> prototypes;</p></li>
+<li><p>classify a new feature <span class="math notranslate nohighlight">\(x\)</span> to the class of the closest prototype.</p></li>
+</ul>
+</section>
+</section>
+<section id="learning-vector-quantization">
+<h2>Learning Vector Quantization<a class="headerlink" href="#learning-vector-quantization" title="Link to this heading">#</a></h2>
+<p>In this technique due to Kohonen (1989), prototypes are placed strategically with respect to the decision boundaries in an ad-hoc way.
+The idea is that the training points attract prototypes of the correct class, and repel other prototypes. When the iterations settle down, prototypes should be close to the training points in their class. The learning rate ǫ is decreased to zero with each iteration .</p>
+<section id="algorithm">
+<h3>algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p>Choose ( R ) initial prototypes for each class: ( m_1^{(k)}, m_2^{(k)}, \dots, m_R^{(k)} ),
+( k = 1,2,\dots,K ), for example, by sampling ( R ) training points at random
+from each class.</p></li>
+<li><p>Sample a training point ( x_i ) randomly (with replacement), and let ( (j, k) )
+index the closest prototype ( m_j^{(k)} ) to ( x_i ).</p>
+<p>(a) If ( g_i = k ) (i.e., they are in the same class), move the prototype
+towards the training point:</p>
+<div class="math notranslate nohighlight">
+\[
+      m_j^{(k)} \leftarrow m_j^{(k)} + \epsilon (x_i - m_j^{(k)}),
+   \]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is the learning rate.</p>
+<p><br />
+(b) If ( g_i \neq k ) (i.e., they are in different classes), move the prototype
+away from the training point:</p>
+<div class="math notranslate nohighlight">
+\[
+      m_j^{(k)} \leftarrow m_j^{(k)} - \epsilon (x_i - m_j^{(k)}).
+      \]</div>
+</li>
+<li><p>Repeat step 2, decreasing the learning rate ( \epsilon ) with each iteration towards zero.</p></li>
+</ol>
+<p><strong>drawback</strong></p>
+<p>A drawback of learning vector quantization methods is the fact that they are defined by algorithms, rather than optimization of some fixed criteria; this makes it difficult to understand their properties.</p>
+</section>
+</section>
+<section id="k-nearest-neighbor-classifiers">
+<h2>k-Nearest-Neighbor Classifiers<a class="headerlink" href="#k-nearest-neighbor-classifiers" title="Link to this heading">#</a></h2>
+<p>These classifiers are memory-based, and require no model to be fit. Given a query point <span class="math notranslate nohighlight">\(x_0\)</span>, we find the k training points <span class="math notranslate nohighlight">\(x_(r)\)</span>,r = 1,…,k closest in distance to <span class="math notranslate nohighlight">\(x_0\)</span>, and then classify using majority vote among the <span class="math notranslate nohighlight">\(k\)</span> neighbors</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/14.png" /></p>
+<p><strong>FIGURE 2.</strong> The upper panel shows the K-means classifier applied to the
+mixture data example. The decision boundary is piecewise linear. The lower panel
+shows a Gaussian mixture model with a common covariance for all component
+Gaussians. The EM algorithm for the mixture model was started at the K-means
+solution. The broken purple curve in the background is the Bayes decision
+boundary.</p>
+</center>
+<p>Ties are broken at random. For simplicity we will assume that the features
+are real-valued, and we use Euclidean distance in feature space:</p>
+<div class="math notranslate nohighlight">
+\[ d_i = {|| x_i − x_0 ||} \,\,\,\,\,\, (1) \]</div>
+<p>Typically we first standardize each of the features to have mean zero and variance 1, since it is possible that they are measured in different unit.</p>
+<p>Despite its simplicity, k-nearest-neighbors has been successful in a large number of classification problems, including handwritten digits, satellite image scenes and EKG patterns. It is often successful where each class has many possible prototypes, and the decision boundary is very irregular.</p>
+<p><strong>Figure 3 (upper panel)</strong> shows the decision boundary of a 15-nearest-neighbor classifier applied to the three-class simulated data. The decision boundary is fairly smooth compared to the lower panel, where a 1-nearest- neighbor classifier was used. There is a close relationship between nearest- neighbor and prototype methods: in 1-nearest-neighbor classification, each training point is a prototype.</p>
+<p><strong>Figure 4 shows</strong> the training, test and tenfold cross-validation errors as a function of the neighborhood size, for the two-class mixture problem.Since the tenfold CV errors are averages of ten numbers, we can estimate a standard error.</p>
+<p>Because it uses only the training point closest to the query point, the bias of the 1-nearest-neighbor estimate is often low, but the variance is high. A famous result of Cover and Hart (1967) shows that asymptotically the error rate of the 1-nearest-neighbor classifier is never more than twice the Bayes rate. The rough idea of the proof is as follows (using squared-error loss). We assume that the query point coincides with one of the training points, so that the bias is zero. This is true asymptotically if the dimension of the feature space is fixed and the training data fills up the space in a dense fashion. Then the error of the Bayes rule is just the variance of a Bernoulli random variate (the target at the query point), while the error of 1-nearest-neighbor rule is twice the variance of a Bernoulli random variate,one contribution each for the training and query targets.</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/15.png" /></p>
+<p><strong>FIGURE 3.</strong> k-nearest-neighbor classifiers applied to the simulation data of Figure 1. The broken purple curve in the background is the Bayes decision boundary</p>
+</center>
+<center>
+<p><img alt="IMAGES" src="../../_images/16.png" /></p>
+<p><strong>FIGURE 4.</strong> k-nearest-neighbors on the two-class mixture data. The upper panel shows the misclassification errors as a function of neighborhood size. Standard error bars are included for 10-fold cross validation. The lower panel shows the decision boundary for 7-nearest-neighbors, which appears to be optimal for minimizing test error. The broken purple curve in the background is the Bayes decision boundary</p>
+</center>
+<p>We now give more detail for misclassification loss. At <span class="math notranslate nohighlight">\(x\)</span> let <span class="math notranslate nohighlight">\(k^∗\)</span> be the dominant class, and <span class="math notranslate nohighlight">\(p_k(x)\)</span> the true conditional probability for class <span class="math notranslate nohighlight">\(k\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+Bayes error = 1 − p_k^*(x)    \,\,\,\, (2)  
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+1-nearest-neighbor error = \sum_{k=1}^{K} p_k{(x)} (1 − p_k{(x)}), \,\,\,\,\, (3)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+≥ 1 − p_{(k^∗)}(x). \,\,\,\,\,\,\,\,  (4)
+\]</div>
+<p>The asymptotic 1-nearest-neighbor error rate is that of a random rule; we pick both the classification and the test point at random with probabilities <span class="math notranslate nohighlight">\(p_k(x)\)</span>, <span class="math notranslate nohighlight">\(k\)</span> = 1,…,<span class="math notranslate nohighlight">\(K\)</span>. For <span class="math notranslate nohighlight">\(K\)</span> = 2 the 1-nearest-neighbor error rate is <span class="math notranslate nohighlight">\( 2p_{k^∗}(x)(1 − p_{k^∗}(x)) ≤ 2(1 − p_{k^∗}(x))\)</span> (twice the Bayes error rate). More generally, one can show (Exercise 13.3)
+$<span class="math notranslate nohighlight">\(
+\sum_{k=1}^{K} p_k(x)(1 − p_k(x)) ≤ \,\, 2(1 − p_{k^∗}(x)) − \frac{K}{K −1} (1 − p_{k^∗}(x))^2.  \,\,\,\,\, (5)
+\)</span>$</p>
+<p>Many additional results of this kind have been derived; Ripley (1996) summarizes a number of them.
+This result can provide a rough idea about the best performance that is possible in a given problem. For example, if the 1-nearest-neighbor rule has a 10% error rate, then asymptotically the Bayes error rate is at least 5%. The kicker here is the asymptotic part, which assumes the bias of the nearest-neighbor rule is zero. In real problems the bias can be substantial. The adaptive nearest-neighbor rules, described later in this chapter, are an attempt to alleviate this bias. For simple nearest-neighbors, the bias and variance characteristics can dictate the optimal number of near neighbors for a given problem. This is illustrated in the next example.</p>
+<section id="example-a-comparative-study">
+<h3>Example: A Comparative Study<a class="headerlink" href="#example-a-comparative-study" title="Link to this heading">#</a></h3>
+<p>We tested the nearest-neighbors, K-means and LVQ classifiers on two simulated problems. There are 10 independent features <span class="math notranslate nohighlight">\(X_j\)</span> , each uniformly distributed on [0,1]. The two-class 0-1 target variable is defined as follows:</p>
+<!-- $$
+Y = I \left( X_1 > \frac{1}{2} \right); \,\,\,\,\, problem 1: "easy" , \quad\quad (6)
+$$
+$$
+Y = I \left( \text{sign} \left\{ \prod_{j=1}^3 \left( X_j - \frac{1}{2} \right) \right\} > 0 \right); \,\,\,\, problem 2: "difficult."
+$$ -->
+<p>[
+\begin{array}{rl}
+Y = I \left( X_1 &gt; \frac{1}{2} \right) &amp; \text{; problem1: “easy,”} \
+&amp; \
+Y = I \left( \text{sign} \left{ \prod_{j=1}^3 \left( X_j - \frac{1}{2} \right) \right} &gt; 0 \right) &amp; \text{; problem2: “difficult.”}
+\end{array}
+\qquad\qquad (6)
+]</p>
+<p>Hence in the first problem the two classes are separated by the hyperplane <span class="math notranslate nohighlight">\(X1 = 1/2;\)</span> in the second problem, the two classes form a checkerboard pattern in the hypercube defined by the first three features. The Bayes error rate is zero in both problems. There were 100 training and 1000 test observations.</p>
+<p><strong>Figure 5</strong> shows the mean and standard error of the misclassification error for nearest-neighbors, K-means and LVQ over ten realizations, as the tuning parameters are varied. We see that K-means and LVQ give nearly identical results. For the best choices of their tuning parameters, K-means and LVQ outperform nearest-neighbors for the first problem, and they perform similarly for the second problem. Notice that the best value of each tuning parameter is clearly situation dependent. For example 25-nearest-neighbors outperforms 1-nearest-neighbor by a factor of 70% in the first problem, while 1-nearest-neighbor is best in the second problem by a
+factor of 18% .</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/17.png" /></p>
+<p><strong>FIGURE 5.</strong> Mean ± one standard error of misclassification error for nearest-neighbors, K-means (blue) and LVQ (red) over ten realizations for two simulated problems: “easy” and “difficult,” described in the text.</p>
+</center>
+</section>
+</section>
+<section id="adaptive-nearest-neighbor-methods">
+<h2>Adaptive Nearest-Neighbor Methods<a class="headerlink" href="#adaptive-nearest-neighbor-methods" title="Link to this heading">#</a></h2>
+<p>When nearest-neighbor classification is carried out in a high-dimensional feature space, the nearest neighbors of a point can be very far away, causing bias and degrading the performance of the rule.</p>
+<p>To quantify this, consider ( N ) data points uniformly distributed in the unit cube (\left[ -\frac{1}{2}, \frac{1}{2} \right]^p). Let ( R ) be the radius of a 1-nearest-neighborhood centered at the origin. Then</p>
+<p>[
+\text{median}(R) = v_p^{-\frac{1}{p}} \left( 1 - \frac{1}{2}^{\frac{1}{N}} \right)^{\frac{1}{p}}, \tag{13.7}
+]</p>
+<p>where ( v_p r^p ) is the volume of the sphere of radius ( r ) in ( p ) dimensions. Figure 13.12 shows the median radius for various training sample sizes and dimensions. We see that median radius quickly approaches 0.5, the distance to the edge of the cube.</p>
+<p>What can be done about this problem? Consider the two-class situation in Figure 13.13. There are two features, and a nearest-neighborhood at a query point is depicted by the circular region. Implicit in near-neighbor classification is the assumption that the class probabilities are roughly constant in the neighborhood, and hence simple averages give good estimates. However, in this example the class probabilities vary only in the horizontal direction. If we knew this, we would stretch the neighborhood in the vertical direction, as shown by the tall rectangular region. This will reduce the bias of our estimate and leave the variance the same.</p>
+<p>In general, this calls for adapting the metric used in nearest-neighbor classification, so that the resulting neighborhoods stretch out in directions for which the class probabilities don’t change much. In high-dimensional feature space, the class probabilities might change only a low-dimensional subspace and hence there can be considerable advantage to adapting the metric.</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/18.png" /></p>
+<p><strong>FIGURE 6.</strong> Median radius of a 1-nearest-neighborhood, for uniform data
+with N observations in p dimensions</p>
+</center>
+<center>
+<p><img alt="IMAGES" src="../../_images/19.png" /></p>
+<p><strong>FIGURE 7.</strong> The points are uniform in the cube, with the vertical line separating class red and green. The vertical strip denotes the 5-nearest-neighbor region using only the horizontal coordinate to find the nearest-neighbors for the target point (solid dot). The sphere shows the 5-nearest-neighbor region using both coordinates, and we see in this case it has extended into the class-red region (and is dominated by the wrong class in this instance).</p>
+</center>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="adaptive-nearest-neighbor-dann-method">
+<h1>Adaptive Nearest-Neighbor (DANN) Method<a class="headerlink" href="#adaptive-nearest-neighbor-dann-method" title="Link to this heading">#</a></h1>
+<p>Friedman (1994a) proposed a method in which rectangular neighborhoods are found adaptively by successively varying away sizes of a box containing the training data. Here we describe the discriminant adaptive nearest-neighbor (DANN) rule of Hastie and Tibshirani (1996a). Earlier, related proposals appear in Short and Fukunaga (1981) and Myles and Hand (1990).</p>
+<p>At each query point a neighborhood of say 50 points is formed, and the class distribution among the points is used to decide how to deform the neighborhood—that is, to adapt the metric. The adapted metric is then used in a nearest-neighbor rule at the query point. Thus at each query point a potential different metric is used.</p>
+<p>In Figure 13.13 it is clear that the neighborhood should be stretched in the direction orthogonal to line joining the class centroids. This direction also coincides with the linear discriminant boundary, and is the direction in which the class probabilities change the least. In general this direction of maximum change will not be orthogonal to the line joining the class centroids (see Figure 4.9 on page 116). Assuming a local discriminant model, the information contained in the local within- and between-class covariance matrices is all that is needed to determine the optimal shape of the neighborhood.</p>
+<p>The discriminant adaptive nearest-neighbor (DANN) metric at a query point <span class="math notranslate nohighlight">\(x_0\)</span> is defined by:</p>
+<div class="math notranslate nohighlight">
+\[D(x, x_0) = (x - x_0)^T \Sigma (x - x_0),\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\Sigma = \mathbf{W}^{-1/2}[\mathbf{W}^{-1/2}\mathbf{B}\mathbf{W}^{-1/2} + \epsilon\mathbf{I}]\mathbf{W}^{-1/2}\]</div>
+<div class="math notranslate nohighlight">
+\[= \mathbf{W}^{-1/2}[\mathbf{B}^* + \epsilon\mathbf{I}]\mathbf{W}^{-1/2}.\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> is the pooled within-class covariance matrix <span class="math notranslate nohighlight">\(\sum_{k=1}^K \pi_k\mathbf{W}_k\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is the between class covariance matrix <span class="math notranslate nohighlight">\(\sum_{k=1}^K \pi_k(\bar{x}_k - \bar{x})(\bar{x}_k - \bar{x})^T\)</span>, with <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> computed using only the 50 nearest neighbors around <span class="math notranslate nohighlight">\(x_0\)</span>. After computation of the metric, it is used in a nearest-neighbor rule at <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>This complicated formula is actually quite simple in its operation. It first spheres the data with respect to <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>, and then stretches the neighborhood in the zero-eigenvalue directions of <span class="math notranslate nohighlight">\(\mathbf{B}^*\)</span> (the between-matrix for the sphered data). This makes sense, since locally the observed class means do not differ in these directions. The <span class="math notranslate nohighlight">\(\epsilon\)</span> parameter rounds the neighborhood, from an infinite strip to an ellipsoid, to avoid using points far away from the query point. The value of <span class="math notranslate nohighlight">\(\epsilon = 1\)</span> seems to work well in general. Figure 13.14 shows the resulting neighborhoods for a problem where the classes form two concentric circles. Notice how the neighborhoods stretch out orthogonally to the decision boundaries when both classes are present in the neighborhood. In the pure regions with only one class, the neighborhoods remain circular.</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/20.png" /></p>
+<p><strong>FIGURE 8.</strong> Neighborhoods found by the DANN procedure, at various query points (centers of the crosses). There are two classes in the data, with one class surrounding the other. 50 nearest-neighbors were used to estimate the local metrics. Shown are the resulting metrics used to form 15-nearest-neighborhoods.</p>
+</center>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<section id="two-class-data-experiment-in-ten-dimensions">
+<h3>Two-Class Data Experiment in Ten Dimensions<a class="headerlink" href="#two-class-data-experiment-in-ten-dimensions" title="Link to this heading">#</a></h3>
+<p>Here we generate two-class data in ten dimensions, analogous to the two-dimensional example of Figure 8. All ten predictors in class 1 are independent standard normal, conditioned on the squared radius being greater than 22.4 and less than 40, while the predictors in class 2 are independent standard normal without the restriction. There are 250 observations in each class. Hence the first class almost completely surrounds the second class in the full ten-dimensional space.</p>
+<p>In this example there are no pure noise variables, the kind that a nearest-neighbor subset selection rule might be able to weed out. At any given point in the feature space, the class discrimination occurs along only one direction. However, this direction changes as we move across the feature space and all variables are important somewhere in the space.</p>
+<p>Figure 13.15 shows boxplots of the test error rates over ten realizations, for standard 5-nearest-neighbors, LVQ, and discriminant adaptive 5-nearest-neighbors. We used 50 prototypes per class for LVQ, to make it comparable to 5 nearest-neighbors (since 250/5 = 50). The adaptive metric significantly reduces the error rate, compared to LVQ or standard nearest-neighbors.</p>
+<center>
+<p><img alt="IMAGES" src="../../_images/21.png" /></p>
+<p><strong>FIGURE 9.</strong> Ten-dimensional simulated example: boxplots of the test error rates over ten realizations, for standard 5-nearest-neighbors, LVQ with 50 centers, and discriminant-adaptive 5-nearest-neighbors</p>
+</center>
+</section>
+</section>
+<section id="global-dimension-reduction-for-nearest-neighbors">
+<h2>Global Dimension Reduction for Nearest-Neighbors<a class="headerlink" href="#global-dimension-reduction-for-nearest-neighbors" title="Link to this heading">#</a></h2>
+<p>The discriminant-adaptive nearest-neighbor method carries out local dimension reduction—that is, dimension reduction separately at each query point. In many problems we can also benefit from global dimension reduction, that is, apply a nearest-neighbor rule in some optimally chosen subspace of the original feature space. For example, suppose that the two classes form two nested spheres in four dimensions of feature space, and there are an additional six noise features whose distribution is independent of class. Then we would like to discover the important four-dimensional subspace, and carry out nearest-neighbor classification in that reduced subspace. Hastie and Tibshirani (1996a) discuss a variation of the discriminant-adaptive nearest-neighbor method for this purpose. At each training point <span class="math notranslate nohighlight">\(x_i\)</span>, the between-centroids sum of squares matrix <span class="math notranslate nohighlight">\(\mathbf{B}_i\)</span> is computed, and then these matrices are averaged over all training points:</p>
+<div class="math notranslate nohighlight">
+\[\bar{\mathbf{B}} = \frac{1}{N} \sum_{i=1}^N \mathbf{B}_i. \tag{13.10}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(e_1, e_2, \ldots, e_p\)</span> be the eigenvectors of the matrix <span class="math notranslate nohighlight">\(\bar{\mathbf{B}}\)</span>, ordered from largest to smallest eigenvalue <span class="math notranslate nohighlight">\(\theta_k\)</span>. Then these eigenvectors span the optimal subspaces for global subspace reduction. The derivation is based on the fact that the best rank-<span class="math notranslate nohighlight">\(L\)</span> approximation to <span class="math notranslate nohighlight">\(\bar{\mathbf{B}}\)</span>, <span class="math notranslate nohighlight">\(\bar{\mathbf{B}}_{[L]} = \sum_{\ell=1}^L \theta_\ell e_\ell e_\ell^T\)</span>, solves the least squares problem</p>
+<div class="math notranslate nohighlight">
+\[\min_{\text{rank}(\mathbf{M})=L} \sum_{i=1}^N \text{trace}[(\mathbf{B}_i - \mathbf{M})^2]. \tag{13.11}\]</div>
+<p>Since each <span class="math notranslate nohighlight">\(\mathbf{B}_i\)</span> contains information on (a) the local discriminant subspace, and (b) the strength of discrimination in that subspace, (13.11) can be seen as a way of finding the best approximating subspace of dimension <span class="math notranslate nohighlight">\(L\)</span> to a series of <span class="math notranslate nohighlight">\(N\)</span> subspaces by weighted least squares.</p>
+<p>In the four-dimensional sphere example mentioned above and examined in Hastie and Tibshirani (1996a), four of the eigenvalues <span class="math notranslate nohighlight">\(\theta_\ell\)</span> turn out to be large (having eigenvectors nearly spanning the interesting subspace), and the remaining six are near zero. Operationally, we project the data into the leading four-dimensional subspace, and then carry out nearest neighbor classification. In the satellite image classification example in Section 13.3.2, the technique labeled DANN in Figure 13.8 used 5-nearest-neighbors in a globally reduced subspace. There are also connections of this technique with the <em>sliced inverse regression</em> proposal of Duan and Li (1991). These authors use similar ideas in the regression setting, but do global rather than local computations. They assume and exploit spherical symmetry of the feature distribution to estimate interesting subspaces.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="drawbacks-and-optimizations-of-nearest-neighbor-rules">
+<h1>Drawbacks and Optimizations of Nearest-Neighbor Rules<a class="headerlink" href="#drawbacks-and-optimizations-of-nearest-neighbor-rules" title="Link to this heading">#</a></h1>
+<p>One drawback of nearest-neighbor rules in general is the computational load, both in finding the neighbors and storing the entire training set. With <span class="math notranslate nohighlight">\(N\)</span> observations and <span class="math notranslate nohighlight">\(p\)</span> predictors, nearest-neighbor classification requires <span class="math notranslate nohighlight">\(Np\)</span> operations to find the neighbors per query point. There are fast algorithms for finding nearest-neighbors (Friedman et al., 1975; Friedman et al., 1977) which can reduce this load somewhat. Hastie and Simard (1998) reduce the computations for tangent distance by developing analogs of K-means clustering in the context of this invariant metric.</p>
+<section id="storage-reduction-techniques">
+<h2>Storage Reduction Techniques<a class="headerlink" href="#storage-reduction-techniques" title="Link to this heading">#</a></h2>
+<p>Reducing the storage requirements is more difficult, and various editing and condensing procedures have been proposed. The idea is to isolate a subset of the training set that suffices for nearest-neighbor predictions, and throw away the remaining training data. Intuitively, it seems important to keep the training points that are:</p>
+<ul class="simple">
+<li><p>Near the decision boundaries</p></li>
+<li><p>On the correct side of those boundaries</p></li>
+</ul>
+<p>Some points far from the boundaries could be discarded.</p>
+<section id="key-algorithms">
+<h3>Key Algorithms<a class="headerlink" href="#key-algorithms" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Multi-edit Algorithm</strong> (Devijver and Kittler, 1982)</p>
+<ul class="simple">
+<li><p>Divides the data cyclically into training and test sets</p></li>
+<li><p>Computes a nearest neighbor rule on the training set</p></li>
+<li><p>Deletes test points that are misclassified</p></li>
+<li><p>Goal: Keep homogeneous clusters of training observations</p></li>
+</ul>
+</li>
+<li><p><strong>Condensing Procedure</strong> (Hart, 1968)</p>
+<ul class="simple">
+<li><p>Aims to keep only important exterior points of clusters</p></li>
+<li><p>Process:</p>
+<ul>
+<li><p>Starts with a single randomly chosen observation as the training set</p></li>
+<li><p>Processes each additional data item one at a time</p></li>
+<li><p>Adds items to training set only if misclassified by current nearest-neighbor rule</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>These procedures are surveyed in Dasarathy (1991) and Ripley (1996). They can also be applied to other learning procedures besides nearest-neighbors. While such methods are sometimes useful, we have not had much practical experience with them, nor have we found any systematic comparison of their performance in the literature.</p>
+</section>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading">#</a></h2>
+<section id="image-classification">
+<h3>Image Classification<a class="headerlink" href="#image-classification" title="Link to this heading">#</a></h3>
+<p>The KNN algorithm can be used in image classification tasks by representing each image as a feature vector and then applyig the KNN algorithm to the set of feature vectors.</p>
+<p>One common approach is to use the pixel values of an image as the features. For example, an RGB image with dimensions 100×100 pixels can be represented as a feature vector of length 30,000 (100x100x3), where each element of the vector corresponds to the pixel value of the corresponding RGB channel.</p>
+<p>Once the feature vectors are extracted from the images, the KNN algorithm can be used to classify new images by finding the k nearest neighbors of the new image’s feature vector in the training set and assigning the new image to the majority class among its neighbors.</p>
+<p>However, using pixel values as features can result in high-dimensional feature vectors that are computationally expensive to process. To address this issue, techniques like Principal Component Analysis (PCA) and Convolutional Neural Networks (CNNs) can be used to reduce the dimensionality of the feature vectors and extract more meaningful features that can improve the accuracy of the KNN algorithm.</p>
+</section>
+<section id="sentiment-analysis">
+<h3>Sentiment Analysis<a class="headerlink" href="#sentiment-analysis" title="Link to this heading">#</a></h3>
+<p>The KNN algorithm can be used in sentiment classification tasks by representing each text document as a feature vector, and then applying the KNN algorithm to the set of feature vectors. The process of transforming text (i.e., unstructured data) into vector representations is known as tokenization (check out our blog post on tokenization here to read more).</p>
+<p>One common approach is to represent each document as a bag-of-words model, where each feature corresponds to a unique word in the vocabulary, and the value of each feature is the frequency of the corresponding word in the document. For example, consider the following two documents:</p>
+<p>Document 1: “The movie was excellent and I highly recommend it.”</p>
+<p>Document 2: “The movie was terrible and I do not recommend it.”</p>
+<p>The vocabulary for these documents might be: [“the”, “movie”, “was”, “excellent”, “and”, “i”, “highly”, “recommend”, “terrible”, “do”, “not”]. The feature vectors for these documents would then be:</p>
+<p>Document 1: [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]</p>
+<p>Document 2: [1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1]</p>
+<p>Once the feature vectors are extracted from the text documents, the KNN algorithm can be used to classify new documents by finding the k nearest neighbors of the new document’s feature vector in the training set and assigning the new document to the majority class among its neighbors.</p>
+<p>However, similarly to using pixel values as features for image classification, using the bag-of-words model as features can result in high-dimensional feature vectors that are computationally expensive to process. To address this issue, techniques like Term Frequency-Inverse Document Frequency (TF-IDF) weighting and word embeddings can be used to represent the documents as lower-dimensional feature vectors that can improve the accuracy of the KNN algorithm.</p>
+</section>
+<section id="anomaly-detection-identifying-outliers">
+<h3>Anomaly Detection: Identifying Outliers<a class="headerlink" href="#anomaly-detection-identifying-outliers" title="Link to this heading">#</a></h3>
+<p>KNN can identify outliers by measuring the distance of data points from their nearest neighbors.</p>
+<p>Points with distances exceeding a threshold are flagged as anomalies.</p>
+<p>This capability is valuable in fraud detection, network security, and quality control.</p>
+</section>
+</section>
+<section id="bibliographic-notes">
+<h2>Bibliographic Notes<a class="headerlink" href="#bibliographic-notes" title="Link to this heading">#</a></h2>
+<p>The nearest-neighbor method goes back at least to Fix and Hodges (1951). The extensive literature on the topic is reviewed by Dasarathy (1991);
+Chapter 6 of Ripley (1996) contains a good summary. K-means clustering is due to Lloyd (1957) and MacQueen (1967). Kohonen (1989) introduced learning vector quantization. The tangent distance method is due to Simard et al. (1993). Hastie and Tibshirani (1996a) proposed the discriminant adaptive nearest-neighbor technique.</p>
+<section id="implementaion-knn-in-python">
+<h3>Implementaion KNN in python<a class="headerlink" href="#implementaion-knn-in-python" title="Link to this heading">#</a></h3>
+<section id="importing-the-modules">
+<h4>1. Importing the modules<a class="headerlink" href="#importing-the-modules" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-dataset">
+<h4>2. Creating Dataset<a class="headerlink" href="#creating-dataset" title="Link to this heading">#</a></h4>
+<p>Scikit-learn has a lot of tools for creating synthetic datasets, which are great for testing machine learning algorithms. I’m going to utilize the make blobs method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span><span class="n">cluster_std</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><small>This code generates a dataset of 500 samples separated into four classes with a total of two characteristics. Using associated parameters, you may quickly change the number of samples, characteristics, and classes. We may also change the distribution of each cluster (or class).</small></p></li>
+</ul>
+</section>
+<section id="visualize-the-dataset">
+<h4>3. Visualize the Dataset<a class="headerlink" href="#visualize-the-dataset" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="splitting-data-into-training-and-testing-datasets">
+<h4>4. Splitting Data into Training and Testing Datasets<a class="headerlink" href="#splitting-data-into-training-and-testing-datasets" title="Link to this heading">#</a></h4>
+<p>It is critical to partition a dataset into train and test sets for every supervised machine learning method. We first train the model and then put it to the test on various portions of the dataset. If we don’t separate the data, we’re simply testing the model with data it already knows. Using the train_test_split method, we can simply separate the tests.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With the train size and test size options, we may determine how much of the original data is utilized for train and test sets, respectively. The default separation is 75% for the train set and 25% for the test set.</p>
+</section>
+<section id="knn-classifier-implementation">
+<h4>5. KNN Classifier Implementation<a class="headerlink" href="#knn-classifier-implementation" title="Link to this heading">#</a></h4>
+<p>After that, we’ll build a kNN classifier object. I develop two classifiers with k values of 1 and 5 to demonstrate the relevance of the k value. The models are then trained using a train set. The k value is chosen using the n_neighbors argument. It does not need to be explicitly specified because the default value is 5.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">knn5</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">knn1</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="predictions-for-the-knn-classifiers">
+<h4>6. Predictions for the KNN Classifiers<a class="headerlink" href="#predictions-for-the-knn-classifiers" title="Link to this heading">#</a></h4>
+<p>Then, in the test set, we forecast the target values and compare them to the actual values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">knn5</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">knn1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred_5</span> <span class="o">=</span> <span class="n">knn5</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_1</span> <span class="o">=</span> <span class="n">knn1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="predict-accuracy-for-both-k-values">
+<h4>7. Predict Accuracy for both k values<a class="headerlink" href="#predict-accuracy-for-both-k-values" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy with k=5&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy with k=1&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_1</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The accuracy for the values of k comes out as follows:</p>
+</section>
+<section id="visualize-predictions">
+<h4>8. Visualize Predictions<a class="headerlink" href="#visualize-predictions" title="Link to this heading">#</a></h4>
+<p>Let’s view the test set and predicted values with k=5 and k=1 to see the influence of k values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_pred_5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Predicted values with k=5&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_pred_1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Predicted values with k=1&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span><span class="n">cluster_std</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">File H:\HadiSadoghiYazdi\PL\Lib\site-packages\matplotlib\style\core.py:137,</span> in <span class="ni">use</span><span class="nt">(style)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="n">style</span> <span class="o">=</span> <span class="n">_rc_params_in_file</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+<span class="nn">File H:\HadiSadoghiYazdi\PL\Lib\site-packages\matplotlib\__init__.py:870,</span> in <span class="ni">_rc_params_in_file</span><span class="nt">(fname, transform, fail_on_error)</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span> <span class="n">rc_temp</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="ne">--&gt; </span><span class="mi">870</span> <span class="k">with</span> <span class="n">_open_file_or_url</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>     <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">File C:\Program Files\Python313\Lib\contextlib.py:141,</span> in <span class="ni">_GeneratorContextManager.__enter__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">140</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">141</span>     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+
+<span class="nn">File H:\HadiSadoghiYazdi\PL\Lib\site-packages\matplotlib\__init__.py:847,</span> in <span class="ni">_open_file_or_url</span><span class="nt">(fname)</span>
+<span class="g g-Whitespace">    </span><span class="mi">846</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">847</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">848</span>     <span class="k">yield</span> <span class="n">f</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;seaborn&#39;
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">OSError</span><span class="g g-Whitespace">                                   </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">12</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">centers</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span><span class="n">cluster_std</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">12</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="nn">File H:\HadiSadoghiYazdi\PL\Lib\site-packages\matplotlib\style\core.py:139,</span> in <span class="ni">use</span><span class="nt">(style)</span>
+<span class="g g-Whitespace">    </span><span class="mi">137</span>         <span class="n">style</span> <span class="o">=</span> <span class="n">_rc_params_in_file</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span>     <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">139</span>         <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">140</span>             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">style</span><span class="si">!r}</span><span class="s2"> is not a valid package style, path of style &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">141</span>             <span class="sa">f</span><span class="s2">&quot;file, URL of style file, or library style name (library &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">142</span>             <span class="sa">f</span><span class="s2">&quot;styles are listed in `style.available`)&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="n">filtered</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="nn">    144 for k</span> in <span class="ni">style:  # don&#39;t trigger RcParams.__getitem__</span><span class="nt">(&#39;backend&#39;)</span>
+
+<span class="ne">OSError</span>: &#39;seaborn&#39; is not a valid package style, path of style file, URL of style file, or library style name (library styles are listed in `style.available`)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">knn5</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">knn1</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">knn5</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">knn1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred_5</span> <span class="o">=</span> <span class="n">knn5</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_1</span> <span class="o">=</span> <span class="n">knn1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy with k=5&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_5</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy with k=1&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_1</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy with k=5 93.60000000000001
+Accuracy with k=1 90.4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_pred_5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Predicted values with k=5&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_pred_1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Predicted values with k=1&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e9c5c0eb153306ab914aa6abea43cf374bd7f6281bd188a93a144b68b5213b53.png" src="../../_images/e9c5c0eb153306ab914aa6abea43cf374bd7f6281bd188a93a144b68b5213b53.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<p><strong>1.</strong> Classic Machine Learning in Python: K-Nearest Neighbors (KNN)
+Proximity-Based Predictions <a class="reference external" href="https://medium.com/&#64;amirm.lavasani/classic-machine-learning-in-python-k-nearest-neighbors-knn-a06fbfaaf80a">PubMed</a></p>
+<p><strong>2.</strong> <a class="reference external" href="https://www.digitalocean.com/community/tutorials/k-nearest-neighbors-knn-in-python#3-visualize-the-dataset">https://www.hopkinsmedicine.org/health/treatment-tests-and-therapies/electrocardiogram </a></p>
+<p><strong>3.</strong> The Elements of Stattistical Learning TibShirani.pdf</p>
+<p><strong>4.</strong> <a class="reference external" href="https://www.pinecone.io/learn/k-nearest-neighbor/">https://www.pinecone.io/learn/k-nearest-neighbor/</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\KNN"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SOFM/SOFM.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SOFM - Clustering and dimensionality reduction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../homeworkLLE/Homework_LLE.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Locally Linear Embedding</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">K Nearest-Neighbors KNN</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prototype-methods">Prototype Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-clustering">K-means Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-clustring-for-labeled-data">K-means clustring for labeled data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-vector-quantization">Learning Vector Quantization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbor-classifiers">k-Nearest-Neighbor Classifiers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-comparative-study">Example: A Comparative Study</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-nearest-neighbor-methods">Adaptive Nearest-Neighbor Methods</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-nearest-neighbor-dann-method">Adaptive Nearest-Neighbor (DANN) Method</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-class-data-experiment-in-ten-dimensions">Two-Class Data Experiment in Ten Dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-dimension-reduction-for-nearest-neighbors">Global Dimension Reduction for Nearest-Neighbors</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#drawbacks-and-optimizations-of-nearest-neighbor-rules">Drawbacks and Optimizations of Nearest-Neighbor Rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-reduction-techniques">Storage Reduction Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-algorithms">Key Algorithms</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-classification">Image Classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentiment-analysis">Sentiment Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anomaly-detection-identifying-outliers">Anomaly Detection: Identifying Outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographic-notes">Bibliographic Notes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementaion-knn-in-python">Implementaion KNN in python</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-the-modules">1. Importing the modules</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-dataset">2. Creating Dataset</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-dataset">3. Visualize the Dataset</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-data-into-training-and-testing-datasets">4. Splitting Data into Training and Testing Datasets</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#knn-classifier-implementation">5. KNN Classifier Implementation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#predictions-for-the-knn-classifiers">6. Predictions for the KNN Classifiers</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-accuracy-for-both-k-values">7. Predict Accuracy for both k values</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-predictions">8. Visualize Predictions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
