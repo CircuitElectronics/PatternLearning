@@ -1,0 +1,984 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Manifold Learning Techniques &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/ManifoldLearning/manifoldLearning';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Contact Me" href="../../Contact_Me.html" />
+    <link rel="prev" title="Cojugate Prior" href="../Conjugate_Prior/Conjugate_Prior.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Manifold Learning Techniques</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/ManifoldLearning/manifoldLearning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/ManifoldLearning/manifoldLearning.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Manifold Learning Techniques</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multidimensional-scaling-mds">1. Multidimensional Scaling (MDS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classical-mds-implementation-on-s-curve-dataset">Classical MDS Implementation on S-curve Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classical-mds-implementation-on-digits-dataset">Classical MDS Implementation on digits Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isometric-mapping-isomap">2. Isometric Mapping (Isomap)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isomap-on-s-curve-dataset">ISOMAP on S-curve dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-isomap">Kernel ISOMAP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="manifold-learning-techniques">
+<h1>Manifold Learning Techniques<a class="headerlink" href="#manifold-learning-techniques" title="Link to this heading">#</a></h1>
+<p><img alt="Mahdieh" src="../../_images/passport_photo2.jpg" /></p>
+<p>Creator : <em>Mahdieh Alizadeh</em></p>
+<p>Email address: <a class="reference external" href="mailto:Mahdieh20201&#37;&#52;&#48;gmail&#46;com">Mahdieh20201<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Machine Learning 1403-fall</p>
+<p>In manifold learning, we aim to uncover the low-dimensional structure embedded in high-dimensional data. Here, we discuss two popular methods: <strong>Multidimensional Scaling (MDS)</strong> and <strong>Isomap</strong>.</p>
+<section id="multidimensional-scaling-mds">
+<h2>1. Multidimensional Scaling (MDS)<a class="headerlink" href="#multidimensional-scaling-mds" title="Link to this heading">#</a></h2>
+<p><strong>Short Description</strong>: MDS aims to preserve pairwise distances between data points by embedding them in a lower-dimensional space. This approach uses the concept of stress minimization to maintain distance relationships.</p>
+<section id="mathematical-formulation">
+<h3>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading">#</a></h3>
+<p>The objective function for classical MDS is given by:</p>
+<p><span class="math notranslate nohighlight">\(
+\text{minimize}_{\{y_i\}_{i=1}^n} c_1 = \sum_{i=1}^n \sum_{j=1}^n (x_i^T x_j - y_i^T y_j)^2,
+\)</span></p>
+<p>whose matrix form is:</p>
+<p><span class="math notranslate nohighlight">\(
+\text{minimize}_Y \, c_1 = \| X^T X - Y^T Y \|_F^2,
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\( (|\cdot\|_F)\)</span> denotes the Frobenius norm.</p>
+<p>The eigenvalue decomposition of the Gram matrix <span class="math notranslate nohighlight">\(( X^T X )\)</span> is:</p>
+<p><span class="math notranslate nohighlight">\(
+X^T X = V \Delta V^T, \quad Y^T Y = Q \Psi Q^T
+\)</span></p>
+<p>The objective function can be simplified as:</p>
+<p><span class="math notranslate nohighlight">\(
+\| X^T X - Y^T Y \|_F^2 = \text{tr}[(X^T X - Y^T Y)^T (X^T X - Y^T Y)] = \text{tr}[(X^T X - Y^T Y)(X^T X - Y^T Y)] = \text{tr}[(X^T X - Y^T Y)^2],
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\text{tr}(\cdot)\)</span> denotes the trace of the matrix. If <span class="math notranslate nohighlight">\(X^T X\)</span> and <span class="math notranslate nohighlight">\(Y^T Y\)</span> are decomposed using eigenvalue decomposition, the result is:</p>
+<p><span class="math notranslate nohighlight">\(
+X^T X = V \Lambda V^T,
+\)</span></p>
+<p><span class="math notranslate nohighlight">\(
+Y^T Y = Q \Psi Q^T,
+\)</span></p>
+<p>where the eigenvectors are sorted from leading (largest eigenvalue) to trailing (smallest eigenvalue). Note that, rather than eigenvalue decomposition of <span class="math notranslate nohighlight">\(X^T X\)</span> and <span class="math notranslate nohighlight">\(Y^T Y\)</span>, it is possible to decompose <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> using a Singular Value Decomposition (SVD) and by taking the right singular vectors of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> as <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>, respectively.</p>
+<p>the matrices <span class="math notranslate nohighlight">\(\Delta\)</span> and <span class="math notranslate nohighlight">\(\Psi\)</span> are obtained by squaring the singular values (to power 2).</p>
+<p>The objective function can be further simplified as:</p>
+<p><span class="math notranslate nohighlight">\(
+\| X^T X - Y^T Y \|_F^2 = \text{tr}[(X^T X - Y^T Y)^2] = \text{tr}[(V \Delta V^T - Q \Psi Q^T)^2] = \text{tr}[(V \Delta V^T - V V^T Q \Psi Q^T V V^T)^2] = \text{tr}[(\Delta - V^T Q \Psi Q^T V)^2]
+\)</span></p>
+<p>where these are for <span class="math notranslate nohighlight">\(V^T V = VV^T = I\)</span> because <span class="math notranslate nohighlight">\(V\)</span> is a nontruncated (square) orthogonal matrix (where <span class="math notranslate nohighlight">\(I\)</span> denotes the identity matrix). The reason is the cyclic property of the trace operator.</p>
+<p>If <span class="math notranslate nohighlight">\(\mathbb{R}^{n \times n} \ni M := V^T Q\)</span>, then:</p>
+<p><span class="math notranslate nohighlight">\(
+\| X^T X - Y^T Y \|_F^2 = \text{tr}[(\Delta - M \Psi M^T)^2].
+\)</span></p>
+<p>Therefore:</p>
+<p><span class="math notranslate nohighlight">\(
+\text{minimize}_Y \| X^T X - Y^T Y \|_F^2 = \text{minimize}_{M, Y} \text{tr}[(\Delta - M \Psi M^T)^2].
+\)</span></p>
+<p>This means that the objective function is:</p>
+<p><span class="math notranslate nohighlight">\(
+c_1 = \text{tr}[(\Delta - M \Psi M^T)^2] = \text{tr}(\Delta^2 + (M \Psi M^T)^2 - 2 \Delta M \Psi M^T) = \text{tr}(\Delta^2) + \text{tr}((M \Psi M^T)^2) - 2 \text{tr}(\Delta M \Psi M^T).
+\)</span>
+As the optimization problem is unconstrained and the objective function is the trace of a quadratic function, the minimum is nonnegative.</p>
+<p>If the derivative with respect to the first objective variable, i.e., <span class="math notranslate nohighlight">\(M\)</span>, is taken, then the result is:</p>
+<p><span class="math notranslate nohighlight">\(
+\mathbb{R}^{n \times n} \ni \frac{\partial c_1}{\partial M} = 2(M \Psi M^T) M - 2 \Delta M \Psi = 0 \Rightarrow (M \Psi M^T) (M) = (\Delta) (M \Psi M^T)
+\)</span></p>
+<p>(a)</p>
+<p><span class="math notranslate nohighlight">\(
+M \Psi M^T = \Delta,
+\)</span></p>
+<p>where (a) is because <span class="math notranslate nohighlight">\(M \neq 0\)</span>. Both Eqs are:</p>
+<p><span class="math notranslate nohighlight">\(
+M \Psi M^T = \Delta,
+\)</span></p>
+<p>whose one possible solution is:</p>
+<p><span class="math notranslate nohighlight">\(
+M = I,
+\)</span></p>
+<p><span class="math notranslate nohighlight">\(
+\Psi = \Delta.
+\)</span></p>
+<p>which means that the minimum value of the nonnegative objective function <span class="math notranslate nohighlight">\(\text{tr}((\Delta - M \Psi M^T)^2)\)</span> is zero.</p>
+<p>If there is <span class="math notranslate nohighlight">\(M = V^T Q\)</span>, there is:</p>
+<p><span class="math notranslate nohighlight">\(
+\therefore V^T Q = I \Rightarrow Q = V.
+\)</span></p>
+<p>there is:</p>
+<p><span class="math notranslate nohighlight">\(
+Y^T Y = Q \Psi Q^T = Q \Psi^{\frac{1}{2}} Q^T Q \Psi^{\frac{1}{2}} Q^T \Rightarrow Y = \Psi^{\frac{1}{2}} Q^T.
+\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_s_curve</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># Parameters</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Target dimensionality for MDS</span>
+
+<span class="c1"># Generate the S-curve dataset</span>
+<span class="n">S_points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_s_curve</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+
+<span class="c1"># Compute the Euclidean distance matrix</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">pdist</span><span class="p">(</span><span class="n">S_points</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">))</span>
+
+<span class="c1"># Centering matrix</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+
+<span class="c1"># Double centering the squared distance matrix</span>
+<span class="n">D_squared</span> <span class="o">=</span> <span class="n">D</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">H</span> <span class="o">@</span> <span class="n">D_squared</span> <span class="o">@</span> <span class="n">H</span>
+
+<span class="c1"># Eigen decomposition of the centered matrix</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+<span class="c1"># Sort eigenvalues and corresponding eigenvectors in descending order</span>
+<span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">sorted_indices</span><span class="p">]</span>
+
+<span class="c1"># Select the top `embedding_dim` eigenvalues and eigenvectors</span>
+<span class="n">Lambda_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">[:</span><span class="n">embedding_dim</span><span class="p">]))</span>
+<span class="n">Q_m</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="p">:</span><span class="n">embedding_dim</span><span class="p">]</span>
+
+<span class="c1"># Compute the low-dimensional embedding</span>
+<span class="n">X_transformed</span> <span class="o">=</span> <span class="n">Q_m</span> <span class="o">@</span> <span class="n">Lambda_m</span>
+
+<span class="c1"># Plotting the result</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_transformed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">S_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Y-axis position (as color gradient)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;MDS Component 1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;MDS Component 2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Classical MDS Projection of S-curve Dataset&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/85e0c0d15dc0e9c0aa72b09ffaba2f35b75cd27e1abc5a829f670b17eec9d159.png" src="../../_images/85e0c0d15dc0e9c0aa72b09ffaba2f35b75cd27e1abc5a829f670b17eec9d159.png" />
+</div>
+</div>
+</section>
+<section id="classical-mds-implementation-on-s-curve-dataset">
+<h3>Classical MDS Implementation on S-curve Dataset<a class="headerlink" href="#classical-mds-implementation-on-s-curve-dataset" title="Link to this heading">#</a></h3>
+<p>This code applies Classical Multidimensional Scaling (MDS) to reduce a 3D S-curve dataset to 2D while preserving pairwise distances. It calculates the Euclidean distance matrix, centers the squared distances, and performs eigendecomposition to extract the top two eigenvalues and eigenvectors, forming a 2D embedding. The result is visualized with colors representing the original Y-axis values, capturing the S-curve structure in 2D.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load digits dataset and select a subset of samples</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># Number of samples to use</span>
+<span class="n">x_subset</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">samples</span><span class="p">]</span>
+<span class="n">y_subset</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="n">samples</span><span class="p">]</span>
+
+<span class="c1"># Compute the Euclidean distance matrix for the subset</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">pdist</span><span class="p">(</span><span class="n">x_subset</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">))</span>
+
+<span class="c1"># Centering matrix</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+
+<span class="c1"># Double-center the squared distance matrix</span>
+<span class="n">D_squared</span> <span class="o">=</span> <span class="n">D</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">H</span> <span class="o">@</span> <span class="n">D_squared</span> <span class="o">@</span> <span class="n">H</span>
+
+<span class="c1"># Eigen decomposition of the centered matrix</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+<span class="c1"># Sort eigenvalues and corresponding eigenvectors in descending order</span>
+<span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">sorted_indices</span><span class="p">]</span>
+
+<span class="c1"># Select the top `m` eigenvalues and eigenvectors</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Target dimensionality for MDS</span>
+<span class="n">Lambda_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">[:</span><span class="n">m</span><span class="p">]))</span>  
+<span class="n">Q_m</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span>
+
+<span class="c1"># Compute the low-dimensional embedding</span>
+<span class="n">X_transformed</span> <span class="o">=</span> <span class="n">Q_m</span> <span class="o">@</span> <span class="n">Lambda_m</span>
+
+<span class="c1"># Plotting the result</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_transformed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_subset</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Digit Label&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;MDS Component 1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;MDS Component 2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Classical MDS Projection of Digits Dataset (300 samples)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3f7d5aadecf6ab653b663160b00a8e2edec64b7482430f0b0508d2010f24bc3d.png" src="../../_images/3f7d5aadecf6ab653b663160b00a8e2edec64b7482430f0b0508d2010f24bc3d.png" />
+</div>
+</div>
+</section>
+<section id="classical-mds-implementation-on-digits-dataset">
+<h3>Classical MDS Implementation on digits Dataset<a class="headerlink" href="#classical-mds-implementation-on-digits-dataset" title="Link to this heading">#</a></h3>
+<p>This code performs Classical Multidimensional Scaling (MDS) on a subset of the digits dataset, projecting high-dimensional data into 2D to maintain relative distances between samples. It first calculates pairwise Euclidean distances and uses a centering matrix to create a Gram matrix suitable for dimensionality reduction. After eigendecomposition, the top two components are selected to construct a 2D representation. The final visualization shows each digit as a color-coded point, highlighting patterns and clusters in the reduced space, which aids in understanding the dataset’s structure and relationships among digit samples.</p>
+</section>
+</section>
+<section id="isometric-mapping-isomap">
+<h2>2. Isometric Mapping (Isomap)<a class="headerlink" href="#isometric-mapping-isomap" title="Link to this heading">#</a></h2>
+<p>Isomap is a special case of the generalized classical MDS, where instead of using Euclidean distances, the geodesic distance is used:</p>
+<p><span class="math notranslate nohighlight">\(
+D_{ij}^{(g)} = \min \sum_{i=2}^{l} \| r_i - r_{i-1} \|_2,
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(( l \geq 2 )\)</span> is the length of the sequence of points <span class="math notranslate nohighlight">\( ( r_i \in \{x_i\}_{i=1}^l )\)</span>, and <span class="math notranslate nohighlight">\(( D_{ij}^{(g)} )\)</span> denotes the geodesic distance matrix.</p>
+<p>Isomap’s formulation involves a kernel matrix based on the geodesic distance:</p>
+<p><span class="math notranslate nohighlight">\(
+K = -\frac{1}{2} H D^{(g)} H
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(( D^{(g)} )\)</span> is the geodesic distance matrix, and <span class="math notranslate nohighlight">\(( H )\)</span> is the centering matrix.</p>
+<section id="isomap-on-s-curve-dataset">
+<h3>ISOMAP on S-curve dataset<a class="headerlink" href="#isomap-on-s-curve-dataset" title="Link to this heading">#</a></h3>
+<p>This code applies the <strong>Isomap</strong> algorithm to reduce a 3D S-curve dataset to <strong>2D</strong> while preserving its shape.</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate Distances</strong> between all data points.</p></li>
+<li><p><strong>Build Graph</strong> by connecting each point to its closest <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>.</p></li>
+<li><p><strong>Compute Geodesic Distances</strong> along the graph to approximate the manifold structure.</p></li>
+<li><p><strong>Eigenvalue Decomposition</strong> extracts the top features, yielding the final 2D embedding.</p></li>
+</ol>
+<p>The result is a 2D plot showing the S-curve’s shape and continuity in reduced dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">distance_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.csgraph</span> <span class="kn">import</span> <span class="n">shortest_path</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">eigh</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_s_curve</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">isomap</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="c1"># Step 1: Compute the pairwise Euclidean distance matrix</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Step 2: Build the neighborhood graph</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">neighborhood_graph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+    <span class="c1"># Connect each point to its k nearest neighbors</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">])[:</span><span class="n">n_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># +1 includes the point itself</span>
+        <span class="n">neighborhood_graph</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">nearest_neighbors</span><span class="p">]</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">nearest_neighbors</span><span class="p">]</span>
+
+    <span class="c1"># Step 3: Compute shortest paths (geodesic distances)</span>
+    <span class="n">geodesic_distances</span> <span class="o">=</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">neighborhood_graph</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Step 4: Double-center the geodesic distance matrix</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">geodesic_distances</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="o">@</span> <span class="p">(</span><span class="n">geodesic_distances</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">h</span>
+
+    <span class="c1"># Step 5: Compute the top eigenvalues and eigenvectors</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">eigvals</span><span class="o">=</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># Get largest n_components eigenvalues</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Sort in descending order</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">]</span>
+
+    <span class="c1"># Step 6: Compute the coordinates in the reduced space</span>
+    <span class="n">embedding</span> <span class="o">=</span> <span class="n">eigvecs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">embedding</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_components</span><span class="p">]</span>
+
+<span class="c1"># Generate the S-curve dataset</span>
+<span class="n">data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">make_s_curve</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Apply ISOMAP</span>
+<span class="n">reduced_data</span> <span class="o">=</span> <span class="n">isomap</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Plot the result</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">reduced_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Component 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Component 2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ISOMAP Projection of the S-Curve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">43</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="n">data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">make_s_curve</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="c1"># Apply ISOMAP</span>
+<span class="ne">---&gt; </span><span class="mi">43</span> <span class="n">reduced_data</span> <span class="o">=</span> <span class="n">isomap</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="c1"># Plot the result</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">reduced_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+
+<span class="nn">Cell In[3], line 30,</span> in <span class="ni">isomap</span><span class="nt">(data, n_neighbors, n_components)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="o">@</span> <span class="p">(</span><span class="n">geodesic_distances</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">h</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span> <span class="c1"># Step 5: Compute the top eigenvalues and eigenvectors</span>
+<span class="ne">---&gt; </span><span class="mi">30</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">eigvals</span><span class="o">=</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># Get largest n_components eigenvalues</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Sort in descending order</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">]</span>
+
+<span class="ne">TypeError</span>: eigh() got an unexpected keyword argument &#39;eigvals&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="kernel-isomap">
+<h3>Kernel ISOMAP<a class="headerlink" href="#kernel-isomap" title="Link to this heading">#</a></h3>
+<p>Kernel Isomap extends the original by using kernel methods on the geodesic distance matrix:</p>
+<p><span class="math notranslate nohighlight">\(
+K(D^2) = -\frac{1}{2} H D^2 H
+\)</span></p>
+<p>And a modified kernel <span class="math notranslate nohighlight">\(( K' ) \)</span> is defined as:</p>
+<p><span class="math notranslate nohighlight">\(
+K' = K(D^2) + 2cK(D) + \frac{1}{c} H,
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(( c \geq c^* )\)</span>, and <span class="math notranslate nohighlight">\(( c^* )\)</span> is the largest eigenvalue of the matrix:</p>
+<p><span class="math notranslate nohighlight">\(
+\begin{bmatrix}
+0 &amp; 2K(D^2) \\
+-4K(D^2) &amp; 0
+\end{bmatrix}.
+\)</span></p>
+<p>For out-of-sample embedding, Isomap uses kernel mapping. Consider a mapping of any data point:</p>
+<p><span class="math notranslate nohighlight">\(
+y(x) = \sum_{j=1}^{n} \alpha_j k(x, x_j),
+\)</span>
+where <span class="math notranslate nohighlight">\(( k(x, x_j) ) \)</span> is a Gaussian kernel:</p>
+<p><span class="math notranslate nohighlight">\(
+k(x, x_j) = \exp\left( -\frac{\| x - x_j \|^2}{2 \sigma_j^2} \right),
+\)</span></p>
+<p>and <span class="math notranslate nohighlight">\( ( \sigma_j )\)</span> is defined as:</p>
+<p><span class="math notranslate nohighlight">\(
+\sigma_j := \gamma \times \min_i \| x_j - x_i \|_2,
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(( \gamma )\)</span> is a small positive number. The objective is to minimize the following cost function to obtain the out-of-sample points:</p>
+<p><span class="math notranslate nohighlight">\(
+\text{minimize} \sum_{i=1}^{n} \| y_i - y(x_i) \|_2^2.
+\)</span></p>
+<p>The corresponding kernel matrix is defined as:</p>
+<p><span class="math notranslate nohighlight">\(
+K'(i,j) = \frac{k(x_i^{(t)}, x_j)}{\sum_{l=1}^{n} k(x_l^{(t)}, x_j)},
+\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(( x_i^{(t)} )\)</span> is the <span class="math notranslate nohighlight">\(( i )th \)</span> out-of-sample data point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">distance_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">eigh</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.csgraph</span> <span class="kn">import</span> <span class="n">shortest_path</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_swiss_roll</span>
+
+<span class="k">def</span> <span class="nf">nearest_neighbor_graph</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="p">):</span>
+    <span class="n">nbrs</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="c1"># Create the graph</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">):</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">graph</span>
+
+<span class="k">def</span> <span class="nf">compute_geodesic_distances</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">center_distance_matrix</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">H</span> <span class="o">@</span> <span class="p">(</span><span class="n">D</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">H</span>
+    <span class="k">return</span> <span class="n">K</span>
+
+<span class="k">def</span> <span class="nf">compute_eigen</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">eigvals</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+    <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">sorted_indices</span><span class="p">]</span>
+    <span class="n">eigvals</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[:</span><span class="n">p</span><span class="p">]</span>
+    <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="p">:</span><span class="n">p</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span>
+
+<span class="k">def</span> <span class="nf">compute_embedding</span><span class="p">(</span><span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">eigvecs</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eigvals</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Y</span>
+
+<span class="k">def</span> <span class="nf">kernel_isomap</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="c1"># Step 1: Construct the kNN graph</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">nearest_neighbor_graph</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="p">)</span>
+    <span class="c1"># Step 2: Compute the geodesic distances</span>
+    <span class="n">D_geodesic</span> <span class="o">=</span> <span class="n">compute_geodesic_distances</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="c1"># Step 3: Center the geodesic distance matrix</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">center_distance_matrix</span><span class="p">(</span><span class="n">D_geodesic</span><span class="p">)</span>
+    <span class="c1"># Step 4: Compute the top p eigenvalues and eigenvectors</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">compute_eigen</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> 
+    <span class="c1"># Step 5: Compute the embedding</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">compute_embedding</span><span class="p">(</span><span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Y</span>
+
+<span class="c1"># Generate the Swiss roll dataset</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">make_swiss_roll</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+<span class="c1"># Apply Kernel ISOMAP</span>
+<span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">kernel_isomap</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="c1"># Plot the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Kernel ISOMAP on Swiss Roll Dataset&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Component 1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Component 2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8a3382d031bf12cbb2e2b37a0f94277804a01fe68c8a0d1e7e50824927731142.png" src="../../_images/8a3382d031bf12cbb2e2b37a0f94277804a01fe68c8a0d1e7e50824927731142.png" />
+</div>
+</div>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Ghojogh, B., Crowley, M., Karray, F., &amp; Ghodsi, A. (2023). Elements of Dimensionality Reduction and Manifold Learning. Springer</p></li>
+<li><p><a class="reference external" href="https://scikit-learn.org/1.5/modules/manifold.html">https://scikit-learn.org/1.5/modules/manifold.html</a></p></li>
+</ol>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\ManifoldLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Conjugate_Prior/Conjugate_Prior.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Cojugate Prior</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../Contact_Me.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contact Me</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multidimensional-scaling-mds">1. Multidimensional Scaling (MDS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classical-mds-implementation-on-s-curve-dataset">Classical MDS Implementation on S-curve Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classical-mds-implementation-on-digits-dataset">Classical MDS Implementation on digits Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isometric-mapping-isomap">2. Isometric Mapping (Isomap)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isomap-on-s-curve-dataset">ISOMAP on S-curve dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-isomap">Kernel ISOMAP</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

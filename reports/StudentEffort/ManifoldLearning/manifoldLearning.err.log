@@ -1,0 +1,102 @@
+Traceback (most recent call last):
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Program Files\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+from scipy.spatial import distance_matrix
+from scipy.sparse.csgraph import shortest_path
+from scipy.linalg import eigh
+from sklearn.datasets import make_s_curve
+import matplotlib.pyplot as plt
+
+def isomap(data, n_neighbors=5, n_components=2):
+    # Step 1: Compute the pairwise Euclidean distance matrix
+    distances = distance_matrix(data, data)
+
+    # Step 2: Build the neighborhood graph
+    n_samples = data.shape[0]
+    neighborhood_graph = np.full((n_samples, n_samples), np.inf)
+
+    # Connect each point to its k nearest neighbors
+    for i in range(n_samples):
+        nearest_neighbors = np.argsort(distances[i])[:n_neighbors + 1]  # +1 includes the point itself
+        neighborhood_graph[i, nearest_neighbors] = distances[i, nearest_neighbors]
+
+    # Step 3: Compute shortest paths (geodesic distances)
+    geodesic_distances = shortest_path(neighborhood_graph, method='D', directed=False)
+
+    # Step 4: Double-center the geodesic distance matrix
+    n = geodesic_distances.shape[0]
+    h = np.eye(n) - np.ones((n, n)) / n
+    b = -0.5 * h @ (geodesic_distances ** 2) @ h
+
+    # Step 5: Compute the top eigenvalues and eigenvectors
+    eigvals, eigvecs = eigh(b, eigvals=(n - n_components, n - 1))  # Get largest n_components eigenvalues
+    indices = np.argsort(eigvals)[::-1]  # Sort in descending order
+    eigvals, eigvecs = eigvals[indices], eigvecs[:, indices]
+
+    # Step 6: Compute the coordinates in the reduced space
+    embedding = eigvecs * np.sqrt(eigvals)
+
+    return embedding[:, :n_components]
+
+# Generate the S-curve dataset
+data, color = make_s_curve(n_samples=1000, noise=0.05)
+
+# Apply ISOMAP
+reduced_data = isomap(data, n_neighbors=10, n_components=2)
+
+# Plot the result
+plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=color, cmap='viridis')
+plt.colorbar()
+plt.xlabel('Component 1')
+plt.ylabel('Component 2')
+plt.title('ISOMAP Projection of the S-Curve')
+plt.show()
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [1;32mIn[3], line 43[0m
+[0;32m     40[0m data, color [38;5;241m=[39m make_s_curve(n_samples[38;5;241m=[39m[38;5;241m1000[39m, noise[38;5;241m=[39m[38;5;241m0.05[39m)
+[0;32m     42[0m [38;5;66;03m# Apply ISOMAP[39;00m
+[1;32m---> 43[0m reduced_data [38;5;241m=[39m [43misomap[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mn_neighbors[49m[38;5;241;43m=[39;49m[38;5;241;43m10[39;49m[43m,[49m[43m [49m[43mn_components[49m[38;5;241;43m=[39;49m[38;5;241;43m2[39;49m[43m)[49m
+[0;32m     45[0m [38;5;66;03m# Plot the result[39;00m
+[0;32m     46[0m plt[38;5;241m.[39mscatter(reduced_data[:, [38;5;241m0[39m], reduced_data[:, [38;5;241m1[39m], c[38;5;241m=[39mcolor, cmap[38;5;241m=[39m[38;5;124m'[39m[38;5;124mviridis[39m[38;5;124m'[39m)
+
+Cell [1;32mIn[3], line 30[0m, in [0;36misomap[1;34m(data, n_neighbors, n_components)[0m
+[0;32m     27[0m b [38;5;241m=[39m [38;5;241m-[39m[38;5;241m0.5[39m [38;5;241m*[39m h [38;5;241m@[39m (geodesic_distances [38;5;241m*[39m[38;5;241m*[39m [38;5;241m2[39m) [38;5;241m@[39m h
+[0;32m     29[0m [38;5;66;03m# Step 5: Compute the top eigenvalues and eigenvectors[39;00m
+[1;32m---> 30[0m eigvals, eigvecs [38;5;241m=[39m [43meigh[49m[43m([49m[43mb[49m[43m,[49m[43m [49m[43meigvals[49m[38;5;241;43m=[39;49m[43m([49m[43mn[49m[43m [49m[38;5;241;43m-[39;49m[43m [49m[43mn_components[49m[43m,[49m[43m [49m[43mn[49m[43m [49m[38;5;241;43m-[39;49m[43m [49m[38;5;241;43m1[39;49m[43m)[49m[43m)[49m  [38;5;66;03m# Get largest n_components eigenvalues[39;00m
+[0;32m     31[0m indices [38;5;241m=[39m np[38;5;241m.[39margsort(eigvals)[::[38;5;241m-[39m[38;5;241m1[39m]  [38;5;66;03m# Sort in descending order[39;00m
+[0;32m     32[0m eigvals, eigvecs [38;5;241m=[39m eigvals[indices], eigvecs[:, indices]
+
+[1;31mTypeError[0m: eigh() got an unexpected keyword argument 'eigvals'
+
