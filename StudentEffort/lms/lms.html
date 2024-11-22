@@ -1,0 +1,1177 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Least Mean Squares (LMS) Algorithm &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/lms/lms';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Locally Linear Embedding" href="../homeworkLLE/Homework_LLE.html" />
+    <link rel="prev" title="Posterior Distribution Derivation" href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html">Posterior Distribution Derivation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Least Mean Squares (LMS) Algorithm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ManifoldLearning/manifoldLearning.html">Manifold Learning Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ridge/ridge.html">Ridge Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/lms/lms.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/lms/lms.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Least Mean Squares (LMS) Algorithm</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-algorithms-definition-and-concept">1. Online Algorithms: Definition and Concept</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2. Least Mean Squares (LMS) Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-setup">Problem Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-weight-update-rule">Gradient Descent: Weight Update Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-learning-adaptive-update-rule">Online Learning: Adaptive Update Rule</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lms-algorithm-with-correntropy-loss">LMS Algorithm with Correntropy Loss</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correntropy-loss">Correntropy Loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">LMS Algorithm with Correntropy Loss</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-of-the-correntropy-cost-function">Gradient of the Correntropy Cost Function</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-take-the-derivative-of-the-loss-function">Step 1: Take the Derivative of the Loss Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-differentiate-the-exponential-function">Step 2: Differentiate the Exponential Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-differentiate-the-inner-term">Step 3: Differentiate the Inner Term</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-combine-the-terms">Step 4: Combine the Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-final-gradient-expression">Step 5: Final Gradient Expression</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-update-rule">Weight Update Rule</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-lms-with-correntropy-loss">Advantages of LMS with Correntropy Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-least-mean-squares-klms-algorithm">Kernel Least Mean Squares (KLMS) Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-prediction-with-kernel-function">Step 1: Prediction with Kernel Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-kernels">Why Use Kernels?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-compute-the-prediction-error">Step 2: Compute the Prediction Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-update-the-weights">Step 3: Update the Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-update-rule">Why This Update Rule?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-kernel-function-selection">Step 4: Kernel Function Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-klms-algorithm">Summary of KLMS Algorithm</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="least-mean-squares-lms-algorithm">
+<h1>Least Mean Squares (LMS) Algorithm<a class="headerlink" href="#least-mean-squares-lms-algorithm" title="Link to this heading">#</a></h1>
+<p><img alt="Payam" src="../../_images/payam1.jpg" /></p>
+<ul class="simple">
+<li><p>Author  : Payam Parvazmanesh</p></li>
+<li><p>Contact : <a class="reference external" href="mailto:payam&#46;manesh&#37;&#52;&#48;gmail&#46;com">payam<span>&#46;</span>manesh<span>&#64;</span>gmail<span>&#46;</span>com</a></p></li>
+<li><p>Pattern Recognition</p></li>
+</ul>
+<section id="online-algorithms-definition-and-concept">
+<h2>1. Online Algorithms: Definition and Concept<a class="headerlink" href="#online-algorithms-definition-and-concept" title="Link to this heading">#</a></h2>
+<p>An online algorithm is a type of algorithm that processes input data in a sequential manner, typically one piece at a time, and updates its model or parameters after each new data point. Unlike offline algorithms, which require all data to be available before any processing begins, online algorithms are well-suited for real-time applications, where data arrives incrementally, such as in streaming data, real-time prediction, or adaptive filtering.</p>
+<p>In an online learning process, the model is updated continuously, without the need to reprocess all past data, making it computationally efficient and suitable for dynamic environments.</p>
+</section>
+<section id="id1">
+<h2>2. Least Mean Squares (LMS) Algorithm<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>The Least Mean Squares (LMS) algorithm is a popular adaptive filtering and optimization algorithm used for solving regression and prediction problems. It is part of the family of online algorithms, meaning it processes data incrementally, updating the model parameters after each new data point. The main goal of the LMS algorithm is to minimize the prediction error by adjusting the model weights iteratively.</p>
+<section id="problem-setup">
+<h3>Problem Setup<a class="headerlink" href="#problem-setup" title="Link to this heading">#</a></h3>
+<p>In a typical regression scenario, we have a set of input-output pairs. The inputs are represented as vectors <span class="math notranslate nohighlight">\(( x_k )\)</span>, and the corresponding desired outputs are represented by scalars <span class="math notranslate nohighlight">\(( y_k )\)</span>. We are interested in finding a set of model parameters <span class="math notranslate nohighlight">\(( w )\)</span> that predict the output as accurately as possible. The predicted output is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}_k = w^T x_k
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( x_k )\)</span> is the input vector for the <span class="math notranslate nohighlight">\(( k )-th\)</span> sample,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( w )\)</span> is the parameter vector (weights),</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \hat{y}_k )\)</span> is the predicted output for the <span class="math notranslate nohighlight">\(( k )-th\)</span> sample.</p></li>
+</ul>
+<p>The error for the <span class="math notranslate nohighlight">\(( k )-th\)</span> sample is defined as the difference between the desired output <span class="math notranslate nohighlight">\(( y_k )\)</span> and the predicted output <span class="math notranslate nohighlight">\(( \hat{y}_k )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+e_k = y_k - w^T x_k
+\]</div>
+<p>The goal is to update the weights <span class="math notranslate nohighlight">\(( w )\)</span> in such a way that the error <span class="math notranslate nohighlight">\(( e_k )\)</span> is minimized over time.</p>
+</section>
+<section id="loss-function">
+<h3>Loss Function<a class="headerlink" href="#loss-function" title="Link to this heading">#</a></h3>
+<p>The loss function used in the LMS algorithm is typically the Sum of Squared Errors (SSE). For a single data point, the squared error is:</p>
+<div class="math notranslate nohighlight">
+\[
+l(e_k) = e_k^2 = (y_k - w^T x_k)^2
+\]</div>
+<p>To simplify the optimization process, we use a scaled version of this loss function:</p>
+<div class="math notranslate nohighlight">
+\[
+J(w) = \frac{1}{2} (y_k - w^T x_k)^2
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( J(w) )\)</span> is the cost function (which is the sum of squared errors),</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \frac{1}{2} )\)</span> is included to simplify the calculation of gradients.</p></li>
+</ul>
+<p>This cost function measures the discrepancy between the predicted output <span class="math notranslate nohighlight">\(( w^T x_k )\)</span> and the desired output <span class="math notranslate nohighlight">\(( y_k )\)</span>.</p>
+</section>
+<section id="gradient-descent-weight-update-rule">
+<h3>Gradient Descent: Weight Update Rule<a class="headerlink" href="#gradient-descent-weight-update-rule" title="Link to this heading">#</a></h3>
+<p>The LMS algorithm uses gradient descent to minimize the cost function. The gradient of the cost function with respect to the weights <span class="math notranslate nohighlight">\(( w )\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w J(w) = - (y_k - w^T x_k) \cdot x_k
+\]</div>
+<p>This gradient points in the direction of the steepest increase in the cost function. To minimize the cost function, we update the weights in the opposite direction of the gradient. The weight update rule becomes:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{k+1} = w_k + \mu \cdot (y_k - w_k^T x_k) \cdot x_k
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( w_k )\)</span> is the weight vector at the <span class="math notranslate nohighlight">\(( k )-th\)</span> iteration,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \mu )\)</span> is the learning rate, a positive constant that determines the step size for the weight update,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( x_k )\)</span> is the input vector at the <span class="math notranslate nohighlight">\(( k )-th\)</span> iteration,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( y_k )\)</span> is the desired output for the <span class="math notranslate nohighlight">\(( k )-th\)</span> sample.</p></li>
+</ul>
+</section>
+<section id="online-learning-adaptive-update-rule">
+<h3>Online Learning: Adaptive Update Rule<a class="headerlink" href="#online-learning-adaptive-update-rule" title="Link to this heading">#</a></h3>
+<p>Since LMS is an online algorithm, the weight update occurs after each individual data sample. This means the algorithm adapts and updates the weights incrementally as new data points arrive, without requiring all data to be available beforehand. The update rule for the LMS algorithm is:</p>
+<div class="math notranslate nohighlight">
+\[
+e_k = y_k - w^T x_k
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+l(e_k) = e_k^2 = (y_k - w^T x_k)^2
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w l(e_k) = - 2(y_k - w^T x_k) \cdot x_k
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+w_{k+1} = w_k - \mu \nabla_w l(e_k)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+w_{k+1} = w_k + 2\mu (y_k - w_k^T x_k) \cdot x_k
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( w_k )\)</span> is the weight vector at iteration <span class="math notranslate nohighlight">\(( k )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \mu )\)</span> is the learning rate,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( y_k )\)</span> is the desired output at iteration <span class="math notranslate nohighlight">\(( k )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( x_k )\)</span> is the input feature vector at iteration <span class="math notranslate nohighlight">\(( k )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( w_k^T x_k )\)</span> is the predicted output.</p></li>
+</ul>
+<p>This equation shows that the weight vector is adjusted based on the error <span class="math notranslate nohighlight">\(( e_k = y_k - w_k^T x_k )\)</span> and the input vector <span class="math notranslate nohighlight">\(( x_k )\)</span>.</p>
+</section>
+</section>
+<section id="lms-algorithm-with-correntropy-loss">
+<h2>LMS Algorithm with Correntropy Loss<a class="headerlink" href="#lms-algorithm-with-correntropy-loss" title="Link to this heading">#</a></h2>
+<p>The Least Mean Squares (LMS) algorithm is widely used in adaptive filtering and regression problems, where the goal is to iteratively adjust model parameters to minimize the error between the predicted output and the desired output. In its basic form, the LMS algorithm minimizes the squared error loss. However, in certain applications, particularly in situations involving noisy data or non-Gaussian noise, a more robust loss function can be used to enhance the performance of the LMS algorithm. One such alternative is the correntropy loss, which offers greater robustness against outliers and non-Gaussian noise by emphasizing more on higher-order moments.</p>
+<section id="correntropy-loss">
+<h3>Correntropy Loss<a class="headerlink" href="#correntropy-loss" title="Link to this heading">#</a></h3>
+<p>Correntropy measures the similarity between two variables by emphasizing not only their average (mean) differences but also higher-order statistical relationships. It is particularly effective in environments where noise is non-Gaussian or data contains outliers.</p>
+<p>The <strong>correntropy loss function</strong> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+L(e_k) = -\exp\left(-\frac{e_k^2}{2 \sigma^2}\right),
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( e_k = y_k - w^T x_k )\)</span>: The error between the desired output <span class="math notranslate nohighlight">\(( y_k )\)</span> and the model prediction <span class="math notranslate nohighlight">\(( w^T x_k )\)</span> at iteration <span class="math notranslate nohighlight">\(( k )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \sigma )\)</span>: A parameter that controls the sensitivity of the loss function to the magnitude of errors.</p></li>
+</ul>
+<p>Unlike the squared error loss, this formulation downweights the impact of large errors, making it more robust to outliers.</p>
+</section>
+<section id="id2">
+<h3>LMS Algorithm with Correntropy Loss<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>To adapt the LMS algorithm to minimize correntropy loss, the weight update process follows the gradient descent method. The cost function for a single data point is:</p>
+<div class="math notranslate nohighlight">
+\[
+J(w) = -\exp\left(-\frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right).
+\]</div>
+<section id="gradient-of-the-correntropy-cost-function">
+<h4>Gradient of the Correntropy Cost Function<a class="headerlink" href="#gradient-of-the-correntropy-cost-function" title="Link to this heading">#</a></h4>
+<p>The gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span> with respect to the weight vector <span class="math notranslate nohighlight">\(( w )\)</span> is:</p>
+</section>
+</section>
+<section id="step-1-take-the-derivative-of-the-loss-function">
+<h3>Step 1: Take the Derivative of the Loss Function<a class="headerlink" href="#step-1-take-the-derivative-of-the-loss-function" title="Link to this heading">#</a></h3>
+<p>The goal is to compute the gradient of the loss <span class="math notranslate nohighlight">\(( J(w) )\)</span> with respect to the weight vector <span class="math notranslate nohighlight">\(( w )\)</span>. The derivative of <span class="math notranslate nohighlight">\(( J(w) )\)</span> is computed using the chain rule.</p>
+<p>We start by differentiating the exponential term:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w J(w) = \frac{\partial}{\partial w} \left[ - \exp\left(- \frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right) \right].
+\]</div>
+</section>
+<section id="step-2-differentiate-the-exponential-function">
+<h3>Step 2: Differentiate the Exponential Function<a class="headerlink" href="#step-2-differentiate-the-exponential-function" title="Link to this heading">#</a></h3>
+<p>First, apply the chain rule to differentiate the exponential term:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w J(w) = - \exp\left(-\frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right) \cdot \frac{\partial}{\partial w}\left( - \frac{(y_k - w^T x_k)^2}{2 \sigma^2} \right).
+\]</div>
+</section>
+<section id="step-3-differentiate-the-inner-term">
+<h3>Step 3: Differentiate the Inner Term<a class="headerlink" href="#step-3-differentiate-the-inner-term" title="Link to this heading">#</a></h3>
+<p>Now, we compute the derivative of the term inside the exponential, which is <span class="math notranslate nohighlight">\(( - \frac{(y_k - w^T x_k)^2}{2 \sigma^2} )\)</span>. This can be differentiated as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial w} \left( - \frac{(y_k - w^T x_k)^2}{2 \sigma^2} \right) = \frac{1}{\sigma^2} \cdot (y_k - w^T x_k) \cdot x_k.
+\]</div>
+<p>This is derived by applying the chain rule to the squared term <span class="math notranslate nohighlight">\(( (y_k - w^T x_k)^2 )\)</span>, which gives <span class="math notranslate nohighlight">\(( -2(y_k - w^T x_k) x_k )\)</span>, and then dividing by <span class="math notranslate nohighlight">\(( 2 \sigma^2 )\)</span>.</p>
+</section>
+<section id="step-4-combine-the-terms">
+<h3>Step 4: Combine the Terms<a class="headerlink" href="#step-4-combine-the-terms" title="Link to this heading">#</a></h3>
+<p>Now, substitute this derivative back into the expression for <span class="math notranslate nohighlight">\(( \nabla_w J(w) )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w J(w) = - \exp\left(-\frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right) \cdot \frac{1}{\sigma^2} \cdot (y_k - w^T x_k) \cdot x_k.
+\]</div>
+</section>
+<section id="step-5-final-gradient-expression">
+<h3>Step 5: Final Gradient Expression<a class="headerlink" href="#step-5-final-gradient-expression" title="Link to this heading">#</a></h3>
+<p>Thus, the gradient of the correntropy loss with respect to <span class="math notranslate nohighlight">\(( w )\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_w J(w) = - \frac{(y_k - w^T x_k) \cdot x_k}{\sigma^2} \exp\left(-\frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right),
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( (y_k - w^T x_k) )\)</span>: The error signal,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \exp\left(-\frac{(y_k - w^T x_k)^2}{2 \sigma^2}\right) )\)</span>: A weighting function that reduces the influence of large errors.</p></li>
+</ul>
+<section id="weight-update-rule">
+<h4>Weight Update Rule<a class="headerlink" href="#weight-update-rule" title="Link to this heading">#</a></h4>
+<p>Using gradient descent, the weights are updated iteratively to minimize the loss:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{k+1} = w_k - \mu \cdot \nabla_w J(w_k),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(( \mu )\)</span> is the learning rate.</p>
+<p>Substituting the gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span>, the update rule becomes:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{k+1} = w_k + \mu \cdot \frac{(y_k - w_k^T x_k) \cdot x_k}{\sigma^2} \exp\left(-\frac{(y_k - w_k^T x_k)^2}{2 \sigma^2}\right).
+\]</div>
+</section>
+</section>
+<section id="advantages-of-lms-with-correntropy-loss">
+<h3>Advantages of LMS with Correntropy Loss<a class="headerlink" href="#advantages-of-lms-with-correntropy-loss" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Robustness to Outliers</strong>: The exponential weighting in the loss function reduces the impact of large errors, improving the algorithm’s stability in the presence of outliers.</p></li>
+<li><p><strong>Non-Gaussian Noise Handling</strong>: This loss function is well-suited for environments with non-Gaussian noise, achieving more reliable parameter updates compared to squared error loss.</p></li>
+<li><p><strong>Higher-order Statistical Adaptation</strong>: Unlike squared error loss, the correntropy loss incorporates information about higher-order statistics, enabling more nuanced error handling.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Generate some sample data for testing</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Number of samples</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># Input data</span>
+<span class="n">true_weights</span> <span class="o">=</span> <span class="mf">2.5</span>  <span class="c1"># True weight for generating output</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># Gaussian noise</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">true_weights</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">noise</span>  <span class="c1"># Desired output with noise</span>
+
+<span class="c1"># Initialize parameters</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Initial weight (model parameter)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># Learning rate</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Number of epochs for training</span>
+
+<span class="c1"># Arrays to store weights and error values for analysis</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># LMS Algorithm</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># Compute prediction</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Calculate error</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_pred</span>
+        
+        <span class="c1"># Update weight using LMS rule</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Store weight and error</span>
+        <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+<span class="c1"># Plotting results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Plot the error over iterations</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Error over Iterations&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the learned model versus true relationship</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;LMS Learned Model&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">true_weights</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True Model&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Input X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Output Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;LMS Learned Model vs. True Model&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final learned weight:&quot;</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/35c3c28a3e3f2a1ba55ed7b12b9a9773b58aa33aec7090df591c1f1f2d037cf6.png" src="../../_images/35c3c28a3e3f2a1ba55ed7b12b9a9773b58aa33aec7090df591c1f1f2d037cf6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final learned weight: 3.147543439836432
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="kernel-least-mean-squares-klms-algorithm">
+<h2>Kernel Least Mean Squares (KLMS) Algorithm<a class="headerlink" href="#kernel-least-mean-squares-klms-algorithm" title="Link to this heading">#</a></h2>
+<p>The Kernel Least Mean Squares (KLMS) algorithm is an extension of the traditional Least Mean Squares (LMS) algorithm, designed to handle nonlinear problems by using kernel methods. The core idea behind KLMS is to apply a nonlinear transformation (via a kernel function) that maps the input data into a higher-dimensional feature space. This allows the KLMS to approximate nonlinear relationships, something the standard LMS cannot do. Below, we will derive the key formulas for KLMS, step by step, explaining how we arrive at each equation and why these steps are taken.</p>
+</section>
+<section id="step-1-prediction-with-kernel-function">
+<h2>Step 1: Prediction with Kernel Function<a class="headerlink" href="#step-1-prediction-with-kernel-function" title="Link to this heading">#</a></h2>
+<p>In the traditional LMS algorithm, the predicted output <span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span> at time step <span class="math notranslate nohighlight">\(( n )\)</span> is computed as a weighted sum of the input features:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}_n = \mathbf{w}^T \mathbf{x}_n
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(( \mathbf{w} )\)</span> is the weight vector and <span class="math notranslate nohighlight">\(( \mathbf{x}_n )\)</span> is the input vector at time step <span class="math notranslate nohighlight">\(( n )\)</span>.</p>
+<p>However, in KLMS, we use kernel functions to map the input vector <span class="math notranslate nohighlight">\(( \mathbf{x}_n )\)</span> into a higher-dimensional feature space. Instead of computing a simple dot product, we use a kernel function <span class="math notranslate nohighlight">\(( k(\mathbf{x}_i, \mathbf{x}_n) )\)</span> that computes the similarity between the input vector <span class="math notranslate nohighlight">\(( \mathbf{x}_n )\)</span> and all previous input vectors <span class="math notranslate nohighlight">\(( \mathbf{x}_i )\)</span>. This allows us to approximate nonlinear functions.</p>
+<p>Thus, the predicted output <span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span> in KLMS is:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}_n = \sum_{i=1}^{n} \alpha_i \cdot k(\mathbf{x}_i, \mathbf{x}_n)
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span> is the predicted output at time step <span class="math notranslate nohighlight">\(( n )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \alpha_i )\)</span> are the weight coefficients corresponding to the input vectors <span class="math notranslate nohighlight">\(( \mathbf{x}_i )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( k(\mathbf{x}_i, \mathbf{x}_n) )\)</span> is the kernel function that computes the similarity between <span class="math notranslate nohighlight">\(( \mathbf{x}_i )\)</span> and <span class="math notranslate nohighlight">\(( \mathbf{x}_n )\)</span>.</p></li>
+</ul>
+<section id="why-use-kernels">
+<h3>Why Use Kernels?<a class="headerlink" href="#why-use-kernels" title="Link to this heading">#</a></h3>
+<p>The kernel function allows us to implicitly map the input vectors into a higher-dimensional feature space, without explicitly computing the mapping. This transformation makes it possible for KLMS to approximate complex, nonlinear relationships between inputs and outputs, which standard LMS cannot.</p>
+</section>
+<section id="step-2-compute-the-prediction-error">
+<h3>Step 2: Compute the Prediction Error<a class="headerlink" href="#step-2-compute-the-prediction-error" title="Link to this heading">#</a></h3>
+<p>The prediction error <span class="math notranslate nohighlight">\(( e_n )\)</span> at time step <span class="math notranslate nohighlight">\(( n )\)</span> is defined as the difference between the desired output <span class="math notranslate nohighlight">\(( d_n )\)</span> and the predicted output <span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+e_n = d_n - \hat{y}_n
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( e_n )\)</span> is the error at time step <span class="math notranslate nohighlight">\(( n )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( d_n )\)</span> is the desired output at time step <span class="math notranslate nohighlight">\(( n )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span> is the predicted output at time step <span class="math notranslate nohighlight">\(( n )\)</span>.</p></li>
+</ul>
+<p>This error term <span class="math notranslate nohighlight">\(( e_n )\)</span> represents how far the model’s prediction is from the true value.</p>
+</section>
+<section id="step-3-update-the-weights">
+<h3>Step 3: Update the Weights<a class="headerlink" href="#step-3-update-the-weights" title="Link to this heading">#</a></h3>
+<p>The goal of KLMS, like LMS, is to adjust the weights so as to minimize the prediction error. We do this by applying an update rule based on the gradient of the cost function. For KLMS, the cost function is typically the Mean Squared Error (MSE):</p>
+<div class="math notranslate nohighlight">
+\[
+J(\alpha) = \frac{1}{2} \sum_{n=1}^{N} e_n^2 = \frac{1}{2} \sum_{n=1}^{N} (d_n - \hat{y}_n)^2
+\]</div>
+<p>To minimize the cost function <span class="math notranslate nohighlight">\(( J(\alpha) )\)</span>, we perform gradient descent. The gradient of the cost function with respect to the weight coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\alpha} J(\alpha) = - (d_n - \hat{y}_n) \cdot \nabla_{\alpha} \hat{y}_n
+\]</div>
+<p>We now need to compute the derivative of <span class="math notranslate nohighlight">\(( \hat{y}_n )\)</span> with respect to the coefficients <span class="math notranslate nohighlight">\(( \alpha_i )\)</span>. Using the kernel-based prediction equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y}_n = \sum_{i=1}^{n} \alpha_i \cdot k(\mathbf{x}_i, \mathbf{x}_n)
+\]</div>
+<p>Taking the derivative with respect to <span class="math notranslate nohighlight">\(( \alpha_i )\)</span> gives:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial \hat{y}_n}{\partial \alpha_i} = k(\mathbf{x}_i, \mathbf{x}_n)
+\]</div>
+<p>Thus, the gradient of the cost function with respect to <span class="math notranslate nohighlight">\(( \alpha_i )\)</span> becomes:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_{\alpha_i} J(\alpha) = - e_n \cdot k(\mathbf{x}_i, \mathbf{x}_n)
+\]</div>
+<p>The update rule for the weight coefficients <span class="math notranslate nohighlight">\(( \alpha_i )\)</span> at time step <span class="math notranslate nohighlight">\(( n )\)</span> is then:</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_{n+1} = \alpha_n + \eta \cdot e_n \cdot k(\mathbf{x}_n, \mathbf{x}_n)
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( \alpha_{n+1} )\)</span> is the updated weight coefficient at time step <span class="math notranslate nohighlight">\(( n )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \alpha_n )\)</span> is the current weight coefficient at time step <span class="math notranslate nohighlight">\(( n )\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \eta )\)</span> is the learning rate (a constant that controls the step size of the update),</p></li>
+<li><p><span class="math notranslate nohighlight">\(( k(\mathbf{x}_n, \mathbf{x}_n) )\)</span> is the kernel function evaluated at the current input <span class="math notranslate nohighlight">\(( \mathbf{x}_n )\)</span>.</p></li>
+</ul>
+</section>
+<section id="why-this-update-rule">
+<h3>Why This Update Rule?<a class="headerlink" href="#why-this-update-rule" title="Link to this heading">#</a></h3>
+<p>This weight update rule ensures that the weights <span class="math notranslate nohighlight">\(( \alpha_n )\)</span> are adjusted in the direction that reduces the error <span class="math notranslate nohighlight">\(( e_n )\)</span>, thus improving the accuracy of the model’s predictions. The kernel function <span class="math notranslate nohighlight">\(( k(\mathbf{x}_n, \mathbf{x}_n) )\)</span> measures the similarity between the current input and itself, and this is used to scale the weight update.</p>
+</section>
+<section id="step-4-kernel-function-selection">
+<h3>Step 4: Kernel Function Selection<a class="headerlink" href="#step-4-kernel-function-selection" title="Link to this heading">#</a></h3>
+<p>The kernel function <span class="math notranslate nohighlight">\(( k(\mathbf{x}_i, \mathbf{x}_j) )\)</span> plays a crucial role in the performance of KLMS. Some commonly used kernel functions include:</p>
+<p><strong>Gaussian (Radial Basis Function) Kernel:</strong>
+$<span class="math notranslate nohighlight">\(
+    k(\mathbf{x}_i, \mathbf{x}_j) = \exp \left(-\frac{\|\mathbf{x}_i - \mathbf{x}_j\|^2}{2\sigma^2}\right)
+    \)</span>$
+This kernel is popular for its ability to map inputs into an infinite-dimensional space, which makes it suitable for complex, highly nonlinear relationships.</p>
+<p><strong>Polynomial Kernel:</strong>
+$<span class="math notranslate nohighlight">\(
+    k(\mathbf{x}_i, \mathbf{x}_j) = (\mathbf{x}_i^\top \mathbf{x}_j + c)^d
+    \)</span>$
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( c )\)</span> is a constant,</p></li>
+<li><p><span class="math notranslate nohighlight">\(( d )\)</span> is the degree of the polynomial.
+This kernel is useful for capturing interactions between features when they can be represented by polynomial relationships.</p></li>
+</ul>
+</section>
+<section id="summary-of-klms-algorithm">
+<h3>Summary of KLMS Algorithm<a class="headerlink" href="#summary-of-klms-algorithm" title="Link to this heading">#</a></h3>
+<p>The KLMS algorithm is an adaptive filtering technique that uses kernel methods to model nonlinear relationships. The key steps of the algorithm are:</p>
+<p><strong>Compute the predicted output} using the kernel function:</strong>
+$<span class="math notranslate nohighlight">\(
+    \hat{y}_n = \sum_{i=1}^{n} \alpha_i \cdot k(\mathbf{x}_i, \mathbf{x}_n)
+    \)</span>$</p>
+<p><strong>Compute the prediction error:</strong>
+$<span class="math notranslate nohighlight">\(
+    e_n = d_n - \hat{y}_n
+    \)</span>$</p>
+<p><strong>Update the weight coefficients based on the error:</strong>
+$<span class="math notranslate nohighlight">\(
+    \alpha_{n+1} = \alpha_n + \eta \cdot e_n \cdot k(\mathbf{x}_n, \mathbf{x}_n)
+    \)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Generate some sample nonlinear data for testing</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Number of samples</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># Input data</span>
+<span class="n">true_weights</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># This will only affect the output to simulate a pattern</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># Gaussian noise</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">true_weights</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">noise</span> <span class="o">*</span> <span class="mf">0.1</span>  <span class="c1"># Desired output with noise</span>
+
+<span class="c1"># KLMS Parameters</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># Learning rate</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Kernel width for Gaussian kernel</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># Threshold for adding new dictionary elements</span>
+
+<span class="c1"># Initialize dictionary and coefficients</span>
+<span class="n">dictionary</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">coefficients</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Gaussian kernel function</span>
+<span class="k">def</span> <span class="nf">gaussian_kernel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Kernel Least Mean Squares (KLMS) algorithm</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">x_i</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">y_i</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># Predict output using dictionary elements</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+        <span class="n">y_pred</span> <span class="o">+=</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">gaussian_kernel</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    
+    <span class="c1"># Compute error</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">y_i</span> <span class="o">-</span> <span class="n">y_pred</span>
+
+    <span class="c1"># If the error exceeds epsilon, add the new input to the dictionary</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="n">dictionary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span>
+        <span class="n">coefficients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu</span> <span class="o">*</span> <span class="n">error</span><span class="p">)</span>
+
+<span class="c1"># Plotting the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Plot original data and KLMS predictions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">coeff</span> <span class="o">*</span> <span class="n">gaussian_kernel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KLMS Model&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Input X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Output Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;KLMS Model vs. Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2c40fe6eb73f283798c933776118cd357a28e68835c402fab17837caebd4eae1.png" src="../../_images/2c40fe6eb73f283798c933776118cd357a28e68835c402fab17837caebd4eae1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">rbf_kernel</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_features</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate synthetic 3D data with a non-linear target function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">num_features</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># Non-linear target</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+
+
+<span class="k">def</span> <span class="nf">apply_rbf_kernel</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the RBF kernel to the input data and return the kernel matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rbf_kernel</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">klms_algorithm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kernel_matrix</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform Kernel Least Mean Squares (KLMS) algorithm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Initialize coefficients (weights)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1"># Compute the predicted output for the current input</span>
+            <span class="n">predicted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">kernel_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>  <span class="c1"># Kernel-weighted sum</span>
+            
+            <span class="c1"># Compute the error</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">predicted</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            
+            <span class="c1"># Update the alpha coefficients</span>
+            <span class="n">alpha</span> <span class="o">+=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">kernel_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">errors</span>
+
+<span class="k">def</span> <span class="nf">plot_error_curve</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the error curve during KLMS learning.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;KLMS Error Curve&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Generate data</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Visualize the original data</span>
+    <span class="n">visualize_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original 3D Data&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Apply RBF Kernel</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">apply_rbf_kernel</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+    <span class="c1"># Perform KLMS</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">iterations</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">klms_algorithm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span>
+
+    <span class="c1"># Reduce the kernel matrix to 2D using PCA for visualization</span>
+    <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>  <span class="c1"># Perform PCA on the kernel matrix</span>
+
+    <span class="c1"># Plot the error curve</span>
+    <span class="n">plot_error_curve</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+    <span class="c1"># Show final alpha coefficients</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final alpha coefficients after KLMS:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">85</span>
+<span class="g g-Whitespace">     </span><span class="mi">80</span>     <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">84</span> <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">85</span>     <span class="n">main</span><span class="p">()</span>
+
+<span class="nn">Cell In[3], line 60,</span> in <span class="ni">main</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span> <span class="c1"># Visualize the original data</span>
+<span class="ne">---&gt; </span><span class="mi">60</span> <span class="n">visualize_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original 3D Data&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span> <span class="c1"># Apply RBF Kernel</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="ne">NameError</span>: name &#39;visualize_data&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\lms"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Posterior Distribution Derivation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../homeworkLLE/Homework_LLE.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Locally Linear Embedding</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#online-algorithms-definition-and-concept">1. Online Algorithms: Definition and Concept</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2. Least Mean Squares (LMS) Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-setup">Problem Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-weight-update-rule">Gradient Descent: Weight Update Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#online-learning-adaptive-update-rule">Online Learning: Adaptive Update Rule</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lms-algorithm-with-correntropy-loss">LMS Algorithm with Correntropy Loss</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correntropy-loss">Correntropy Loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">LMS Algorithm with Correntropy Loss</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-of-the-correntropy-cost-function">Gradient of the Correntropy Cost Function</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-take-the-derivative-of-the-loss-function">Step 1: Take the Derivative of the Loss Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-differentiate-the-exponential-function">Step 2: Differentiate the Exponential Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-differentiate-the-inner-term">Step 3: Differentiate the Inner Term</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-combine-the-terms">Step 4: Combine the Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-final-gradient-expression">Step 5: Final Gradient Expression</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-update-rule">Weight Update Rule</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-lms-with-correntropy-loss">Advantages of LMS with Correntropy Loss</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-least-mean-squares-klms-algorithm">Kernel Least Mean Squares (KLMS) Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-prediction-with-kernel-function">Step 1: Prediction with Kernel Function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-kernels">Why Use Kernels?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-compute-the-prediction-error">Step 2: Compute the Prediction Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-update-the-weights">Step 3: Update the Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-update-rule">Why This Update Rule?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-kernel-function-selection">Step 4: Kernel Function Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-klms-algorithm">Summary of KLMS Algorithm</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

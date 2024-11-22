@@ -1,0 +1,1012 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ridge Regression &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/ridge/ridge';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Contact Me" href="../../Contact_Me.html" />
+    <link rel="prev" title="Manifold Learning Techniques" href="../ManifoldLearning/manifoldLearning.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html">Posterior Distribution Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lms/lms.html">Least Mean Squares (LMS) Algorithm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ManifoldLearning/manifoldLearning.html">Manifold Learning Techniques</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ridge Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/ridge/ridge.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/ridge/ridge.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ridge Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-multicollinearity">2. What is the Multicollinearity?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-diffrent-between-linear-regression-and-ridge-regression">3. What is the diffrent between linear regression and ridge regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">Linear Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ridge Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shrinkage-penalty">4. Shrinkage penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-calculate-intercept">5. How can we calculate intercept?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-steps">Proof Steps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-of-ridge-regression">6. Features of Ridge Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-regularization-in-ridge-regression-l2-regularization">7. Effect of Regularization in Ridge Regression (L2 Regularization)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-closed-form-solution">Derivation of the Closed-Form Solution}</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#objective-function">1. Objective Function}</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-of-j-w">2. Gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-gradient-to-zero">3. Setting the Gradient to Zero</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-w">4. Solving for <span class="math notranslate nohighlight">\(( w )\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-the-solution">Interpretation of the Solution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-ridge-regression-krr">8. Kernel Ridge Regression (KRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-mapping-and-the-kernel-trick">1. Feature Mapping and the Kernel Trick</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objective-function-in-kernel-ridge-regression">2. Objective Function in Kernel Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-for-coefficients-alpha">3. Solution for Coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#making-predictions">4. Making Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression-and-the-bayesian-view">9. Ridge Regression and the Bayesian View</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-function-and-prior-distribution">1. Likelihood Function and Prior Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">2. Prior Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution-and-its-connection-to-ridge-regression">3. Posterior Distribution and Its Connection to Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-the-result">Interpretation of the Result</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code-that-demonstrates-the-benefits-of-using-ridge-regression-particularly-showing-how-the-regularization-parameter-lambda-affects-the-model-s-ability-to-prevent-overfitting-and-improve-generalization">10. Python code that demonstrates the benefits of using Ridge Regression, particularly showing how the regularization parameter <span class="math notranslate nohighlight">\((\lambda)\)</span> affects the model’s ability to prevent overfitting and improve generalization.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ridge-regression">
+<h1>Ridge Regression<a class="headerlink" href="#ridge-regression" title="Link to this heading">#</a></h1>
+<p><img alt="Payam" src="../../_images/payam2.jpg" /></p>
+<ul class="simple">
+<li><p>Author  : Payam Parvazmanesh</p></li>
+<li><p>Contact : <a class="reference external" href="mailto:payam&#46;manesh&#37;&#52;&#48;gmail&#46;com">payam<span>&#46;</span>manesh<span>&#64;</span>gmail<span>&#46;</span>com</a></p></li>
+<li><p>Machine Learning</p></li>
+</ul>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Ridge regression is a type of linear regression specifically designed to deal with multicollinearity in a data set In linear regression, the goal is to find the best-fitting hyperplane that minimizes the sum of squared differences between the observed and predicted values. However, when there are highly correlated variables, linear regression may become unstable and provide unreliable estimates..</p>
+</section>
+<section id="what-is-the-multicollinearity">
+<h2>2. What is the Multicollinearity?<a class="headerlink" href="#what-is-the-multicollinearity" title="Link to this heading">#</a></h2>
+<p>Multicollinearity is a phenomenon that occurs when several independent variables in regression progress have high correlation, but not necessarily perfect correlation, with each other.</p>
+<p><img alt="Multicollinearity" src="../../_images/Multicollinearity.jpg" /></p>
+<p>Correlation can be both positive and negative. Positive correlation means that as one variable increases, the other also increases, while negative correlation means that as one variable increases, the other decreases. In both cases, the presence of high correlation can lead to problems in regression analysis.</p>
+<p><img alt="correlation" src="../../_images/correlation1.png" /></p>
+</section>
+<section id="what-is-the-diffrent-between-linear-regression-and-ridge-regression">
+<h2>3. What is the diffrent between linear regression and ridge regression<a class="headerlink" href="#what-is-the-diffrent-between-linear-regression-and-ridge-regression" title="Link to this heading">#</a></h2>
+<p>Ridge regression introduces a regularization term that penalizes large coefficients, helping to stabilize the model and prevent overfitting. This regularization term, also known as the L2 penalty, adds a constraint to the optimization process, influencing the model to choose smaller coefficients for the predictors.</p>
+<section id="linear-regression">
+<h3>Linear Regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h3>
+<p>In linear regression, the goal is to find a series of coefficients,This is done using the method of least squares. One seeks the values 𝛽0,𝛽1,…,𝛽𝑝 that minimize the Residual Sum of Squares:$<span class="math notranslate nohighlight">\(
+RSS = \sum_{i=1}^{n} \left( y_i - \left( w_0 + \sum_{j=1}^{p} w_j x_{ij} \right) \right)^2
+\)</span>$</p>
+</section>
+<section id="id1">
+<h3>Ridge Regression<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Ridge regression is very similar to the method of least squares, with the exception that the coefficients are estimated by minimizing a slightly different quantity. In reality, it’s the same quantity, just with something more, with something we call a shrinkage penalty.
+$<span class="math notranslate nohighlight">\(
+RSS + \lambda \sum_{j=1}^{p} w_j^2 = \sum_{i=1}^{n} \left( y_i - \left( w_0 + \sum_{j=1}^{p} w_j x_{ij} \right) \right)^2 + \lambda \sum_{j=1}^{p} w_j^2
+\)</span>$</p>
+</section>
+</section>
+<section id="shrinkage-penalty">
+<h2>4. Shrinkage penalty<a class="headerlink" href="#shrinkage-penalty" title="Link to this heading">#</a></h2>
+<p>The shrinkage penalty in ridge regression:
+$<span class="math notranslate nohighlight">\(
+\lambda \sum_{j=1}^{p} w_j^2
+\)</span>$
+refers to the regularization term added to the linear regression equation to prevent overfitting and address multicollinearity. In ridge regression, the objective is to minimize the sum of squared differences between observed and predicted values. However, to this, a penalty term is added, which is proportional to the square of the magnitude of the coefficients. This penalty term is also known as the ℓ2 norm or Euclidean norm.</p>
+<p>𝜆≥0 is called the tuning parameter of the method, which is chosen separately. The parameter 𝜆 controls how strongly the coefficients are shrunk toward 0. When 𝜆=0, the penalty has no effect, and ridge regression reduces to the ordinary least squares method. However, as 𝜆→∞ the impact of the penalty grows, and the estimates of the coefficients 𝛽𝑗 in ridge regression shrink towards zero.</p>
+</section>
+<section id="how-can-we-calculate-intercept">
+<h2>5. How can we calculate intercept?<a class="headerlink" href="#how-can-we-calculate-intercept" title="Link to this heading">#</a></h2>
+<p>It should also be noted that the shrinkage penalty is applied exclusively to the coefficients 𝛽1,…,𝛽𝑝, but it does not affect the intercept term 𝛽0. We do not shrink the intercept — it represents the prediction of the mean value of the dependent variable when all predictors are equal to 0. Assuming that the variables have been centered to have a mean of zero before conducting ridge regression, the estimated intercept will take the form
+$<span class="math notranslate nohighlight">\(
+w_0 = \frac{1}{n} \sum_{i=1}^{n} y_i
+\)</span>$</p>
+<section id="proof-steps">
+<h3>Proof Steps<a class="headerlink" href="#proof-steps" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Linear Regression Equation</strong>:
+The linear regression equation can be expressed as
+$<span class="math notranslate nohighlight">\(
+y_i = w_0 + \sum_{j=1}^{p} w_j x_{ij} + \epsilon_i
+\)</span>$</p></li>
+<li><p><strong>Mean of ( y )</strong>:
+By summing all observations and dividing by ( n ):
+$<span class="math notranslate nohighlight">\(
+\bar{y} = \frac{1}{n} \sum_{i=1}^{n} y_i
+\)</span>$</p></li>
+<li><p><strong>Equation in Terms of Mean</strong>:
+Substituting the mean into the regression equation, we can write
+$<span class="math notranslate nohighlight">\(
+\bar{y} = w_0 + \sum_{j=1}^{p} w_j \bar{x_j}
+\)</span>$</p>
+<p>Since the predictor variables are standardized, their means are zero:
+$<span class="math notranslate nohighlight">\(
+\bar{x_j} = 0
+\)</span>$</p>
+</li>
+<li><p><strong>Substitution</strong>:
+Substituting this value into the equation gives u</p>
+<div class="math notranslate nohighlight">
+\[
+   \bar{y} = w_0 + 0
+   \]</div>
+<p>Thus:
+$<span class="math notranslate nohighlight">\(
+w_0 = \bar{y}
+\)</span>$</p>
+</li>
+</ol>
+</section>
+</section>
+<section id="features-of-ridge-regression">
+<h2>6. Features of Ridge Regression<a class="headerlink" href="#features-of-ridge-regression" title="Link to this heading">#</a></h2>
+<p>In Ridge Regression, the model is set up with all variables given. However, it does not remove variables with low relationships from the model, it brings the coefficients of these variables closer to zero.</p>
+<ul class="simple">
+<li><p>It is resistant to overlearning.</p></li>
+<li><p>It is biased but has a low variance.</p></li>
+<li><p>It is better than the Least Squares method when there are too many parameters.</p></li>
+<li><p>It offers a solution against multidimensionality. The problem here is that the number of variables is greater than the number of observations. It      offers a solution against this.</p></li>
+<li><p>It is effective in multiple linear connection problem. The problem here is that there is a high correlation between the independent variables.</p></li>
+<li><p>It is important to find an optimum value for λ. Cross-Validation is used for this.</p></li>
+</ul>
+</section>
+<section id="effect-of-regularization-in-ridge-regression-l2-regularization">
+<h2>7. Effect of Regularization in Ridge Regression (L2 Regularization)<a class="headerlink" href="#effect-of-regularization-in-ridge-regression-l2-regularization" title="Link to this heading">#</a></h2>
+<p>Ridge Regression (also known as L2 Regularization) is an extension of Ordinary Least Squares (OLS) regression that includes an additional penalty term to prevent overfitting. The goal is to minimize the following objective function:</p>
+<div class="math notranslate nohighlight">
+\[
+\min_{w} \left[ (Y - Xw)^T(Y - Xw) + \lambda ||w||_2^2 \right]
+\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( Y )\)</span> is the vector of observed values (targets).</p></li>
+<li><p><span class="math notranslate nohighlight">\(( X )\)</span> is the matrix of input features (design matrix).</p></li>
+<li><p><span class="math notranslate nohighlight">\(( w )\)</span> is the vector of coefficients (weights).</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \lambda )\)</span> is the regularization parameter that controls the strength of the penalty.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( ||w||_2^2 = w^T w)\)</span> is the squared L2 norm of the coefficient vector, which represents the sum of the squares of the coefficients.</p></li>
+</ul>
+<p>The first term in the objective function, <span class="math notranslate nohighlight">\(( (Y - Xw)^T(Y - Xw) )\)</span>, is the residual sum of squares (RSS) from ordinary least squares regression. The second term, <span class="math notranslate nohighlight">\(( \lambda ||w||_2^2 )\)</span>, is the regularization term that penalizes large values of the coefficients.</p>
+<section id="derivation-of-the-closed-form-solution">
+<h3>Derivation of the Closed-Form Solution}<a class="headerlink" href="#derivation-of-the-closed-form-solution" title="Link to this heading">#</a></h3>
+<p>To find the closed-form solution for <span class="math notranslate nohighlight">\(( w )\)</span>, we take the derivative of the objective function with respect to <span class="math notranslate nohighlight">\(( w )\)</span> and set it equal to zero.</p>
+<section id="objective-function">
+<h4>1. Objective Function}<a class="headerlink" href="#objective-function" title="Link to this heading">#</a></h4>
+<p>The objective function <span class="math notranslate nohighlight">\(( J(w) )\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+J(w) = (Y - Xw)^T(Y - Xw) + \lambda w^T w
+\]</div>
+<p>Expanding the first term:</p>
+<div class="math notranslate nohighlight">
+\[
+J(w) = (Y^T Y - Y^T Xw - w^T X^T Y + w^T X^T X w) + \lambda w^T w
+\]</div>
+<p>Simplifying:</p>
+<div class="math notranslate nohighlight">
+\[
+J(w) = Y^T Y - 2w^T X^T Y + w^T X^T X w + \lambda w^T w
+\]</div>
+</section>
+<section id="gradient-of-j-w">
+<h4>2. Gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span><a class="headerlink" href="#gradient-of-j-w" title="Link to this heading">#</a></h4>
+<p>Now, we take the gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span> with respect to <span class="math notranslate nohighlight">\(( w )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J(w)}{\partial w} = -2X^T(Y - Xw) + 2\lambda w
+\]</div>
+<p>Simplifying:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J(w)}{\partial w} = -2X^T Y + 2X^T X w + 2\lambda w
+\]</div>
+</section>
+<section id="setting-the-gradient-to-zero">
+<h4>3. Setting the Gradient to Zero<a class="headerlink" href="#setting-the-gradient-to-zero" title="Link to this heading">#</a></h4>
+<p>To find the minimum, we set the gradient equal to zero:</p>
+<div class="math notranslate nohighlight">
+\[
+-2X^T Y + 2X^T X w + 2\lambda w = 0
+\]</div>
+<p>Simplifying:</p>
+<div class="math notranslate nohighlight">
+\[
+X^T Y = (X^T X + \lambda I) w
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(( I )\)</span> is the identity matrix, and <span class="math notranslate nohighlight">\(( \lambda I )\)</span> is the regularization term.</p>
+</section>
+<section id="solving-for-w">
+<h4>4. Solving for <span class="math notranslate nohighlight">\(( w )\)</span><a class="headerlink" href="#solving-for-w" title="Link to this heading">#</a></h4>
+<p>Now we solve for <span class="math notranslate nohighlight">\(( w )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+w = (X^T X + \lambda I)^{-1} X^T Y
+\]</div>
+<p>This is the closed-form solution for Ridge regression.</p>
+</section>
+</section>
+<section id="interpretation-of-the-solution">
+<h3>Interpretation of the Solution<a class="headerlink" href="#interpretation-of-the-solution" title="Link to this heading">#</a></h3>
+<p>The closed-form solution for Ridge regression is:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{\text{ridge}} = (X^T X + \lambda I)^{-1} X^T Y
+\]</div>
+<p>This solution is similar to the Ordinary Least Squares (OLS) solution, which is:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{\text{OLS}} = (X^T X)^{-1} X^T Y
+\]</div>
+<p>The key difference is the additional regularization term <span class="math notranslate nohighlight">\(( \lambda I )\)</span>, which helps control the magnitude of the coefficients.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( \lambda \to 0 )\)</span>, Ridge regression behaves like ordinary least squares (OLS).</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \lambda \to \infty )\)</span>, the coefficients <span class="math notranslate nohighlight">\(( w )\)</span> shrink towards zero.</p></li>
+</ul>
+</section>
+</section>
+<section id="kernel-ridge-regression-krr">
+<h2>8. Kernel Ridge Regression (KRR)<a class="headerlink" href="#kernel-ridge-regression-krr" title="Link to this heading">#</a></h2>
+<p>Kernel Ridge Regression (KRR) is a powerful technique that combines ridge regression (which applies L2 regularization) with the kernel trick to handle non-linear relationships between features and the target variable. By using a kernel, KRR implicitly maps input data to a higher-dimensional feature space, where linear relationships can be discovered, without ever computing the transformation explicitly.</p>
+<section id="feature-mapping-and-the-kernel-trick">
+<h3>1. Feature Mapping and the Kernel Trick<a class="headerlink" href="#feature-mapping-and-the-kernel-trick" title="Link to this heading">#</a></h3>
+<p>In traditional linear regression, we assume that the relationship between the input features and the target is linear, i.e.,
+$<span class="math notranslate nohighlight">\(
+y = w^T x + b
+\)</span>$
+However, in many real-world problems, this assumption is too restrictive, and the data may exhibit complex, non-linear relationships.</p>
+<p>To handle this, we apply a feature mapping <span class="math notranslate nohighlight">\(( \varphi(x) )\)</span>, which maps the data from the original input space <span class="math notranslate nohighlight">\(( \mathbb{R}^n )\)</span> to a higher-dimensional feature space <span class="math notranslate nohighlight">\(( \mathbb{R}^m )\)</span>:
+$<span class="math notranslate nohighlight">\(
+\varphi : \mathbb{R}^n \to \mathbb{R}^m
+\)</span>$</p>
+<p>Once we apply this mapping, we can attempt to fit a linear model in the transformed feature space. However, explicitly computing the transformation <span class="math notranslate nohighlight">\(( \varphi(x) )\)</span> can be computationally expensive, especially if the dimensionality of the feature space is very high.</p>
+<p>Instead of computing the feature map explicitly, we use a kernel function <span class="math notranslate nohighlight">\(( K(x_i, x_j) )\)</span>, which computes the inner product of the feature-mapped data points:
+$<span class="math notranslate nohighlight">\(
+K(x_i, x_j) = \langle \varphi(x_i), \varphi(x_j) \rangle
+\)</span>$
+This allows us to compute similarities between data points in the higher-dimensional space without having to perform the explicit mapping. Some common kernel functions are:</p>
+<ul class="simple">
+<li><p>Linear kernel:
+$<span class="math notranslate nohighlight">\(
+  K(x_i, x_j) = x_i^T x_j
+  \)</span>$</p></li>
+<li><p>Polynomial kernel:
+$<span class="math notranslate nohighlight">\(
+  K(x_i, x_j) = (x_i^T x_j + 1)^d
+  \)</span>$</p></li>
+<li><p>Radial Basis Function (RBF) kernel:
+$<span class="math notranslate nohighlight">\(
+  K(x_i, x_j) = \exp \left( -\frac{\| x_i - x_j \|^2}{2\sigma^2} \right)
+  \)</span>$</p></li>
+</ul>
+</section>
+<section id="objective-function-in-kernel-ridge-regression">
+<h3>2. Objective Function in Kernel Ridge Regression<a class="headerlink" href="#objective-function-in-kernel-ridge-regression" title="Link to this heading">#</a></h3>
+<p>In Kernel Ridge Regression, the goal is to find the coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span> associated with each training data point. The objective function to minimize is the sum of the squared error between the predicted outputs and the actual targets, along with a regularization term:
+$<span class="math notranslate nohighlight">\(
+\mathcal{L}(\alpha) = \| \mathbf{y} - K(X, X) \alpha \|^2 + \lambda \| \alpha \|^2
+\)</span>$
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( \mathbf{y} )\)</span> is the vector of actual target values for the training samples.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( K(X, X) )\)</span> is the kernel matrix, where each element <span class="math notranslate nohighlight">\(( K_{ij} = K(x_i, x_j) )\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \alpha )\)</span> is the vector of coefficients corresponding to the training samples.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \lambda )\)</span> is the regularization parameter that controls the complexity of the model.</p></li>
+</ul>
+</section>
+<section id="solution-for-coefficients-alpha">
+<h3>3. Solution for Coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span><a class="headerlink" href="#solution-for-coefficients-alpha" title="Link to this heading">#</a></h3>
+<p>To minimize the objective function, we take the derivative with respect to <span class="math notranslate nohighlight">\(( \alpha )\)</span> and set it equal to zero:
+$<span class="math notranslate nohighlight">\(
+K(X, X) \alpha = \mathbf{y}
+\)</span>$</p>
+<p>Solving for <span class="math notranslate nohighlight">\(( \alpha )\)</span>:
+$<span class="math notranslate nohighlight">\(
+\alpha = (K(X, X) + \lambda I)^{-1} \mathbf{y}
+\)</span>$
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( I )\)</span> is the identity matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( \lambda )\)</span> is the regularization parameter, which penalizes large coefficients to prevent overfitting.</p></li>
+</ul>
+</section>
+<section id="making-predictions">
+<h3>4. Making Predictions<a class="headerlink" href="#making-predictions" title="Link to this heading">#</a></h3>
+<p>Once we have the coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span>, the prediction for a new input <span class="math notranslate nohighlight">\(( x )\)</span> is given by:
+$<span class="math notranslate nohighlight">\(
+\hat{y} = \sum_{i=1}^n \alpha_i K(x_i, x)
+\)</span>$
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(( \alpha_i )\)</span> is the coefficient corresponding to the <span class="math notranslate nohighlight">\(i-th\)</span> training data point <span class="math notranslate nohighlight">\(( x_i )\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(( K(x_i, x) )\)</span> is the kernel function that measures the similarity between the new sample <span class="math notranslate nohighlight">\(( x )\)</span> and the training data points <span class="math notranslate nohighlight">\(( x_i )\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="ridge-regression-and-the-bayesian-view">
+<h2>9. Ridge Regression and the Bayesian View<a class="headerlink" href="#ridge-regression-and-the-bayesian-view" title="Link to this heading">#</a></h2>
+<p>Ridge regression is a model that minimizes prediction error while adding a penalty term on the model parameters. The objective function includes the sum of squared differences between the actual and predicted values, along with a penalty on the magnitude of the coefficients <span class="math notranslate nohighlight">\(( w )\)</span>. This model is especially useful when there are many input variables or when multicollinearity exists among the variables.</p>
+<section id="likelihood-function-and-prior-distribution">
+<h3>1. Likelihood Function and Prior Distribution<a class="headerlink" href="#likelihood-function-and-prior-distribution" title="Link to this heading">#</a></h3>
+<p>Suppose the data <span class="math notranslate nohighlight">\(( y_i )\)</span> are normally distributed with a linear mean <span class="math notranslate nohighlight">\(( \beta_0 + x_i^T w )\)</span> and variance <span class="math notranslate nohighlight">\(( \sigma^2 )\)</span>:
+$<span class="math notranslate nohighlight">\(
+y_i \sim N(\beta_0 + x_i^T w, \sigma^2)
+\)</span><span class="math notranslate nohighlight">\(
+This implies that \)</span>( y_i )<span class="math notranslate nohighlight">\( is centered around \)</span>( \beta_0 + x_i^T w )<span class="math notranslate nohighlight">\( with normal noise. This relationship defines the likelihood function for the data. If we consider all the data, the likelihood for the entire dataset, assuming independence between observations, is:
+\)</span><span class="math notranslate nohighlight">\(
+p(y | w) = \prod_{i=1}^n \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( -\frac{(y_i - (\beta_0 + x_i^T w))^2}{2 \sigma^2} \right)
+\)</span>$</p>
+</section>
+<section id="prior-distribution">
+<h3>2. Prior Distribution<a class="headerlink" href="#prior-distribution" title="Link to this heading">#</a></h3>
+<p>In the Bayesian framework, we place a prior distribution on the model parameters. Here, we assume that each parameter <span class="math notranslate nohighlight">\(( w_j )\)</span> independently follows a normal distribution with zero mean and variance <span class="math notranslate nohighlight">\(( \tau^2 )\)</span>:
+$<span class="math notranslate nohighlight">\(
+w_j \sim N(0, \tau^2), \quad \forall j
+\)</span><span class="math notranslate nohighlight">\(
+Thus, the prior distribution on \)</span>( w )<span class="math notranslate nohighlight">\( is:
+\)</span><span class="math notranslate nohighlight">\(
+p(w) = \prod_{j=1}^p \frac{1}{\sqrt{2 \pi \tau^2}} \exp \left( -\frac{w_j^2}{2 \tau^2} \right)
+\)</span>$</p>
+</section>
+<section id="posterior-distribution-and-its-connection-to-ridge-regression">
+<h3>3. Posterior Distribution and Its Connection to Ridge Regression<a class="headerlink" href="#posterior-distribution-and-its-connection-to-ridge-regression" title="Link to this heading">#</a></h3>
+<p>Using Bayes’ theorem, the posterior distribution of the parameters <span class="math notranslate nohighlight">\(( w )\)</span> given the data <span class="math notranslate nohighlight">\(( y )\)</span> is:
+$<span class="math notranslate nohighlight">\(
+p(w | y) \propto p(y | w) \cdot p(w)
+\)</span><span class="math notranslate nohighlight">\(
+By substituting in the likelihood \)</span>( p(y | w) )<span class="math notranslate nohighlight">\( and the prior \)</span>( p(w) )<span class="math notranslate nohighlight">\(, we find the posterior distribution. To simplify this, we take the negative logarithm of the posterior:
+\)</span><span class="math notranslate nohighlight">\(
+-\log p(w | y) = -\log p(y | w) - \log p(w) + \text{constant}
+\)</span><span class="math notranslate nohighlight">\(
+Expanding this expression, we get:
+\)</span><span class="math notranslate nohighlight">\(
+-\log p(w | y) = \sum_{i=1}^n \frac{(y_i - (\beta_0 + x_i^T w))^2}{2 \sigma^2} + \sum_{j=1}^p \frac{w_j^2}{2 \tau^2} + \text{constant}
+\)</span><span class="math notranslate nohighlight">\(
+This closely resembles the ridge regression objective function. By defining \)</span>( \lambda = \frac{\sigma^2}{\tau^2} )<span class="math notranslate nohighlight">\(, we can rewrite the expression as:
+\)</span><span class="math notranslate nohighlight">\(
+-\log p(w | y) = \frac{1}{2 \sigma^2} \sum_{i=1}^n (y_i - (\beta_0 + x_i^T w))^2 + \frac{\lambda}{2} \sum_{j=1}^p w_j^2 + \text{constant}
+\)</span><span class="math notranslate nohighlight">\(
+This is identical to the ridge regression objective function:
+\)</span><span class="math notranslate nohighlight">\(
+\text{Ridge Objective:} \quad \min_w \left\{ \sum_{i=1}^n (y_i - (\beta_0 + x_i^T w))^2 + \lambda \sum_{j=1}^p w_j^2 \right\}
+\)</span><span class="math notranslate nohighlight">\(
+Thus, minimizing the ridge regression objective function is equivalent to finding the mode of the posterior distribution of \)</span>( w )$.</p>
+</section>
+<section id="interpretation-of-the-result">
+<h3>Interpretation of the Result<a class="headerlink" href="#interpretation-of-the-result" title="Link to this heading">#</a></h3>
+<p>Since the posterior distribution of <span class="math notranslate nohighlight">\(( w )\)</span> is Gaussian (due to both the likelihood and the prior being normal), the mode and mean of this distribution are the same. Therefore, the optimal value obtained from ridge regression represents both the mode and mean of the posterior distribution of <span class="math notranslate nohighlight">\(( w )\)</span>.</p>
+<p>In simpler terms, the ridge regression estimate for the parameters <span class="math notranslate nohighlight">\(( w )\)</span> is the value that maximizes the posterior probability (mode) and, since the distribution is Gaussian, it is also the posterior mean.</p>
+</section>
+</section>
+<section id="python-code-that-demonstrates-the-benefits-of-using-ridge-regression-particularly-showing-how-the-regularization-parameter-lambda-affects-the-model-s-ability-to-prevent-overfitting-and-improve-generalization">
+<h2>10. Python code that demonstrates the benefits of using Ridge Regression, particularly showing how the regularization parameter <span class="math notranslate nohighlight">\((\lambda)\)</span> affects the model’s ability to prevent overfitting and improve generalization.<a class="headerlink" href="#python-code-that-demonstrates-the-benefits-of-using-ridge-regression-particularly-showing-how-the-regularization-parameter-lambda-affects-the-model-s-ability-to-prevent-overfitting-and-improve-generalization" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+
+<span class="c1"># Generating synthetic data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Adding some noise</span>
+
+<span class="c1"># Polynomial feature transformation (to simulate a non-linear relationship)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">X_poly</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Fit Linear Regression (OLS)</span>
+<span class="n">ols</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">ols</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_poly</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">y_pred_ols</span> <span class="o">=</span> <span class="n">ols</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_poly</span><span class="p">)</span>
+
+<span class="c1"># Fit Ridge Regression with different values of lambda (alpha)</span>
+<span class="n">lambdas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">ridge_preds</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="n">lambdas</span><span class="p">:</span>
+    <span class="n">ridge</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">ridge</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_poly</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">ridge_preds</span><span class="p">[</span><span class="n">lam</span><span class="p">]</span> <span class="o">=</span> <span class="n">ridge</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_poly</span><span class="p">)</span>
+
+<span class="c1"># Plotting the results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot the original data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Plot the OLS model prediction (no regularization)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_pred_ols</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;OLS (No Regularization)&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Plot Ridge predictions for different lambdas</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">lam</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">ridge_preds</span><span class="p">[</span><span class="n">lam</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Ridge (lambda=</span><span class="si">{</span><span class="n">lam</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Styling the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Ridge Regression: Effect of Regularization&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>H:\HadiSadoghiYazdi\PL\Lib\site-packages\sklearn\linear_model\_ridge.py:216: LinAlgWarning: Ill-conditioned matrix (rcond=1.80049e-29): result may not be accurate.
+  return linalg.solve(A, Xy, assume_a=&quot;pos&quot;, overwrite_a=True).T
+</pre></div>
+</div>
+<img alt="../../_images/a5cc1fbad55e4b5c8ed92dedd222081ac9d2ac13dc5aecd9b1efb831a20dab52.png" src="../../_images/a5cc1fbad55e4b5c8ed92dedd222081ac9d2ac13dc5aecd9b1efb831a20dab52.png" />
+</div>
+</div>
+<p><img alt="plot" src="../../_images/plot.jpg" /></p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>The Elements of Statistical Learning</p></li>
+<li><p>What is Ridge Regression? <a class="reference external" href="https://www.geeksforgeeks.org/what-is-ridge-regression/">Link to the page</a>.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\ridge"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../ManifoldLearning/manifoldLearning.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Manifold Learning Techniques</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../Contact_Me.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contact Me</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-multicollinearity">2. What is the Multicollinearity?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-diffrent-between-linear-regression-and-ridge-regression">3. What is the diffrent between linear regression and ridge regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">Linear Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Ridge Regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shrinkage-penalty">4. Shrinkage penalty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-calculate-intercept">5. How can we calculate intercept?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-steps">Proof Steps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-of-ridge-regression">6. Features of Ridge Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-regularization-in-ridge-regression-l2-regularization">7. Effect of Regularization in Ridge Regression (L2 Regularization)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-closed-form-solution">Derivation of the Closed-Form Solution}</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#objective-function">1. Objective Function}</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-of-j-w">2. Gradient of <span class="math notranslate nohighlight">\(( J(w) )\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-gradient-to-zero">3. Setting the Gradient to Zero</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-w">4. Solving for <span class="math notranslate nohighlight">\(( w )\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-the-solution">Interpretation of the Solution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-ridge-regression-krr">8. Kernel Ridge Regression (KRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-mapping-and-the-kernel-trick">1. Feature Mapping and the Kernel Trick</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objective-function-in-kernel-ridge-regression">2. Objective Function in Kernel Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-for-coefficients-alpha">3. Solution for Coefficients <span class="math notranslate nohighlight">\(( \alpha )\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#making-predictions">4. Making Predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression-and-the-bayesian-view">9. Ridge Regression and the Bayesian View</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-function-and-prior-distribution">1. Likelihood Function and Prior Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">2. Prior Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution-and-its-connection-to-ridge-regression">3. Posterior Distribution and Its Connection to Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-the-result">Interpretation of the Result</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code-that-demonstrates-the-benefits-of-using-ridge-regression-particularly-showing-how-the-regularization-parameter-lambda-affects-the-model-s-ability-to-prevent-overfitting-and-improve-generalization">10. Python code that demonstrates the benefits of using Ridge Regression, particularly showing how the regularization parameter <span class="math notranslate nohighlight">\((\lambda)\)</span> affects the model’s ability to prevent overfitting and improve generalization.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

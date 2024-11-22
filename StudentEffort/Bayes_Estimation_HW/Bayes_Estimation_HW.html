@@ -1,0 +1,723 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Posterior Distribution Derivation &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/Bayes_Estimation_HW/Bayes_Estimation_HW';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Least Mean Squares (LMS) Algorithm" href="../lms/lms.html" />
+    <link rel="prev" title="K Nearest-Neighbors KNN" href="../KNN/KNN.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Posterior Distribution Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lms/lms.html">Least Mean Squares (LMS) Algorithm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ManifoldLearning/manifoldLearning.html">Manifold Learning Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ridge/ridge.html">Ridge Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/Bayes_Estimation_HW/Bayes_Estimation_HW.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/Bayes_Estimation_HW/Bayes_Estimation_HW.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Posterior Distribution Derivation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">1. Prior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-function">2. Likelihood Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">3. Posterior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#completing-the-square-detailed-derivation">4. Completing the Square (Detailed Derivation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-terms-in-the-exponent">4.1 Expanding Terms in the Exponent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-all-terms">4.2 Combine All Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#completing-the-square-for-mu">4.3 Completing the Square for <span class="math notranslate nohighlight">\((\mu)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-the-posterior-mean-and-variance">4.4 Identify the Posterior Mean and Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resulting-posterior-distribution">5. Resulting Posterior Distribution</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="posterior-distribution-derivation">
+<h1>Posterior Distribution Derivation<a class="headerlink" href="#posterior-distribution-derivation" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Author  : Payam Parvazmanesh</p></li>
+<li><p>Contact : <a class="reference external" href="mailto:payam&#46;manesh&#37;&#52;&#48;gmail&#46;com">payam<span>&#46;</span>manesh<span>&#64;</span>gmail<span>&#46;</span>com</a></p></li>
+<li><p>Pattern Recognition</p></li>
+<li></li>
+</ul>
+<p>We assume the following:</p>
+<ul class="simple">
+<li><p>Prior Distribution for <span class="math notranslate nohighlight">\(( \mu )\)</span>: <span class="math notranslate nohighlight">\(( \mu_0 \sim \mathcal{N}(\mu_0, \sigma_0^2) )\)</span>, a normal distribution with mean <span class="math notranslate nohighlight">\(( \mu_0 )\)</span> and variance <span class="math notranslate nohighlight">\(( \sigma_0^2 )\)</span>.</p></li>
+<li><p>Likelihood Function: The likelihood of the data <span class="math notranslate nohighlight">\(( \mathbf{D} = \{x_1, x_2, \dots, x_n\} )\)</span> is assumed to come from a normal distribution with mean <span class="math notranslate nohighlight">\(( \mu )\)</span> and variance <span class="math notranslate nohighlight">\(( \sigma^2 )\)</span>, i.e., <span class="math notranslate nohighlight">\(( x_i \sim \mathcal{N}(\mu, \sigma^2) )\)</span>.</p></li>
+</ul>
+<p>Now, we want to find the posterior distribution of <span class="math notranslate nohighlight">\(( \mu )\)</span> given the data.</p>
+<section id="prior-distribution">
+<h2>1. Prior Distribution<a class="headerlink" href="#prior-distribution" title="Link to this heading">#</a></h2>
+<p>The prior distribution of <span class="math notranslate nohighlight">\(( \mu )\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mu) = \frac{1}{\sqrt{2\pi \sigma_0^2}} \exp\left( -\frac{(\mu - \mu_0)^2}{2\sigma_0^2} \right)
+\]</div>
+</section>
+<section id="likelihood-function">
+<h2>2. Likelihood Function<a class="headerlink" href="#likelihood-function" title="Link to this heading">#</a></h2>
+<p>Since the data points <span class="math notranslate nohighlight">\(( x_1, x_2, \dots, x_n )\)</span> are independent, the likelihood is the product of normal distributions for each data point:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mathbf{D} | \mu) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left( -\frac{(x_i - \mu)^2}{2\sigma^2} \right)
+\]</div>
+<p>The likelihood function simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mathbf{D} | \mu) = \frac{1}{(2\pi \sigma^2)^{n/2}} \exp\left( -\frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 \right)
+\]</div>
+</section>
+<section id="posterior-distribution">
+<h2>3. Posterior Distribution<a class="headerlink" href="#posterior-distribution" title="Link to this heading">#</a></h2>
+<p>The posterior distribution is proportional to the product of the prior and the likelihood:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mu | \mathbf{D}) \propto p(\mu) p(\mathbf{D} | \mu)
+\]</div>
+<p>Substituting the expressions for <span class="math notranslate nohighlight">\(( p(\mu) )\)</span> and <span class="math notranslate nohighlight">\(( p(\mathbf{D} | \mu) )\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{(\mu - \mu_0)^2}{2\sigma_0^2} \right) \exp\left( -\frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 \right)
+\]</div>
+<p>We can combine the terms inside the exponentials:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{1}{2} \left( \frac{(\mu - \mu_0)^2}{\sigma_0^2} + \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 \right) \right)
+\]</div>
+</section>
+<section id="completing-the-square-detailed-derivation">
+<h2>4. Completing the Square (Detailed Derivation)<a class="headerlink" href="#completing-the-square-detailed-derivation" title="Link to this heading">#</a></h2>
+<p>The goal of completing the square is to rewrite the posterior probability <span class="math notranslate nohighlight">\(( p(\mu | \mathbf{D}) )\)</span> into a standard normal distribution form.</p>
+<section id="expanding-terms-in-the-exponent">
+<h3>4.1 Expanding Terms in the Exponent<a class="headerlink" href="#expanding-terms-in-the-exponent" title="Link to this heading">#</a></h3>
+<p>Recall the posterior is proportional to:
+$<span class="math notranslate nohighlight">\(
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{1}{2} \left( \frac{(\mu - \mu_0)^2}{\sigma_0^2} + \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 \right) \right).
+\)</span>$</p>
+<p>First, expand the terms in the exponent:</p>
+<ol class="arabic">
+<li><p>Expand <span class="math notranslate nohighlight">\((\frac{(\mu - \mu_0)^2}{\sigma_0^2})\)</span>:
+$<span class="math notranslate nohighlight">\(
+\frac{(\mu - \mu_0)^2}{\sigma_0^2} = \frac{\mu^2}{\sigma_0^2} - \frac{2\mu\mu_0}{\sigma_0^2} + \frac{\mu_0^2}{\sigma_0^2}.
+\)</span>$</p></li>
+<li><p>Expand <span class="math notranslate nohighlight">\((\frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2)\)</span>:
+$<span class="math notranslate nohighlight">\(
+\sum_{i=1}^{n} (x_i - \mu)^2 = \sum_{i=1}^{n} x_i^2 - 2\mu \sum_{i=1}^{n} x_i + n\mu^2.
+\)</span>$</p>
+<p>Substituting this back:
+$<span class="math notranslate nohighlight">\(
+\frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 = \frac{1}{\sigma^2} \left( \sum_{i=1}^{n} x_i^2 - 2\mu \sum_{i=1}^{n} x_i + n\mu^2 \right).
+\)</span>$</p>
+</li>
+</ol>
+<p>Combine the terms:
+$<span class="math notranslate nohighlight">\(
+\frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2 = \frac{n\mu^2}{\sigma^2} - \frac{2\mu}{\sigma^2} \sum_{i=1}^{n} x_i + \frac{\sum_{i=1}^{n} x_i^2}{\sigma^2}.
+\)</span>$</p>
+</section>
+<section id="combine-all-terms">
+<h3>4.2 Combine All Terms<a class="headerlink" href="#combine-all-terms" title="Link to this heading">#</a></h3>
+<p>Now, substitute both expansions back into the posterior:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{1}{2} \left( \frac{\mu^2}{\sigma_0^2} - \frac{2\mu\mu_0}{\sigma_0^2} + \frac{\mu_0^2}{\sigma_0^2} + \frac{n\mu^2}{\sigma^2} - \frac{2\mu}{\sigma^2} \sum_{i=1}^{n} x_i + \frac{\sum_{i=1}^{n} x_i^2}{\sigma^2} \right) \right).
+\]</div>
+<p>Group terms involving <span class="math notranslate nohighlight">\((\mu^2)\)</span>, <span class="math notranslate nohighlight">\((\mu)\)</span>, and constants:</p>
+<ol class="arabic simple">
+<li><p>Coefficient of <span class="math notranslate nohighlight">\((\mu^2)\)</span>:
+$<span class="math notranslate nohighlight">\(
+\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}.
+\)</span>$</p></li>
+<li><p>Coefficient of <span class="math notranslate nohighlight">\((\mu)\)</span>:
+$<span class="math notranslate nohighlight">\(
+-\frac{2\mu_0}{\sigma_0^2} - \frac{2}{\sigma^2} \sum_{i=1}^{n} x_i.
+\)</span>$</p></li>
+<li><p>Constant terms:
+$<span class="math notranslate nohighlight">\(
+\frac{\mu_0^2}{\sigma_0^2} + \frac{\sum_{i=1}^{n} x_i^2}{\sigma^2}.
+\)</span>$</p></li>
+</ol>
+<p>Thus, the posterior becomes:
+$<span class="math notranslate nohighlight">\(
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{1}{2} \left( \left( \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2} \right) \mu^2 - 2\left( \frac{\mu_0}{\sigma_0^2} + \frac{\sum_{i=1}^{n} x_i}{\sigma^2} \right)\mu + \text{(constant terms)} \right) \right).
+\)</span>$</p>
+</section>
+<section id="completing-the-square-for-mu">
+<h3>4.3 Completing the Square for <span class="math notranslate nohighlight">\((\mu)\)</span><a class="headerlink" href="#completing-the-square-for-mu" title="Link to this heading">#</a></h3>
+<p>To rewrite this as a standard quadratic form, complete the square for <span class="math notranslate nohighlight">\((\mu)\)</span>.</p>
+<p>The quadratic expression is:
+$<span class="math notranslate nohighlight">\(
+a\mu^2 - 2b\mu + \text{(constant terms)},
+\)</span><span class="math notranslate nohighlight">\(
+where:
+\)</span><span class="math notranslate nohighlight">\(
+a = \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}, \quad b = \frac{\mu_0}{\sigma_0^2} + \frac{\sum_{i=1}^{n} x_i}{\sigma^2}.
+\)</span>$</p>
+<p>Complete the square:
+$<span class="math notranslate nohighlight">\(
+a\mu^2 - 2b\mu = a\left( \mu^2 - \frac{2b}{a}\mu \right) = a\left( \left( \mu - \frac{b}{a} \right)^2 - \left( \frac{b}{a} \right)^2 \right).
+\)</span>$</p>
+<p>Substitute this back:
+$<span class="math notranslate nohighlight">\(
+p(\mu | \mathbf{D}) \propto \exp\left( -\frac{1}{2} a \left( \mu - \frac{b}{a} \right)^2 \right).
+\)</span>$</p>
+</section>
+<section id="identify-the-posterior-mean-and-variance">
+<h3>4.4 Identify the Posterior Mean and Variance<a class="headerlink" href="#identify-the-posterior-mean-and-variance" title="Link to this heading">#</a></h3>
+<p>From the completed square, the posterior distribution is normal:
+$<span class="math notranslate nohighlight">\(
+\mu | \mathbf{D} \sim \mathcal{N}\left( \frac{b}{a}, \frac{1}{a} \right).
+\)</span>$</p>
+<p>Substitute <span class="math notranslate nohighlight">\((a)\)</span> and <span class="math notranslate nohighlight">\((b)\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Posterior Mean</strong>:
+$<span class="math notranslate nohighlight">\(
+\mu_{\text{post}} = \frac{b}{a} = \frac{\frac{\mu_0}{\sigma_0^2} + \frac{\sum_{i=1}^{n} x_i}{\sigma^2}}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}} = \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar{x}}{\sigma^2 + n \sigma_0^2}.
+\)</span>$</p></li>
+<li><p><strong>Posterior Variance</strong>:
+$<span class="math notranslate nohighlight">\(
+\sigma^2_{\text{post}} = \frac{1}{a} = \frac{1}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}} = \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}.
+\)</span>$</p></li>
+</ol>
+</section>
+</section>
+<section id="resulting-posterior-distribution">
+<h2>5. Resulting Posterior Distribution<a class="headerlink" href="#resulting-posterior-distribution" title="Link to this heading">#</a></h2>
+<p>After completing the square, the posterior distribution of <span class="math notranslate nohighlight">\(( \mu )\)</span> is a normal distribution with the following mean and variance:</p>
+<ul class="simple">
+<li><p>Mean:
+$<span class="math notranslate nohighlight">\(
+\mu_{\text{post}} = \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar{x}}{\sigma^2 + n \sigma_0^2}
+\)</span><span class="math notranslate nohighlight">\(
+where \)</span>( \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i )$ is the sample mean.</p></li>
+<li><p>Variance:
+$<span class="math notranslate nohighlight">\(
+\sigma^2_{\text{post}} = \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2}
+\)</span>$</p></li>
+</ul>
+<p>Therefore, the posterior distribution of <span class="math notranslate nohighlight">\(( \mu )\)</span> given the data <span class="math notranslate nohighlight">\(( \mathbf{D} )\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+\mu | \mathbf{D} \sim \mathcal{N}\left( \frac{\sigma^2 \mu_0 + n \sigma_0^2 \bar{x}}{\sigma^2 + n \sigma_0^2}, \frac{\sigma^2 \sigma_0^2}{\sigma^2 + n \sigma_0^2} \right)
+\]</div>
+<p>This result shows that the posterior distribution of <span class="math notranslate nohighlight">\(( \mu )\)</span> is normal, with a mean that is a weighted average of the prior mean <span class="math notranslate nohighlight">\(( \mu_0 )\)</span> and the sample mean <span class="math notranslate nohighlight">\(( \bar{x} )\)</span>, where the weights depend on the prior variance <span class="math notranslate nohighlight">\(( \sigma_0^2 )\)</span>, the sample size <span class="math notranslate nohighlight">\(( n )\)</span>, and the variance of the data <span class="math notranslate nohighlight">\(( \sigma^2 )\)</span>. The posterior variance is a combination of the prior variance and the data variance.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\Bayes_Estimation_HW"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../KNN/KNN.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">K Nearest-Neighbors KNN</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../lms/lms.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Least Mean Squares (LMS) Algorithm</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">1. Prior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-function">2. Likelihood Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">3. Posterior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#completing-the-square-detailed-derivation">4. Completing the Square (Detailed Derivation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-terms-in-the-exponent">4.1 Expanding Terms in the Exponent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-all-terms">4.2 Combine All Terms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#completing-the-square-for-mu">4.3 Completing the Square for <span class="math notranslate nohighlight">\((\mu)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identify-the-posterior-mean-and-variance">4.4 Identify the Posterior Mean and Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resulting-posterior-distribution">5. Resulting Posterior Distribution</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

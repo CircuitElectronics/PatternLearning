@@ -1,0 +1,135 @@
+Traceback (most recent call last):
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Program Files\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics.pairwise import rbf_kernel
+from sklearn.decomposition import PCA
+
+def generate_data(num_samples=10, num_features=3):
+    """
+    Generate synthetic 3D data with a non-linear target function.
+    """
+    np.random.seed(0)
+    X = np.random.rand(num_samples, num_features)
+    y = np.sin(np.sum(X, axis=1))  # Non-linear target
+    return X, y
+
+
+
+def apply_rbf_kernel(X, sigma=0.5):
+    """
+    Apply the RBF kernel to the input data and return the kernel matrix.
+    """
+    return rbf_kernel(X, X, gamma=1 / (2 * sigma ** 2))
+
+def klms_algorithm(X, y, kernel_matrix, learning_rate=0.1, iterations=50):
+    """
+    Perform Kernel Least Mean Squares (KLMS) algorithm.
+    """
+    alpha = np.zeros(X.shape[0])  # Initialize coefficients (weights)
+    errors = []
+
+    for n in range(iterations):
+        for i in range(X.shape[0]):
+            # Compute the predicted output for the current input
+            predicted = np.sum(alpha * kernel_matrix[i, :])  # Kernel-weighted sum
+            
+            # Compute the error
+            error = y[i] - predicted
+            errors.append(error)
+            
+            # Update the alpha coefficients
+            alpha += learning_rate * error * kernel_matrix[i, :]
+
+    return alpha, errors
+
+def plot_error_curve(errors):
+    """
+    Plot the error curve during KLMS learning.
+    """
+    plt.figure(figsize=(8, 5))
+    plt.plot(errors)
+    plt.title("KLMS Error Curve")
+    plt.xlabel("Iteration")
+    plt.ylabel("Error")
+    plt.show()
+
+def main():
+    # Generate data
+    X, y = generate_data(num_samples=10, num_features=3)
+
+    # Visualize the original data
+    visualize_data(X, y, title="Original 3D Data")
+
+    # Apply RBF Kernel
+    sigma = 0.5
+    K = apply_rbf_kernel(X, sigma)
+
+    # Perform KLMS
+    learning_rate = 0.1
+    iterations = 50
+    alpha, errors = klms_algorithm(X, y, K, learning_rate, iterations)
+
+    # Reduce the kernel matrix to 2D using PCA for visualization
+    pca = PCA(n_components=2)
+    X_pca = pca.fit_transform(K)  # Perform PCA on the kernel matrix
+
+    # Plot the error curve
+    plot_error_curve(errors)
+
+    # Show final alpha coefficients
+    print("Final alpha coefficients after KLMS:")
+    print(alpha)
+
+
+
+if __name__ == "__main__":
+    main()
+
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mNameError[0m                                 Traceback (most recent call last)
+Cell [1;32mIn[3], line 85[0m
+[0;32m     80[0m     [38;5;28mprint[39m(alpha)
+[0;32m     84[0m [38;5;28;01mif[39;00m [38;5;18m__name__[39m [38;5;241m==[39m [38;5;124m"[39m[38;5;124m__main__[39m[38;5;124m"[39m:
+[1;32m---> 85[0m     [43mmain[49m[43m([49m[43m)[49m
+
+Cell [1;32mIn[3], line 60[0m, in [0;36mmain[1;34m()[0m
+[0;32m     57[0m X, y [38;5;241m=[39m generate_data(num_samples[38;5;241m=[39m[38;5;241m10[39m, num_features[38;5;241m=[39m[38;5;241m3[39m)
+[0;32m     59[0m [38;5;66;03m# Visualize the original data[39;00m
+[1;32m---> 60[0m [43mvisualize_data[49m(X, y, title[38;5;241m=[39m[38;5;124m"[39m[38;5;124mOriginal 3D Data[39m[38;5;124m"[39m)
+[0;32m     62[0m [38;5;66;03m# Apply RBF Kernel[39;00m
+[0;32m     63[0m sigma [38;5;241m=[39m [38;5;241m0.5[39m
+
+[1;31mNameError[0m: name 'visualize_data' is not defined
+
