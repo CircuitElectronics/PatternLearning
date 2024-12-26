@@ -1,0 +1,138 @@
+Traceback (most recent call last):
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Program Files\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import matplotlib.pyplot as plt
+from ipywidgets import interact, FloatSlider, FloatText, Button, HBox, VBox, Output
+import ipywidgets as widgets
+
+class GaussianProcess:
+    def __init__(self, lengthscale=1.0, signal_variance=1.0, noise_variance=0.1):
+        self.lengthscale = lengthscale
+        self.signal_variance = signal_variance
+        self.noise_variance = noise_variance
+        self.X_train = np.empty((0, 1))
+        self.y_train = np.empty((0, 1))
+        self.X_test = np.linspace(-5, 5, 100).reshape(-1, 1)
+        self.K = None
+        self.K_inv = None
+        self.y_pred = None
+        self.cov_pred = None
+
+    def rbf_kernel(self, X1, X2):
+        sqdist = np.sum(X1**2, 1).reshape(-1, 1) + np.sum(X2**2, 1) - 2 * np.dot(X1, X2.T)
+        return self.signal_variance * np.exp(-0.5 / self.lengthscale**2 * sqdist)
+
+    def fit(self, X_train, y_train):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.K = self.rbf_kernel(X_train, X_train) + self.noise_variance * np.eye(len(X_train))
+        self.K_inv = np.linalg.inv(self.K)
+
+    def predict(self):
+        K_s = self.rbf_kernel(self.X_train, self.X_test)
+        K_ss = self.rbf_kernel(self.X_test, self.X_test) + 1e-8 * np.eye(len(self.X_test))
+        mu_s = K_s.T.dot(self.K_inv).dot(self.y_train).flatten()
+        cov_s = K_ss - K_s.T.dot(self.K_inv).dot(K_s)
+        self.y_pred = mu_s
+        self.cov_pred = cov_s
+
+    def add_data_point(self, x, y):
+        x = np.array([[x]])
+        y = np.array([[y]])
+        self.X_train = np.vstack((self.X_train, x))
+        self.y_train = np.vstack((self.y_train, y))
+        self.fit(self.X_train, self.y_train)
+        self.predict()
+
+    def plot(self, output_widget):
+        with output_widget:
+            output_widget.clear_output(wait=True)
+            plt.figure(figsize=(10, 5))
+            plt.plot(self.X_test, self.y_pred, 'b-', label='Mean')
+            plt.fill_between(self.X_test.flatten(), self.y_pred - 1.96 * np.sqrt(np.diag(self.cov_pred)),
+                             self.y_pred + 1.96 * np.sqrt(np.diag(self.cov_pred)), alpha=0.2, color='blue')
+            plt.scatter(self.X_train, self.y_train, color='red', label='Data points')
+            plt.xlabel('X')
+            plt.ylabel('f(X)')
+            plt.legend()
+            plt.show()
+
+def interactive_gp(lengthscale, signal, noise):
+    global gp
+    gp.lengthscale = lengthscale
+    gp.signal_variance = signal
+    gp.noise_variance = noise
+    gp.fit(gp.X_train, gp.y_train)
+    gp.predict()
+    gp.plot(output)
+
+def add_point(b):
+    x = x_input.value
+    y = y_input.value
+    gp.add_data_point(x, y)
+    gp.plot(output)
+
+lengthscale_slider = FloatSlider(min=0.1, max=5.0, step=0.1, value=1.0, description='Lengthscale')
+signal_slider = FloatSlider(min=0.1, max=5.0, step=0.1, value=1.0, description='Signal')
+noise_slider = FloatSlider(min=0, max=1.0, step=0.01, value=0.1, description='Noise')
+
+x_input = FloatText(value=0.0, description='X:')
+y_input = FloatText(value=0.0, description='Y:')
+add_button = Button(description='Add Point')
+
+add_button.on_click(add_point)
+
+controls = VBox([HBox([x_input, y_input, add_button])])
+output = Output()
+
+display(controls, output)
+
+gp = GaussianProcess()
+gp.fit(gp.X_train, gp.y_train)
+gp.predict()
+gp.plot(output)
+
+interact(interactive_gp, lengthscale=lengthscale_slider, signal=signal_slider, noise=noise_slider)
+
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [1;32mIn[2], line 3[0m
+[0;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[0;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m----> 3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mipywidgets[39;00m [38;5;28;01mimport[39;00m interact, FloatSlider, FloatText, Button, HBox, VBox, Output
+[0;32m      4[0m [38;5;28;01mimport[39;00m [38;5;21;01mipywidgets[39;00m [38;5;28;01mas[39;00m [38;5;21;01mwidgets[39;00m
+[0;32m      6[0m [38;5;28;01mclass[39;00m [38;5;21;01mGaussianProcess[39;00m:
+
+[1;31mModuleNotFoundError[0m: No module named 'ipywidgets'
+
