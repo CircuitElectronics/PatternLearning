@@ -1,0 +1,114 @@
+Traceback (most recent call last):
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Program Files\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "H:\HadiSadoghiYazdi\PL\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from sklearn.datasets import fetch_olivetti_faces
+from matplotlib import pyplot as plt
+import numpy as np
+import cv2
+import os
+
+src = 'D:/education-MS/ML/forth home work/data/'
+files = os.listdir(src)
+lfw_people = []
+for file in files:
+    lfw_people.append(cv2.imread(src+file, 0))
+lfw_people = np.array(lfw_people)
+
+name = ['resized_parvaz.png','resized_mahdieh.jpg']
+test = cv2.imread('D:/education-MS/ML/forth home work/img/'+name[0], 0).reshape(1, 64, 64)
+
+print(test.shape)
+print(lfw_people.shape)
+
+num_pcs = 10
+def pca(X, num_components):
+    X_meaned = X - np.mean(X, axis=0)
+    covariance_matrix = np.cov(X_meaned, rowvar=False)
+    print(X.shape)
+    print(covariance_matrix.shape)
+    eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
+    sorted_index = np.argsort(eigenvalues)[::-1]
+    sorted_eigenvectors = eigenvectors[:, sorted_index]
+    eigenvector_subset = sorted_eigenvectors[:, :num_components]
+    X_reduced = np.dot(X_meaned, eigenvector_subset)
+    return X_reduced, eigenvector_subset
+
+# TRAINING
+mnist_reduced, eigenvector_subset = pca(lfw_people.reshape(-1, 64*64), num_pcs)
+plt.imshow(eigenvector_subset[:,0].reshape(64, 64), cmap='gray')
+plt.show()
+# TESTING
+test_reduced = np.dot(test.reshape(-1, 64*64), eigenvector_subset)
+print(eigenvector_subset.shape)
+# plt.figure(figsize=(8, 6))
+# scatter = plt.scatter(mnist_reduced[:, 0], mnist_reduced[:, 1], c=labels, cmap='tab10', alpha=0.7)
+# plt.colorbar(scatter)
+# plt.xlabel('PC1')
+# plt.ylabel('PC2')
+# plt.show()
+
+mnist_decompressed = np.dot(mnist_reduced, eigenvector_subset.T) + np.mean(lfw_people.reshape(-1, 64*64), axis=0)
+test_decompressed = np.dot(test_reduced, eigenvector_subset.T)
+
+def visualize_decompression(original, decompressed, img_shape, num_images=13, title=""):
+    original = original.reshape(-1, *img_shape)
+    decompressed = decompressed.reshape(-1, *img_shape)
+
+    plt.figure(figsize=(10, 4))
+
+    for i in range(num_images):
+        plt.subplot(2, num_images, i + 1)
+        plt.imshow(original[i])
+        plt.axis('off')
+
+        plt.subplot(2, num_images, num_images + i + 1)
+        plt.imshow(decompressed[i])
+        plt.axis('off')
+
+    plt.tight_layout()
+    plt.show()
+
+
+visualize_decompression(lfw_people, mnist_decompressed, (64, 64), title="PCA Decompression")
+visualize_decompression(test, test_decompressed, (64, 64), num_images=1, title="PCA Decompression")
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mFileNotFoundError[0m                         Traceback (most recent call last)
+Cell [1;32mIn[10], line 8[0m
+[0;32m      5[0m [38;5;28;01mimport[39;00m [38;5;21;01mos[39;00m
+[0;32m      7[0m src [38;5;241m=[39m [38;5;124m'[39m[38;5;124mD:/education-MS/ML/forth home work/data/[39m[38;5;124m'[39m
+[1;32m----> 8[0m files [38;5;241m=[39m [43mos[49m[38;5;241;43m.[39;49m[43mlistdir[49m[43m([49m[43msrc[49m[43m)[49m
+[0;32m      9[0m lfw_people [38;5;241m=[39m []
+[0;32m     10[0m [38;5;28;01mfor[39;00m file [38;5;129;01min[39;00m files:
+
+[1;31mFileNotFoundError[0m: [WinError 3] The system cannot find the path specified: 'D:/education-MS/ML/forth home work/data/'
+

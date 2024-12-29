@@ -1,0 +1,1412 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Principal Component Analysis &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/miniprojecct_PCA/finallPCA';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html">Posterior Distribution Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lms/lms.html">Least Mean Squares (LMS) Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../NMF/NonnegativeMatrixFactorization_NMF_Clustering.html">Nonnegative Matrix Factorization (NMF) for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RAG_%20Retrieval_Augmented_Generation/RAG_%20RetrievalAugmentedGeneration.html">RAG : Retrieval-Augmented Generation</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Explanation of Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ManifoldLearning/manifoldLearning.html">Manifold Learning Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ridge/ridge.html">Ridge Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GP_Midterm/gp_final.html">Midterm Exam - Gaussian Processes</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../AdaboostforRegression/adaboostregression.html">Adaboost for Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Finall_PCA/finallPCA.html">Midterm Exam - PCA</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/miniprojecct_PCA/finallPCA.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/miniprojecct_PCA/finallPCA.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Principal Component Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-dimension-examples">High Dimension Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-benefits">Dimensionality Reduction Benefits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-techniques">Dimensionality Reduction Techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-purpose">Dimensionality Reduction Purpose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea">Idea:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2d-gussian-dataset">CODE: 2D Gussian dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-first-pca-axis">CODE: First PCA axis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-first-and-second-axis">CODE: First and Second Axis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretations">Interpretations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalence-of-the-interpretations">Equivalence of the Interpretations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizes-variance-of-projected-data">Maximizes variance of projected data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-eigenvalues-and-eigenvectors">what are Eigenvalues and eigenvectors?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrical-interpretation">Geometrical Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-find-eigenvalues-and-eigenvectors">How to Find Eigenvalues and Eigenvectors?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-example">Numerical Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">visualization</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-covariance">what is Covariance?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-covariance-matrix">what is covariance Matrix?</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-matrix-example">Covariance Matrix Example</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">CODE:Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expression-for-variance">Expression for variance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximization-problem">Maximization Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-lagrange-multipliers">Use of Lagrange Multipliers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">CODE:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">CODE:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">CODE:</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#refrences">Refrences:</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis">
+<h1>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Link to this heading">#</a></h1>
+<p><img alt="Mahdieh" src="StudentEffort/miniprojecct_PCA/img/passport_photo.jpg" /></p>
+<p>Creator : <em>Mahdieh Alizadeh</em></p>
+<p>Email address: <a class="reference external" href="mailto:Mahdieh20201&#37;&#52;&#48;gmail&#46;com">Mahdieh20201<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Machine Learning 1403-fall</p>
+<section id="high-dimension-examples">
+<h2>High Dimension Examples<a class="headerlink" href="#high-dimension-examples" title="Link to this heading">#</a></h2>
+<p>High dimensions have many features like EEG signals from the brain or social media and etc.</p>
+<p><img alt="social" src="../../_images/social1.png" /></p>
+</section>
+<section id="dimensionality-reduction-benefits">
+<h2>Dimensionality Reduction Benefits<a class="headerlink" href="#dimensionality-reduction-benefits" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Visualization</p></li>
+<li><p>Helps avoid overfitting</p></li>
+<li><p>More efficient use of resources</p></li>
+</ol>
+</section>
+<section id="dimensionality-reduction-techniques">
+<h2>Dimensionality Reduction Techniques<a class="headerlink" href="#dimensionality-reduction-techniques" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Feature Selection</p>
+<p>select a subset from a given feature set.</p>
+</li>
+<li><p>Feature Extraction</p>
+<p>A linear or non linear transform from the orginal feature space to a lower dimension space.</p>
+</li>
+</ol>
+<p><img alt="social" src="../../_images/FS-FE1.png" /></p>
+</section>
+<section id="dimensionality-reduction-purpose">
+<h2>Dimensionality Reduction Purpose<a class="headerlink" href="#dimensionality-reduction-purpose" title="Link to this heading">#</a></h2>
+<p>Maximize retention of important information while reducing dimensionality.</p>
+<p>what is important information?</p>
+<p>Information: Variance of projected data</p>
+<p><img alt="social" src="../../_images/dim_red_var1.jpg" /></p>
+<p>Information: Preserve local geometric nighborhood.</p>
+<p><img alt="social" src="../../_images/local_relation1.png" /></p>
+<p>Information: Preserve both local and global geometric nighborhood.</p>
+<p><img alt="social" src="../../_images/global_relation1.png" /></p>
+</section>
+<section id="idea">
+<h2>Idea:<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
+<p>Given data points in a d-dimensional space, project them into a lower dimensional
+space while preserving as much information as possible:</p>
+<p>Find the best planar approximation of 3D data.</p>
+<p>Find the best 12-D approximation of 104-D data.</p>
+<p>In particular, choose projection that minimizes the squared error in reconstructing the original data.</p>
+<section id="code-2d-gussian-dataset">
+<h3>CODE: 2D Gussian dataset<a class="headerlink" href="#code-2d-gussian-dataset" title="Link to this heading">#</a></h3>
+<p>This Python code generates and visualizes 2D data sampled from a multivariate normal distribution with the following mean and covariance matrix:</p>
+<p><strong>Mean Vector</strong>:
+$<span class="math notranslate nohighlight">\(
+\mu = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\)</span>$</p>
+<p><strong>Covariance Matrix</strong>:
+$<span class="math notranslate nohighlight">\(
+\Sigma = \begin{bmatrix} 1 &amp; 0.8 \\ 0.8 &amp; 1 \end{bmatrix}
+\)</span>$</p>
+<p>It creates a scatter plot of 1,000 samples, showing the correlation between the two variables, with an equal aspect ratio and grid for clarity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define the mean vector and covariance matrix</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Example: 2D data with zero mean</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>  <span class="c1"># Covariance matrix (2x2)</span>
+
+<span class="c1"># Number of samples</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Hadi\AppData\Local\Temp\ipykernel_8676\3502363690.py:19: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  plt.legend()
+</pre></div>
+</div>
+<img alt="../../_images/60e25a3454125bca520898642cf0f76f49741a1fe4d0e78230f13b3e9487d94f.png" src="../../_images/60e25a3454125bca520898642cf0f76f49741a1fe4d0e78230f13b3e9487d94f.png" />
+</div>
+</div>
+</section>
+<section id="code-first-pca-axis">
+<h3>CODE: First PCA axis<a class="headerlink" href="#code-first-pca-axis" title="Link to this heading">#</a></h3>
+<p>This Python code computes the covariance matrix of the generated data, performs eigen decomposition, and visualizes the first principal axis (the eigenvector with the largest eigenvalue). The plot displays the data points along with the first principal axis, represented by a red arrow, indicating the direction of maximum variance in the data. The axis is scaled for better visualization, and the plot includes grid lines, axis labels, and a legend.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the covariance matrix of the generated data</span>
+<span class="n">data_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Perform eigen decomposition</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">data_cov</span><span class="p">)</span>
+
+<span class="c1"># Find the first principal axis (eigenvector with the largest eigenvalue)</span>
+<span class="n">first_principal_axis</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)]</span>
+
+<span class="c1"># Scale the axis for visualization</span>
+<span class="n">scaling_factor</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Arbitrary scaling factor for better visualization</span>
+<span class="n">axis_line</span> <span class="o">=</span> <span class="n">first_principal_axis</span> <span class="o">*</span> <span class="n">scaling_factor</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="c1"># Add the first principal axis</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="n">mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mean</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+    <span class="n">axis_line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis_line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;First Principal Axis&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Add labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Plot with First Principal Axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c149b42870123357c1a63f7c3dcd8d77e387de0191c55d720cc4c326be7566af.png" src="../../_images/c149b42870123357c1a63f7c3dcd8d77e387de0191c55d720cc4c326be7566af.png" />
+</div>
+</div>
+</section>
+<section id="code-first-and-second-axis">
+<h3>CODE: First and Second Axis<a class="headerlink" href="#code-first-and-second-axis" title="Link to this heading">#</a></h3>
+<p>This Python code computes the covariance matrix of the generated data and performs eigen decomposition to extract the first two principal components. The principal components are scaled for better visualization and plotted alongside the data. The first principal component (largest eigenvalue) is shown in red, and the second principal component (smallest eigenvalue) is shown in blue. The plot includes grid lines, axis labels, and a legend, with an equal aspect ratio to clearly visualize the orientation of the principal components in relation to the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the covariance matrix of the generated data</span>
+<span class="n">data_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Perform eigen decomposition</span>
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">data_cov</span><span class="p">)</span>
+
+<span class="c1"># Scale the principal components for visualization</span>
+<span class="n">scaling_factor</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Arbitrary scaling factor for better visualization</span>
+<span class="n">pc1</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scaling_factor</span>  <span class="c1"># First principal component (largest eigenvalue)</span>
+<span class="n">pc2</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scaling_factor</span>  <span class="c1"># Second principal component (smallest eigenvalue)</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="c1"># Add the first and second principal axes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mean</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pc1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pc1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;First Principal Component&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mean</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pc2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pc2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Second Principal Component&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Plot with First and Second Principal Components&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cf761378546cfb1bf5a128d7348f644e1231a835c30b3caf6471b9644ccbd73c.png" src="../../_images/cf761378546cfb1bf5a128d7348f644e1231a835c30b3caf6471b9644ccbd73c.png" />
+</div>
+</div>
+<p>Random direction versus principal component:</p>
+<p><img alt="PCAdata" src="../../_images/pcaVSrandom1.JPG" /></p>
+</section>
+</section>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Goal: reducing the dimenionality of the data while preserving important aspects of the data.</p>
+<p>Suppose <span class="math notranslate nohighlight">\( \mathbf{X} \)</span>:</p>
+</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \mathbf{X} =
+  \begin{pmatrix}
+      \mathbf{X}_1^\top \\
+      \vdots \\
+      \mathbf{X}_N^\top
+  \end{pmatrix}_{N \times d}
+  =
+  \begin{pmatrix}
+      x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1d} \\
+      x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2d} \\
+      \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+      x_{N1} &amp; x_{N2} &amp; \cdots &amp; x_{Nd}
+  \end{pmatrix}
+  \end{split}\]</div>
+<ul>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{X}_{N \times d} \xrightarrow{\text{PCA}} \tilde{\mathbf{X}}_{N \times k} \quad \text{with} \quad k \leq d \)</span></p></li>
+<li><p><strong>Assumption</strong>: Data is mean-centered, which is:</p>
+<div class="math notranslate nohighlight">
+\[
+  \mu_x = \frac{1}{N} \sum_{i=1}^N \mathbf{X}_i = \mathbf{0}_{d \times 1}
+  \]</div>
+</li>
+</ul>
+</section>
+<section id="interpretations">
+<h2>Interpretations<a class="headerlink" href="#interpretations" title="Link to this heading">#</a></h2>
+<p>Orthogonal projection of the data onto a lower-dimensional linear subspace that:
+Interpretation 1. Maximizes variance of projected data.
+Interpretation 2. Minimizes the sum of squared distances to the subspace.</p>
+<p><img alt="PCAdata" src="../../_images/pca1.png" /></p>
+<section id="equivalence-of-the-interpretations">
+<h3>Equivalence of the Interpretations<a class="headerlink" href="#equivalence-of-the-interpretations" title="Link to this heading">#</a></h3>
+<p>Minimizing the sum of square distances to the subspace is equivalent to
+maximizing the sum of squares of the projections on that subspace</p>
+<p><img alt="PCAdata" src="../../_images/var_vs_rec1.JPG" /></p>
+<p>A set of orthonormal vectors <span class="math notranslate nohighlight">\( \mathbf{v} =  \mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k \)</span> (where each <span class="math notranslate nohighlight">\( \mathbf{v}_i \)</span> is <span class="math notranslate nohighlight">\( d \times 1 \)</span> ) generated by PCA, which fulfill both of the interpretations.</p>
+<section id="maximizes-variance-of-projected-data">
+<h4>Maximizes variance of projected data<a class="headerlink" href="#maximizes-variance-of-projected-data" title="Link to this heading">#</a></h4>
+<p>Projection of data points on  <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Pi = \Pi_{\mathbf{v}_1}\{ \mathbf{X}_1, \dots, \mathbf{X}_N \} = \{ \mathbf{v}_1^\top \mathbf{X}_1, \dots, \mathbf{v}_1^\top \mathbf{X}_N \} \]</div>
+<p>Note that: <span class="math notranslate nohighlight">\(Var(\mathbf{X}) = \mathbb{E}[\mathbf{X}^2] - \mathbb{E}[\mathbf{X}]^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}[\mathbf{X}] = 0 \implies Var(\Pi) = \frac{1}{N}  \sum_{i=1}^N (\mathbf{v}_1^\top \mathbf{X}_i)^2 \]</div>
+<ul class="simple">
+<li><p>Mean Centering data</p>
+<ul>
+<li><p>Zeroing out the mean of each feature</p></li>
+</ul>
+</li>
+<li><p>Scaling to normalize each feature to have variance 1 (an arbitrary step)</p>
+<ul>
+<li><p>Might affect results</p></li>
+<li><p>It helps when unit of measurements of features are different and some features may be ignored without normalization.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Before starting PCA algorithm, we sjould be familiar with followings:</p>
+<ol class="arabic simple">
+<li><p>what are eigenvalues and eigenvectors?</p></li>
+<li><p>Sample covariance matrix</p></li>
+</ol>
+<section id="what-are-eigenvalues-and-eigenvectors">
+<h3>what are Eigenvalues and eigenvectors?<a class="headerlink" href="#what-are-eigenvalues-and-eigenvectors" title="Link to this heading">#</a></h3>
+<p>Eigenvector: A non-zero vector that multiplies only by a scalar factor when a linear transformation is applied.
+Eigenvalue: The scalar factor by which the eigenvector is scaled.
+Equation for a n×n matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+Av = \lambda v
+\]</div>
+<p>Where:</p>
+<p>A: a Square Matrix</p>
+<p>v: Eigenvector</p>
+<p><span class="math notranslate nohighlight">\( \lambda \)</span>: Eigenvalue</p>
+</section>
+<section id="geometrical-interpretation">
+<h3>Geometrical Interpretation<a class="headerlink" href="#geometrical-interpretation" title="Link to this heading">#</a></h3>
+<p>Eigenvectors point in the same direction (or opposite) after the transformation.
+Eigenvectors do not change direction under a transformation.
+Eigenvalues represent howmuch the vector is stretched or compressed.
+Eigenvalues tell us how much the vector is scaled.</p>
+<p><img alt="PCAdata" src="../../_images/eigenvetor-eigenvalue-idea1.png" /></p>
+</section>
+<section id="how-to-find-eigenvalues-and-eigenvectors">
+<h3>How to Find Eigenvalues and Eigenvectors?<a class="headerlink" href="#how-to-find-eigenvalues-and-eigenvectors" title="Link to this heading">#</a></h3>
+<p>we know that
+$<span class="math notranslate nohighlight">\(
+Av = \lambda v
+\)</span><span class="math notranslate nohighlight">\(
+so
+\)</span><span class="math notranslate nohighlight">\(
+Av - \lambda v=0
+\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(
+(Av - \lambda I) v=0
+\)</span><span class="math notranslate nohighlight">\(
+v can not be zero, so:
+\)</span><span class="math notranslate nohighlight">\(
+det(Av - \lambda I)=0
+\)</span><span class="math notranslate nohighlight">\(
+solve for  \)</span>\lambda <span class="math notranslate nohighlight">\(
+substitude \)</span> \lambda <span class="math notranslate nohighlight">\( back into the equation \)</span> Av=\lambda v $ to find v.</p>
+<section id="numerical-example">
+<h4>Numerical Example<a class="headerlink" href="#numerical-example" title="Link to this heading">#</a></h4>
+<p>Assume
+<span class="math notranslate nohighlight">\(
+A = \begin{pmatrix}
+4 &amp; -5 \\ 
+2 &amp; -3 
+\end{pmatrix}
+\)</span></p>
+<p>then</p>
+<p><span class="math notranslate nohighlight">\( A-\lambda I= \begin{pmatrix}
+4-\lambda &amp; -5 \\ 
+2 &amp; -3-\lambda 
+\end{pmatrix} 
+\)</span>
+$$</p>
+<p>Determinant (A- \lambda I)= (4-\lambda)(-3-\lambda)+10=(\lambda)^2-\lambda-2=0</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
+<p>\lambda=-1   or  \lambda=2
+$$</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}
+for \lambda_1=-1: \\\begin{split}(A- \lambda_1 I)v_1= \begin{pmatrix} 5 &amp; -5 \\ 2 &amp; -2 \end{pmatrix} \begin{pmatrix} v_{11} \\ v_{12} \end{pmatrix} = \begin{pmatrix} 0 \\0  \end{pmatrix} \implies v_1=\begin{pmatrix} 1 \\1  \end{pmatrix}
+\end{split}\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}
+for \lambda_2=2: \\\begin{split}(A- \lambda_2 I)v_2= \begin{pmatrix} 2 &amp; -5 \\ 2 &amp; -5 \end{pmatrix} \begin{pmatrix} v_{21} \\ v_{22} \end{pmatrix} = \begin{pmatrix} 0 \\0  \end{pmatrix} \implies v_2=\begin{pmatrix} 5 \\2  \end{pmatrix}
+\end{split}\end{aligned}\end{align} \]</div>
+</section>
+<section id="visualization">
+<h4>visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h4>
+<p><img alt="PCAdata" src="../../_images/matrix_transformations1.png" /></p>
+</section>
+</section>
+<section id="what-is-covariance">
+<h3>what is Covariance?<a class="headerlink" href="#what-is-covariance" title="Link to this heading">#</a></h3>
+<p>Covariance is a measure of how much two random features vary together.
+$<span class="math notranslate nohighlight">\(Cov(X,Y) = E[(X −E[X])(Y −E[Y])] = E[(Y −E[Y])(X −E[X])] = Cov(Y,X)\)</span>$
+So covariance is symmetric.
+Such as heights and weights of individuals.</p>
+<section id="what-is-covariance-matrix">
+<h4>what is covariance Matrix?<a class="headerlink" href="#what-is-covariance-matrix" title="Link to this heading">#</a></h4>
+<p>A covariance matrix generalizes the concept of covariance to multiple features.
+suppose there is two feature covariance matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\Sigma = \begin{pmatrix}
+a &amp; b \\ 
+c &amp; d 
+\end{pmatrix} =\begin{pmatrix}
+a &amp; b \\ 
+b &amp; d 
+\end{pmatrix}
+\end{split}\]</div>
+<p>why b=c?</p>
+<p>what is the relation between a,b and d?</p>
+<section id="covariance-matrix-example">
+<h5>Covariance Matrix Example<a class="headerlink" href="#covariance-matrix-example" title="Link to this heading">#</a></h5>
+<div class="math notranslate nohighlight">
+\[\begin{split} \Sigma = \begin{pmatrix}
+a &amp; 0 \\ 
+0 &amp; a 
+\end{pmatrix}
+\end{split}\]</div>
+</section>
+</section>
+<section id="code-example">
+<h4>CODE: Example<a class="headerlink" href="#code-example" title="Link to this heading">#</a></h4>
+<p>This Python code generates and visualizes 2D data sampled from a multivariate normal distribution with a mean of [0, 0] and a covariance matrix of:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\Sigma = \begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}
+\end{split}\]</div>
+<p>The covariance matrix represents independent variables with no correlation. The code creates a scatter plot of 1,000 samples, with equal scaling for both axes and grid lines to better display the distribution of the data, which should appear circular due to the lack of correlation between the variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define the mean vector and covariance matrix</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Example: 2D data with zero mean</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>  <span class="c1"># Covariance matrix (2x2)</span>
+
+<span class="c1"># Number of samples</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4e013dd2fbe4c16091015d818814f37f1fe80362b9587b59f973901d3cd7b916.png" src="../../_images/4e013dd2fbe4c16091015d818814f37f1fe80362b9587b59f973901d3cd7b916.png" />
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}  \Sigma = \begin{pmatrix}
+a &amp; 0 \\ 
+0 &amp; d 
+\end{pmatrix}
+\end{split}\]</div>
+</section>
+<section id="id1">
+<h4>CODE: Example<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<p>This Python code generates and visualizes 2D data sampled from a multivariate normal distribution with a mean of [0, 0] and a covariance matrix of:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\Sigma = \begin{bmatrix} 4 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}
+\end{split}\]</div>
+<p>The covariance matrix indicates that the variables have different variances (4 and 1) but no correlation. The scatter plot of 1,000 samples will show an elliptical distribution, with a larger spread along the X-axis due to the larger variance of 4 in that direction. The plot includes an equal aspect ratio and grid lines for better visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define the mean vector and covariance matrix</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Example: 2D data with zero mean</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>  <span class="c1"># Covariance matrix (2x2)</span>
+
+<span class="c1"># Number of samples</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c17c2013dd93ef5fd5da8e6bf99c6f1fa8491f65c5a7d252c5e4a0b0a6da271c.png" src="../../_images/c17c2013dd93ef5fd5da8e6bf99c6f1fa8491f65c5a7d252c5e4a0b0a6da271c.png" />
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}  \Sigma = \begin{pmatrix}
+a &amp; b \\ 
+b &amp; d 
+\end{pmatrix}
+\end{split}\]</div>
+<p>a&gt;d and b&gt;0</p>
+</section>
+<section id="id2">
+<h4>CODE: Example<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<p>This Python code generates and visualizes 2D data sampled from a multivariate normal distribution with a mean of [0, 0] and a covariance matrix of:
+$<span class="math notranslate nohighlight">\(
+\Sigma = \begin{bmatrix} 10 &amp; 4 \\ 4 &amp; 2 \end{bmatrix}
+\)</span>$</p>
+<p>The covariance matrix indicates that the variables have different variances (10 and 2) and a positive correlation of 4. The scatter plot of 1,000 samples will show an elliptical distribution, with the data points being spread more along the X-axis due to the larger variance (10) and a skewed shape due to the positive correlation between the variables. The plot includes an equal aspect ratio and grid lines for better visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define the mean vector and covariance matrix</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Example: 2D data with zero mean</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>  <span class="c1"># Covariance matrix (2x2)</span>
+
+<span class="c1"># Number of samples</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4826bf9eba46039b8d4a13841fdc15ab67ccbad8799cb30df0194d1356c5e17a.png" src="../../_images/4826bf9eba46039b8d4a13841fdc15ab67ccbad8799cb30df0194d1356c5e17a.png" />
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}  \Sigma = \begin{pmatrix}
+a &amp; b \\ 
+b &amp; d 
+\end{pmatrix}
+\end{split}\]</div>
+<p>a&gt;d and b&lt;0</p>
+</section>
+<section id="id3">
+<h4>CODE:Example<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<p>This Python code generates and visualizes 2D data sampled from a multivariate normal distribution with a mean of [0, 0] and a covariance matrix of:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\Sigma = \begin{bmatrix} 10 &amp; -4 \\ -4 &amp; 2 \end{bmatrix}
+\end{split}\]</div>
+<p>The covariance matrix indicates that the variables have different variances (10 and 2) and a negative correlation of -4. The scatter plot of 1,000 samples will show an elliptical distribution, with the data points spread more along the X-axis due to the larger variance (10) and a skewed shape due to the negative correlation between the variables. The plot includes an equal aspect ratio and grid lines for better visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Define the mean vector and covariance matrix</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Example: 2D data with zero mean</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> 
+       <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>  <span class="c1"># Covariance matrix (2x2)</span>
+
+<span class="c1"># Number of samples</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y-axis&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Scatter Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>  <span class="c1"># Equal aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d563ba988b8de2f56d4e9673039e382be9ccc360c0a3a74894cb73fd2cc3ed33.png" src="../../_images/d563ba988b8de2f56d4e9673039e382be9ccc360c0a3a74894cb73fd2cc3ed33.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="expression-for-variance">
+<h2>Expression for variance<a class="headerlink" href="#expression-for-variance" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The variance of the projected data onto the direction <span class="math notranslate nohighlight">\(v\)</span> is:
+$<span class="math notranslate nohighlight">\(
+\text{VAR}(X\mathbf{v}) = \frac{1}{n} \sum_{i=1}^n (x_i^T\mathbf{v})^2
+\)</span><span class="math notranslate nohighlight">\(
+-this can be written as:
+\)</span><span class="math notranslate nohighlight">\(
+\text{VAR}(X\mathbf{v}) = \frac{1}{n} ||X\mathbf{v}||^2 = \frac{1}{n} \mathbf{v}^TX^TX\mathbf{v} = \mathbf{v}^T \Sigma \mathbf{v}
+\)</span>$</p></li>
+</ul>
+</section>
+<section id="maximization-problem">
+<h2>Maximization Problem<a class="headerlink" href="#maximization-problem" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>We aim to maximize the variance <span class="math notranslate nohighlight">\(\mathbf{v}^T\Sigma \mathbf{v}\)</span> under the constraint that <span class="math notranslate nohighlight">\( ||\mathbf{v}||=1 \)</span>.</p></li>
+<li><p>This leads to the following optimization problem:
+$<span class="math notranslate nohighlight">\( \max_{v} \mathbf{v}^T \Sigma \mathbf{v} \text{ subject to } ||\mathbf{v}||=1 \)</span>$</p></li>
+</ul>
+</section>
+<section id="use-of-lagrange-multipliers">
+<h2>Use of Lagrange Multipliers<a class="headerlink" href="#use-of-lagrange-multipliers" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>We introduce a Lagrange multiplier <span class="math notranslate nohighlight">\(\lambda\)</span> and define the Lagrangian:
+$<span class="math notranslate nohighlight">\( L(\mathbf{v},\lambda)=\mathbf{v}^T \Sigma \mathbf{v} - \lambda (\mathbf{v}^T\mathbf{v} - 1) \)</span>$</p></li>
+<li><p>Taking the derivative with respect to <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and setting it to 0:
+$<span class="math notranslate nohighlight">\( \frac{\partial{L}}{\partial{\mathbf{v}}} = 2\Sigma \mathbf{v} - 2 \lambda \mathbf{v} = 0 \)</span>$</p></li>
+<li><p>This simplifies to:
+$<span class="math notranslate nohighlight">\(
+\Sigma \mathbf{v} = \lambda \mathbf{v}
+\)</span>$</p></li>
+<li><p>We define all <span class="math notranslate nohighlight">\((\mathbf{v}_1, \lambda_1), (\mathbf{v}_2, \lambda_2), ... ,(\mathbf{v}_k, \lambda_k)\)</span> as the <span class="math notranslate nohighlight">\(k\)</span> eigenvectors of <span class="math notranslate nohighlight">\(\Sigma\)</span> having largest eigenvalues: <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_k\)</span></p></li>
+</ul>
+</section>
+<section id="interpretation">
+<h2>Interpretation<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The variance <span class="math notranslate nohighlight">\(\mathbf{v}^T \Sigma \mathbf{v}\)</span> is maximized when <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is the eigenvector corresponding to the largest eigenvalue of <span class="math notranslate nohighlight">\(\Sigma\)</span>.</p></li>
+<li><p>The eigenvalue <span class="math notranslate nohighlight">\(\lambda\)</span> represents the variance in the direction of the eigenvector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p></li>
+<li><p>Conclusion: Eigenvectors of the covariance matrix maximize the variance of the projected data.</p></li>
+</ul>
+</section>
+<section id="code">
+<h2>CODE:<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>This Python code performs Principal Component Analysis (PCA) on the MNIST-like digit dataset from <code class="docutils literal notranslate"><span class="pre">sklearn.datasets</span></code>. The dataset is first loaded and reshaped, with pixel values normalized. The <code class="docutils literal notranslate"><span class="pre">pca</span></code> function calculates the principal components by centering the data (subtracting the mean), computing the covariance matrix, and obtaining its eigenvectors and eigenvalues. The top <code class="docutils literal notranslate"><span class="pre">num_components</span></code> eigenvectors are selected to project the data into a reduced space. The code reduces the dataset to 20 principal components and visualizes the first two principal components in a scatter plot, color-coded by digit labels. This visualization helps to observe how the data is distributed in the reduced-dimensional space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">images</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">num_pcs</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">):</span>
+    <span class="n">X_meaned</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_meaned</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">)</span>
+    <span class="n">sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">sorted_eigenvectors</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">sorted_index</span><span class="p">]</span>
+    <span class="n">eigenvector_subset</span> <span class="o">=</span> <span class="n">sorted_eigenvectors</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">]</span>
+    <span class="n">X_reduced</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_meaned</span><span class="p">,</span> <span class="n">eigenvector_subset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span>
+
+<span class="n">mnist_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">mnist</span><span class="p">,</span> <span class="n">num_pcs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mnist_reduced</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mnist_reduced</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mnist_reduced</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1797, 64)
+(64, 64)
+(1797, 20)
+</pre></div>
+</div>
+<img alt="../../_images/03387a91b7d8913c39b7ec4f07a9ef424295a3fa72fc9bac3dd326fc31576474.png" src="../../_images/03387a91b7d8913c39b7ec4f07a9ef424295a3fa72fc9bac3dd326fc31576474.png" />
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>CODE:<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>This Python code decomposes the reduced MNIST dataset using the inverse of the PCA transformation. The <code class="docutils literal notranslate"><span class="pre">mnist_decompressed</span></code> is reconstructed by multiplying the reduced data (<code class="docutils literal notranslate"><span class="pre">mnist_reduced</span></code>) with the transpose of the eigenvectors (<code class="docutils literal notranslate"><span class="pre">eigenvector_subset.T</span></code>) and adding the mean of the original dataset. The <code class="docutils literal notranslate"><span class="pre">visualize_decompression</span></code> function displays the original and decompressed images side by side for comparison. It reshapes both the original and decompressed data into image format and shows the first 5 images along with their decompressed versions, providing a visual representation of how well the PCA compression and decompression process retains image details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_decompressed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mnist_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mnist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">visualize_decompression</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">decompressed</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">,</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">img_shape</span><span class="p">)</span>
+    <span class="n">decompressed</span> <span class="o">=</span> <span class="n">decompressed</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">img_shape</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_images</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">original</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">num_images</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">decompressed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">visualize_decompression</span><span class="p">(</span><span class="n">mnist</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">mnist_decompressed</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">img_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MNIST&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a5824b7b12c38b285487cacd70c617999745a3052b31b7cb1855e8b47d41ed5b.png" src="../../_images/a5824b7b12c38b285487cacd70c617999745a3052b31b7cb1855e8b47d41ed5b.png" />
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>CODE:<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>This project uses PCA to analyze a dataset created from grayscale images of all students in a class. The dataset, stored in <code class="docutils literal notranslate"><span class="pre">lfw_people</span></code>, is constructed by loading pictures from a directory. Additionally, a separate test image is loaded for evaluation.</p>
+<p>The goal is to reduce the dimensionality of the images using PCA while retaining the most significant features. The <code class="docutils literal notranslate"><span class="pre">pca</span></code> function extracts the top 10 principal components. The first principal component, visualized as an image, represents the dominant shared feature across the class photos.</p>
+<p>The script then compresses and reconstructs both the class dataset and the test image. The <code class="docutils literal notranslate"><span class="pre">visualize_decompression</span></code> function displays the original and reconstructed images side by side, highlighting how well PCA retains critical information.</p>
+<p>This analysis demonstrates how PCA can simplify image data, showing class photo decompression and reconstruction effectively while maintaining visual similarity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_olivetti_faces</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">src</span> <span class="o">=</span> <span class="s1">&#39;D:/education-MS/ML/forth home work/data/&#39;</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+<span class="n">lfw_people</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="n">lfw_people</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">src</span><span class="o">+</span><span class="n">file</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">lfw_people</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lfw_people</span><span class="p">)</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;resized_parvaz.png&#39;</span><span class="p">,</span><span class="s1">&#39;resized_mahdieh.jpg&#39;</span><span class="p">]</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;D:/education-MS/ML/forth home work/img/&#39;</span><span class="o">+</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">num_pcs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num_components</span><span class="p">):</span>
+    <span class="n">X_meaned</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_meaned</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">)</span>
+    <span class="n">sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">sorted_eigenvectors</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">sorted_index</span><span class="p">]</span>
+    <span class="n">eigenvector_subset</span> <span class="o">=</span> <span class="n">sorted_eigenvectors</span><span class="p">[:,</span> <span class="p">:</span><span class="n">num_components</span><span class="p">]</span>
+    <span class="n">X_reduced</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_meaned</span><span class="p">,</span> <span class="n">eigenvector_subset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span>
+
+<span class="c1"># TRAINING</span>
+<span class="n">mnist_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="o">*</span><span class="mi">64</span><span class="p">),</span> <span class="n">num_pcs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">eigenvector_subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># TESTING</span>
+<span class="n">test_reduced</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="o">*</span><span class="mi">64</span><span class="p">),</span> <span class="n">eigenvector_subset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eigenvector_subset</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># plt.figure(figsize=(8, 6))</span>
+<span class="c1"># scatter = plt.scatter(mnist_reduced[:, 0], mnist_reduced[:, 1], c=labels, cmap=&#39;tab10&#39;, alpha=0.7)</span>
+<span class="c1"># plt.colorbar(scatter)</span>
+<span class="c1"># plt.xlabel(&#39;PC1&#39;)</span>
+<span class="c1"># plt.ylabel(&#39;PC2&#39;)</span>
+<span class="c1"># plt.show()</span>
+
+<span class="n">mnist_decompressed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mnist_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lfw_people</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="o">*</span><span class="mi">64</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">test_decompressed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">test_reduced</span><span class="p">,</span> <span class="n">eigenvector_subset</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">visualize_decompression</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">decompressed</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">,</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">img_shape</span><span class="p">)</span>
+    <span class="n">decompressed</span> <span class="o">=</span> <span class="n">decompressed</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">img_shape</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_images</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">original</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">num_images</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">decompressed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">visualize_decompression</span><span class="p">(</span><span class="n">lfw_people</span><span class="p">,</span> <span class="n">mnist_decompressed</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PCA Decompression&quot;</span><span class="p">)</span>
+<span class="n">visualize_decompression</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">test_decompressed</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PCA Decompression&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">os</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">src</span> <span class="o">=</span> <span class="s1">&#39;D:/education-MS/ML/forth home work/data/&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">lfw_people</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+
+<span class="ne">FileNotFoundError</span>: [WinError 3] The system cannot find the path specified: &#39;D:/education-MS/ML/forth home work/data/&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="refrences">
+<h1>Refrences:<a class="headerlink" href="#refrences" title="Link to this heading">#</a></h1>
+<p>[1] M. Soleymani Baghshah, “Machine learning.” Lecture slides.</p>
+<p>[2] B. Póczos, “Advanced introduction to machine learning.” Lecture slides.
+CMU-10715.</p>
+<p>[3] M. Gormley, “Introduction to machine learning.” Lecture slides.
+10-701.</p>
+<p>[4] M. Gormley, “Introduction to machine learning.” Lecture slides.
+10-301/10-601.</p>
+<p>[5] F. Seyyedsalehi, “Machine learning and theory of machine learning.” Lecture slides.
+CE-477/CS-828.</p>
+<p>[6] G. Strang, “Linear algebra and its applications,” 2000.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\miniprojecct_PCA"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#high-dimension-examples">High Dimension Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-benefits">Dimensionality Reduction Benefits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-techniques">Dimensionality Reduction Techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-purpose">Dimensionality Reduction Purpose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea">Idea:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2d-gussian-dataset">CODE: 2D Gussian dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-first-pca-axis">CODE: First PCA axis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-first-and-second-axis">CODE: First and Second Axis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretations">Interpretations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalence-of-the-interpretations">Equivalence of the Interpretations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizes-variance-of-projected-data">Maximizes variance of projected data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-eigenvalues-and-eigenvectors">what are Eigenvalues and eigenvectors?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrical-interpretation">Geometrical Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-find-eigenvalues-and-eigenvectors">How to Find Eigenvalues and Eigenvectors?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-example">Numerical Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">visualization</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-covariance">what is Covariance?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-covariance-matrix">what is covariance Matrix?</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-matrix-example">Covariance Matrix Example</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">CODE: Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">CODE:Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expression-for-variance">Expression for variance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximization-problem">Maximization Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-of-lagrange-multipliers">Use of Lagrange Multipliers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">CODE:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">CODE:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">CODE:</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#refrences">Refrences:</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

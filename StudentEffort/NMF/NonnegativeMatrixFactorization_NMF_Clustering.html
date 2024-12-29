@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Nonnegative Matrix Factorization (NMF) for Clustering &#8212; Dr.Hadi Sadoghi Yazdi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'StudentEffort/NMF/NonnegativeMatrixFactorization_NMF_Clustering';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="RAG : Retrieval-Augmented Generation" href="../RAG_%20Retrieval_Augmented_Generation/RAG_%20RetrievalAugmentedGeneration.html" />
+    <link rel="prev" title="Least Mean Squares (LMS) Algorithm" href="../lms/lms.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../Introduction_StudentEffort.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-light" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+    <img src="../../_static/Hadi_Sadoghi_Yazdi.png" class="logo__image only-dark pst-js-only" alt="Dr.Hadi Sadoghi Yazdi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../Introduction_StudentEffort.html">
+                    Enduring Efforts of Students
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort PR</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Whyprojection1.html">What is Projection?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Star%20Coordinates/Star_Coordinates.html">Star Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Covariance_Fekri/Covariance_Poorya.html">Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linear-least-square-final/least-square.html">Linear Least Square Method</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../ECG/ecg.html">ECG: Measurement of heart rate and probability of heart attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correntropy/correntropy.html">Understanding Correntropy as a Loss Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Normalization/Normalization_1.html">Data Normalization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Chernoff/ChernoffEsri.html">Chernoff Faces in ESRI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GloVe/GloVe1.html">GloVe: Word Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinkageClustering1/linkageclustering2.html">Linkage Clustering Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Word2Vec/Word2Vec.html">Word2Vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SOFM/SOFM.html">SOFM - Clustering and dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KNN/KNN.html">K Nearest-Neighbors KNN</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Bayes_Estimation_HW/Bayes_Estimation_HW.html">Posterior Distribution Derivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lms/lms.html">Least Mean Squares (LMS) Algorithm</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Nonnegative Matrix Factorization (NMF) for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RAG_%20Retrieval_Augmented_Generation/RAG_%20RetrievalAugmentedGeneration.html">RAG : Retrieval-Augmented Generation</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Student Effort ML</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../homeworkLLE/Homework_LLE.html">Locally Linear Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bias_variance_tradeoff/bias_variance_tardeoff.html">Explanation of Bias-Variance Trade-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Conjugate_Prior/Conjugate_Prior.html">Cojugate Prior</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ManifoldLearning/manifoldLearning.html">Manifold Learning Techniques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ridge/ridge.html">Ridge Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GP_Midterm/gp_final.html">Midterm Exam - Gaussian Processes</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../AdaboostforRegression/adaboostregression.html">Adaboost for Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Finall_PCA/finallPCA.html">Midterm Exam - PCA</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contact</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Contact_Me.html">Contact Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../About_Me.html">About Me</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/h-sadoghi/dr-sadoghi.git/issues/new?title=Issue%20on%20page%20%2FStudentEffort/NMF/NonnegativeMatrixFactorization_NMF_Clustering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/StudentEffort/NMF/NonnegativeMatrixFactorization_NMF_Clustering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Nonnegative Matrix Factorization (NMF) for Clustering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Nonnegative Matrix Factorization (NMF) for Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-nmf">Understanding NMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-nmf-in-clustering">Applications of NMF in Clustering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-nmf">Advantages of NMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-and-considerations">Challenges and Considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-document-clustering-with-nmf">Example: Document Clustering with NMF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refrences">Refrences</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="nonnegative-matrix-factorization-nmf-for-clustering">
+<h1>Nonnegative Matrix Factorization (NMF) for Clustering<a class="headerlink" href="#nonnegative-matrix-factorization-nmf-for-clustering" title="Link to this heading">#</a></h1>
+<p>Auther: Arash Ghazi</p>
+<p>Contact: <a class="reference external" href="mailto:arash&#46;ghazi&#46;2012&#37;&#52;&#48;gmail&#46;com">arash<span>&#46;</span>ghazi<span>&#46;</span>2012<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<section id="id1">
+<h2>Nonnegative Matrix Factorization (NMF) for Clustering<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Nonnegative Matrix Factorization (NMF) is a powerful technique used in data analysis and machine learning, particularly for clustering tasks. It is a matrix factorization method that decomposes a nonnegative matrix into two lower-dimensional nonnegative matrices. This decomposition helps in uncovering hidden patterns and structures within the data, making it an effective tool for clustering.</p>
+<section id="understanding-nmf">
+<h3>Understanding NMF<a class="headerlink" href="#understanding-nmf" title="Link to this heading">#</a></h3>
+<p>NMF aims to approximate a given nonnegative matrix ( V ) (of size ( m \times n )) as the product of two nonnegative matrices: ( W ) (of size ( m \times r )) and ( H ) (of size ( r \times n )). Mathematically, this can be represented as:</p>
+<p>[ V \approx W \times H ]</p>
+<p>Here, ( r ) is the rank of the factorization, which is typically much smaller than ( m ) and ( n ). The matrices ( W ) and ( H ) are learned such that their product closely approximates the original matrix ( V ).</p>
+</section>
+<section id="applications-of-nmf-in-clustering">
+<h3>Applications of NMF in Clustering<a class="headerlink" href="#applications-of-nmf-in-clustering" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Document Clustering</strong>: NMF is widely used in text mining for document clustering. By decomposing the term-document matrix, NMF can identify latent topics and group similar documents together based on these topics.</p></li>
+<li><p><strong>Image Clustering</strong>: In image processing, NMF can be applied to cluster images by decomposing the pixel intensity matrix. This helps in identifying common features and patterns across different images.</p></li>
+<li><p><strong>Gene Expression Data</strong>: In bioinformatics, NMF is used to analyze gene expression data. By clustering genes with similar expression patterns, researchers can identify potential gene functions and regulatory mechanisms.</p></li>
+</ol>
+</section>
+<section id="advantages-of-nmf">
+<h3>Advantages of NMF<a class="headerlink" href="#advantages-of-nmf" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Interpretability</strong>: One of the key advantages of NMF is its interpretability. The nonnegativity constraint ensures that the resulting matrices ( W ) and ( H ) have a clear and meaningful interpretation, making it easier to understand the underlying patterns.</p></li>
+<li><p><strong>Sparsity</strong>: NMF often leads to sparse representations, which can be beneficial for clustering tasks. Sparse representations highlight the most important features, reducing noise and improving clustering performance.</p></li>
+<li><p><strong>Scalability</strong>: NMF can be efficiently applied to large datasets, making it suitable for real-world applications with high-dimensional data.</p></li>
+</ul>
+</section>
+<section id="challenges-and-considerations">
+<h3>Challenges and Considerations<a class="headerlink" href="#challenges-and-considerations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Initialization</strong>: The performance of NMF can be sensitive to the initialization of the matrices ( W ) and ( H ). Proper initialization techniques, such as random initialization or using the results of other clustering methods, can help improve the results.</p></li>
+<li><p><strong>Rank Selection</strong>: Choosing the appropriate rank ( r ) is crucial for the success of NMF. Cross-validation and other model selection techniques can be used to determine the optimal rank.</p></li>
+<li><p><strong>Computational Complexity</strong>: While NMF is scalable, it can still be computationally intensive for very large datasets. Efficient algorithms and parallel computing techniques can help mitigate this issue.</p></li>
+</ul>
+</section>
+</section>
+<section id="example-document-clustering-with-nmf">
+<h2>Example: Document Clustering with NMF<a class="headerlink" href="#example-document-clustering-with-nmf" title="Link to this heading">#</a></h2>
+<p>Imagine we have a collection of 10 documents, and we want to cluster them based on their content. Each document can be represented as a vector of word frequencies, resulting in a term-document matrix ( V ). For simplicity, let’s assume our term-document matrix ( V ) is as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Terms/Docs</p></th>
+<th class="head"><p>Doc1</p></th>
+<th class="head"><p>Doc2</p></th>
+<th class="head"><p>Doc3</p></th>
+<th class="head"><p>Doc4</p></th>
+<th class="head"><p>Doc5</p></th>
+<th class="head"><p>Doc6</p></th>
+<th class="head"><p>Doc7</p></th>
+<th class="head"><p>Doc8</p></th>
+<th class="head"><p>Doc9</p></th>
+<th class="head"><p>Doc10</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Term1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Term2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>Term3</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Term4</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>Term5</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Our goal is to factorize this matrix ( V ) into two nonnegative matrices ( W ) and ( H ) such that ( V \approx W \times H ). Let’s assume we choose the rank ( r = 2 ), meaning we want to cluster the documents into 2 clusters.</p>
+<p>After applying NMF, we obtain the following matrices ( W ) and ( H ):</p>
+<p>Matrix ( W ) (Term-Cluster Matrix):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Terms/Clusters</p></th>
+<th class="head"><p>Cluster1</p></th>
+<th class="head"><p>Cluster2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Term1</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Term2</p></td>
+<td><p>0.1</p></td>
+<td><p>0.9</p></td>
+</tr>
+<tr class="row-even"><td><p>Term3</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Term4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+</tr>
+<tr class="row-even"><td><p>Term5</p></td>
+<td><p>0.7</p></td>
+<td><p>0.3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Matrix ( H ) (Cluster-Document Matrix):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Clusters/Docs</p></th>
+<th class="head"><p>Doc1</p></th>
+<th class="head"><p>Doc2</p></th>
+<th class="head"><p>Doc3</p></th>
+<th class="head"><p>Doc4</p></th>
+<th class="head"><p>Doc5</p></th>
+<th class="head"><p>Doc6</p></th>
+<th class="head"><p>Doc7</p></th>
+<th class="head"><p>Doc8</p></th>
+<th class="head"><p>Doc9</p></th>
+<th class="head"><p>Doc10</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cluster1</p></td>
+<td><p>0.9</p></td>
+<td><p>0.1</p></td>
+<td><p>0.8</p></td>
+<td><p>0.3</p></td>
+<td><p>0.2</p></td>
+<td><p>0.7</p></td>
+<td><p>0.8</p></td>
+<td><p>0.1</p></td>
+<td><p>0.9</p></td>
+<td><p>0.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cluster2</p></td>
+<td><p>0.1</p></td>
+<td><p>0.9</p></td>
+<td><p>0.2</p></td>
+<td><p>0.7</p></td>
+<td><p>0.8</p></td>
+<td><p>0.3</p></td>
+<td><p>0.2</p></td>
+<td><p>0.9</p></td>
+<td><p>0.1</p></td>
+<td><p>0.8</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>From the matrix ( W ), we can see the association of each term with the clusters. For example, Term1 is strongly associated with Cluster1, while Term2 is strongly associated with Cluster2.</p>
+<p>From the matrix ( H ), we can see the association of each document with the clusters. For example, Doc1, Doc3, Doc7, and Doc9 are strongly associated with Cluster1, while Doc2, Doc4, Doc5, Doc8, and Doc10 are strongly associated with Cluster2.</p>
+<p>By examining these matrices, we can cluster the documents based on their content. Documents with similar content will be grouped together in the same cluster.</p>
+<p>This example demonstrates how NMF can be used for clustering tasks, providing interpretable and meaningful results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">NMF</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+
+<span class="c1"># Sample term-document matrix (V)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Number of clusters</span>
+<span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># Apply NMF</span>
+<span class="n">nmf_model</span> <span class="o">=</span> <span class="n">NMF</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">nmf_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">nmf_model</span><span class="o">.</span><span class="n">components_</span>
+
+<span class="c1"># Normalize the matrices for better interpretability</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Term-Cluster Matrix (W):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cluster-Document Matrix (H):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+<span class="c1"># Assign documents to clusters based on the highest value in H</span>
+<span class="n">document_clusters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Document Clusters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">document_clusters</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Term-Cluster Matrix (W):
+[[1.         0.        ]
+ [0.00693408 0.99306592]
+ [0.80131066 0.19868934]
+ [0.         1.        ]
+ [1.         0.        ]]
+
+Cluster-Document Matrix (H):
+[[0.99522321 0.10597333 1.         0.23537329 0.         0.50104913
+  0.99522321 0.10597333 0.99522321 0.        ]
+ [0.00477679 0.89402667 0.         0.76462671 1.         0.49895087
+  0.00477679 0.89402667 0.00477679 1.        ]]
+
+Document Clusters:
+[0 1 0 1 1 0 0 1 0 1]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sure, here’s a Python example demonstrating how to use Nonnegative Matrix Factorization (NMF) for document clustering using the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> library:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">NMF</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+
+<span class="c1"># Sample term-document matrix (V)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Number of clusters</span>
+<span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># Apply NMF</span>
+<span class="n">nmf_model</span> <span class="o">=</span> <span class="n">NMF</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">nmf_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">nmf_model</span><span class="o">.</span><span class="n">components_</span>
+
+<span class="c1"># Normalize the matrices for better interpretability</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Term-Cluster Matrix (W):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cluster-Document Matrix (H):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+<span class="c1"># Assign documents to clusters based on the highest value in H</span>
+<span class="n">document_clusters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Document Clusters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">document_clusters</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="explanation">
+<h2>Explanation:<a class="headerlink" href="#explanation" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Term-Document Matrix (V)</strong>: This matrix represents the frequency of terms in each document.</p></li>
+<li><p><strong>Number of Clusters (n_clusters)</strong>: We set the number of clusters to 2.</p></li>
+<li><p><strong>Apply NMF</strong>: We use the <code class="docutils literal notranslate"><span class="pre">NMF</span></code> class from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> to perform the factorization. The <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method decomposes the matrix ( V ) into two matrices ( W ) and ( H ).</p></li>
+<li><p><strong>Normalize the Matrices</strong>: We normalize the matrices ( W ) and ( H ) for better interpretability.</p></li>
+<li><p><strong>Display the Results</strong>: We print the term-cluster matrix ( W ) and the cluster-document matrix ( H ).</p></li>
+<li><p><strong>Assign Documents to Clusters</strong>: We assign each document to a cluster based on the highest value in the cluster-document matrix ( H ).</p></li>
+</ol>
+<p>This code provides a basic example of how to use NMF for document clustering. You can adjust the number of clusters and the term-document matrix to fit your specific use case.</p>
+</section>
+<section id="refrences">
+<h2>Refrences<a class="headerlink" href="#refrences" title="Link to this heading">#</a></h2>
+<p>Here are some references that provide more information on Nonnegative Matrix Factorization (NMF):</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">Non-negative matrix factorization - Wikipedia</a></p></li>
+<li><p><a class="reference external" href="https://mljourney.com/understanding-non-negative-matrix-factorization-nmf/">Understanding Non-Negative Matrix Factorization (NMF)</a></p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./StudentEffort\NMF"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lms/lms.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Least Mean Squares (LMS) Algorithm</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../RAG_%20Retrieval_Augmented_Generation/RAG_%20RetrievalAugmentedGeneration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">RAG : Retrieval-Augmented Generation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Nonnegative Matrix Factorization (NMF) for Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-nmf">Understanding NMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-nmf-in-clustering">Applications of NMF in Clustering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-nmf">Advantages of NMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-and-considerations">Challenges and Considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-document-clustering-with-nmf">Example: Document Clustering with NMF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refrences">Refrences</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr.Hadi Sadoghi Yazdi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024 Pattern Recognition Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
